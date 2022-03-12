@@ -2,6 +2,9 @@
 
 <head>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="main.js"></script>
+
+    <link rel="stylesheet" href="main.css">
 </head>
 
 <body>
@@ -10,6 +13,15 @@
     <input type="number" id="x" name="x" value="3">
     <label for="y">column:</label>
     <input type="number" id="y" name="y" value="5">
+
+    <select name="language" class="custom-select" multiple>
+        <option value="html">HTML</option>
+        <option value="css">CSS</option>
+        <option value="javascript">JavaScript</option>
+        <option value="python">Python</option>
+        <option value="sql">SQL</option>
+        <option value="kotlin">Kotlin</option>
+      </select>
 
     <button onclick="createGrid(document.getElementById('x').value,document.getElementById('y').value)">Generate grid</button>
 
