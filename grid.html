@@ -2,21 +2,6 @@
 <html>
 
 <head>
-    <style>
-        td {
-            width: 80px;
-            height: 80px;
-        }
-        
-        .unselected_cell {
-            background-color: #EED;
-        }
-        
-        .selected_cell {
-            background-color: green;
-        }
-    </style>
-    <script src="https://code.jquery.com/jquery-2.1.4.js"></script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
 </head>
@@ -29,78 +14,80 @@
     <label for="y">column:</label>
     <input type="number" id="y" name="y" value="5">
 
-    <button onclick="createGrid(document.getElementById('x').value,document.getElementById('y').value)">Generate grid</button>
+    <button onclick="addRow(document.getElementById('x').value,document.getElementById('y').value)">GENERATE GRID</button>
+    <button onclick="">SUBMIT</button>
 
-    <table>
-        <tr>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-        </tr>
-        <tr>
+    <div id="reload">
 
-            <td id=M_6-8 class="unselected_cell" onclick="handleCellClick(this);" />
-            <td id=T_6-8 class="unselected_cell" onclick="handleCellClick(this);" />
-            <td id=W_6-8 class="unselected_cell" onclick="handleCellClick(this);" />
-            <td id=Tu_6-8 class="unselected_cell" onclick="handleCellClick(this);" />
-            <td id=F_6-8 class="unselected_cell" onclick="handleCellClick(this);" />
-            <td id=S_6-8 class="unselected_cell" onclick="handleCellClick(this);" />
-            <td id=Su_6-8 class="unselected_cell" onclick="handleCellClick(this);" />
-            <tr>
+    </div>
 
-                <td id=M_8-10 class="unselected_cell" onclick="handleCellClick(this);" />
-                <td id=T_8-10 class="unselected_cell" onclick="handleCellClick(this);" />
-                <td id=W_8-10 class="unselected_cell" onclick="handleCellClick(this);" />
-                <td id=Tu_8-10 class="unselected_cell" onclick="handleCellClick(this);" />
-                <td id=F_8-10 class="unselected_cell" onclick="handleCellClick(this);" />
-                <td id=S_8-10 class="unselected_cell" onclick="handleCellClick(this);" />
-                <td id=Su_8-10 class="unselected_cell" onclick="handleCellClick(this);" />
-            </tr>
-            <tr>
 
-                <td id=M_10-12 class="unselected_cell" onclick="handleCellClick(this);" />
-                <td id=T_10-12 class="unselected_cell" onclick="handleCellClick(this);" />
-                <td id=W_10-12 class="unselected_cell" onclick="handleCellClick(this);" />
-                <td id=Tu_10-12 class="unselected_cell" onclick="handleCellClick(this);" />
-                <td id=F_10-12 class="unselected_cell" onclick="handleCellClick(this);" />
-                <td id=S_10-12 class="unselected_cell" onclick="handleCellClick(this);" />
-                <td id=Su_10-12 class="unselected_cell" onclick="handleCellClick(this);" />
-            </tr>
-            <tr>
 
-                <td id=M_12-14 class="unselected_cell" onclick="handleCellClick(this);" />
-                <td id=T_12-14 class="unselected_cell" onclick="handleCellClick(this);" />
-                <td id=W_12-14 class="unselected_cell" onclick="handleCellClick(this);" />
-                <td id=Tu_12-14 class="unselected_cell" onclick="handleCellClick(this);" />
-                <td id=F_12-14 class="unselected_cell" onclick="handleCellClick(this);" />
-                <td id=S_12-14 class="unselected_cell" onclick="handleCellClick(this);" />
-                <td id=Su_12-14 class="unselected_cell" onclick="handleCellClick(this);" />
-            </tr>
-
-    </table>
-
-    <button onclick="handleButtonClick()">FINISHED</button>
-
-    <script>
-        function handleCellClick(cell) {
-            if (cell.className.indexOf("unselected_cell") > -1) {
-                cell.className = cell.className.replace("unselected_cell", "selected_cell");
-            } else {
-                cell.className = cell.className.replace("selected_cell", "unselected_cell");
-            }
-        }
-
-        function handleButtonClick() {
-            $(".selected_cell").each(function(index) {
-                console.log($(this).prop('id'));
-            });
-        }
-    </script>
 </body>
 
 </html>
+
+<script>
+    addRow(3, 5);
+
+
+    function handleCellClick(cell) {
+        if (cell.className.indexOf("unselected_cell") > -1) {
+            cell.className = cell.className.replace("unselected_cell", "selected_cell");
+        } else {
+            cell.className = cell.className.replace("selected_cell", "unselected_cell");
+        }
+    }
+
+    function handleButtonClick() {
+        $(".selected_cell").each(function(index) {
+            console.log($(this).prop('id'));
+        });
+    }
+
+
+
+    function addRow(x, y) {
+
+        var size = 80;
+        var size2 = (size + 2) * y;
+
+
+
+        document.getElementById("reload").innerHTML = '';
+        var counter = 1
+        for (var rows = 0; rows < x; rows++) {
+
+            for (var columns = 0; columns < y; columns++) {
+                document.getElementById("reload").innerHTML += '<div id=' + counter + ' class="unselected_cell" onclick="handleCellClick(this);"> </div>';
+
+                document.getElementById("reload").style.width = size2 + "px";
+                counter++;
+            };
+
+        };
+
+    };
+</script>
+
+<style>
+    #reload {
+        float: none;
+    }
+    
+    .unselected_cell {
+        background-color: #EED;
+        width: 80px;
+        height: 80px;
+        float: left;
+        border: solid 1px black;
+    }
+    
+    .selected_cell {
+        background-color: green;
+        width: 80px;
+        height: 80px;
+        float: left;
+        border: solid 1px black;
+    }
+</style>
