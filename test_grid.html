@@ -1,22 +1,89 @@
-<!DOCTYPE html>
 <html>
+<head>
+    <link rel=stylesheet type="text/css" href="Project_Javascript_jQuery.css">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script type="text/javascript" src="Project_Javascript_jQuery.js"></script>
+</head>
 
 <body>
+<h4><a href="http://www.theodinproject.com/home">The Odin Project</a> >> <a href="http://www.theodinproject.com/web-development-101">Web Development 101</a> >> <a href="http://www.theodinproject.com/web-development-101#section-the-front-end">The Front End</a> >> <a href="http://www.theodinproject.com/web-development-101/javascript-and-jquery">Project: JavaScript and jQuery</a> >> Nick Kessler entry February 6, 2015</h4>
 
-    <p id="demo">Click the button and watch it grow.</p>
+<center><button class="newGrid">New Grid</button></center>
 
-    <button id="myButton" onclick="myFunction()">Try it</button>
+<div id="container"></div>
 
-    <script>
-        function myFunction() {
-            var w = window.innerWidth;
-            var h = window.innerHeight;
-            var x = document.getElementById("myButton");
-            x.style.width = w + "px";
-            x.style.height = h + "px";
-        }
-    </script>
+<br><br>
 
 </body>
 
 </html>
+
+<style>
+
+#container {
+    position: relative;
+    top: 30px;
+    outline: 2px solid #000;
+    font-size: 0;
+    margin: auto;
+    height: 960px;
+    width: 960px;
+    padding: 0;
+    border: none;
+}
+
+.grid {
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: 1px solid #000;
+    display: inline-block;
+}
+</style>
+
+<script>
+//Function that builds a grid in the "container"
+function createGrid(x) {
+    for (var rows = 0; rows < x; rows++) {
+        for (var columns = 0; columns < x; columns++) {
+            $("#container").append("<div class='grid'></div>");
+        };
+    };
+    $(".grid").width(960/x);
+    $(".grid").height(960/x);
+};
+
+// Function that clears the grid
+function clearGrid(){
+    $(".grid").remove();
+};
+
+// Function that prompts the user to select the number of boxes in a new grid
+// the function then also creates that new grid
+function refreshGrid(){
+    var z = prompt("How many boxes per side?");
+    clearGrid();
+    createGrid(z);
+};
+
+// Create a 16x16 grid when the page loads.
+// Creates a hover effect that changes the color of a square to black when the mouse passes over it, leaving a (pixel) trail through the grid
+// allows the click of a button to prompt the user to create a new grid
+$(document).ready(function() {
+    createGrid(16);
+
+    $(".grid").click(function() 
+        {
+            $(this).css("background-color", "black");
+        });
+
+    $(".newGrid").click(function() {
+        refreshGrid();
+
+        $(".grid").mouseover(function() {
+        $(this).css("background-color", "black");
+        });
+    });
+});
+
+</script>

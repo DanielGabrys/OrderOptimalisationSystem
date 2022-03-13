@@ -45,6 +45,56 @@
         });
     }
 
+    var markdown=0;
+    var markup=0;
+
+    function mouseDown(id)
+    {
+     if(document.getElementById(id).style.background != "green")
+     {
+        document.getElementById(id).style.background = "green";
+        markdown=1;
+        markup=0;
+     }
+     else
+     {
+        document.getElementById(id).style.background = "#EED";
+        markup=1;
+        markdown=0;
+     }
+    };
+
+    function mouseUp(id) 
+    {
+       
+        //document.getElementById(id).style.background= "green";
+        markdown=0;
+        markup=0;
+        //alert(markdown+markup);
+        
+
+       
+        //document.getElementById(id).style.background= "#EED";
+        markup=0;
+        markdown=0;
+        
+        
+        
+       
+    };
+
+    function MouseOver(id) 
+    {
+    if (markdown==1 && markup==0)
+    {
+        document.getElementById(id).style.background= "green";
+    }
+    if (markup==1 && markdown==0)
+    {
+        document.getElementById(id).style.background= "#EED";
+    }
+
+    };
 
 
     function addRow(x, y) {
@@ -52,15 +102,12 @@
         var size = 80;
         var size2 = (size + 2) * y;
 
-
-
         document.getElementById("reload").innerHTML = '';
         var counter = 1
         for (var rows = 0; rows < x; rows++) {
 
             for (var columns = 0; columns < y; columns++) {
-                document.getElementById("reload").innerHTML += '<div id=' + counter + ' class="unselected_cell" onclick="handleCellClick(this);"> </div>';
-
+                document.getElementById("reload").innerHTML += '<div id=' + counter + ' class="unselected_cell" onclick="handleCellClick(this);" onmousedown="mouseDown('+counter+')" onmouseup="mouseUp('+counter+')" onmouseover="MouseOver('+counter+')">'+counter+'</div>';
                 document.getElementById("reload").style.width = size2 + "px";
                 counter++;
             };
@@ -81,6 +128,7 @@
         height: 80px;
         float: left;
         border: solid 1px black;
+        cursor: pointer;
     }
     
     .selected_cell {
@@ -89,5 +137,7 @@
         height: 80px;
         float: left;
         border: solid 1px black;
+        cursor: pointer;
+
     }
 </style>
