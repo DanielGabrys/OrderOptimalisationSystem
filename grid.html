@@ -31,13 +31,17 @@
     addRow(3, 5);
 
 
+/*
     function handleCellClick(cell) {
-        if (cell.className.indexOf("unselected_cell") > -1) {
+        if (cell.className.indexOf("unselected_cell") > -1) 
+        {
             cell.className = cell.className.replace("unselected_cell", "selected_cell");
-        } else {
+        } else 
+        {
             cell.className = cell.className.replace("selected_cell", "unselected_cell");
         }
     }
+    */
 
     function handleButtonClick() {
         $(".selected_cell").each(function(index) {
@@ -62,25 +66,18 @@
         markup=1;
         markdown=0;
      }
+     console.log(markdown+" "+markup);
     };
 
     function mouseUp(id) 
     {
-       
-        //document.getElementById(id).style.background= "green";
+        
         markdown=0;
         markup=0;
         //alert(markdown+markup);
-        
-
-       
-        //document.getElementById(id).style.background= "#EED";
-        markup=0;
-        markdown=0;
-        
-        
-        
-       
+        console.log(markdown+" "+markup);
+        clearSelection();
+                
     };
 
     function MouseOver(id) 
@@ -93,8 +90,15 @@
     {
         document.getElementById(id).style.background= "#EED";
     }
+    console.log(markdown+" "+markup);
 
     };
+
+    function clearSelection()
+    {
+        if (window.getSelection) {window.getSelection().removeAllRanges();}
+        else if (document.selection) {document.selection.empty();}
+    }
 
 
     function addRow(x, y) {
@@ -107,7 +111,7 @@
         for (var rows = 0; rows < x; rows++) {
 
             for (var columns = 0; columns < y; columns++) {
-                document.getElementById("reload").innerHTML += '<div id=' + counter + ' class="unselected_cell" onclick="handleCellClick(this);" onmousedown="mouseDown('+counter+')" onmouseup="mouseUp('+counter+')" onmouseover="MouseOver('+counter+')">'+counter+'</div>';
+                document.getElementById("reload").innerHTML += '<div id=' + counter + ' class="unselected_cell" onmousedown="mouseDown('+counter+')" onmouseover="MouseOver('+counter+')" onmouseup="mouseUp('+counter+')">'+counter+'</div>';
                 document.getElementById("reload").style.width = size2 + "px";
                 counter++;
             };
