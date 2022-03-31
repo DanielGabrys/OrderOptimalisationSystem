@@ -1,0 +1,22 @@
+#reload {
+    float: none;
+}
+
+.unselected_cell {
+    background-color: #EED;
+    width: 80px;
+    height: 80px;
+    float: left;
+    border: solid 1px black;
+    cursor: pointer;
+}
+
+.selected_cell {
+    background-color: green;
+    width: 80px;
+    height: 80px;
+    float: left;
+    border: solid 1px black;
+    cursor: pointer;
+
+}

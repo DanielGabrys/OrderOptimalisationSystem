@@ -6,7 +6,10 @@
     <meta name="viewport" content="width=device-width">
 </head>
 
-<script src="{{asset('Frontend/Grid/grid.js')}}"></script>
+<script src="{{asset('Frontend/Js/Grid/grid.js')}}"></script>
+
+
+<link href="{{asset('Frontend/css/grid/grid.css')}}" rel="stylesheet">
 
 <body>
 
@@ -16,6 +19,7 @@
 <label for="y">column:</label>
 <input type="number" id="y" name="y" value="5">
 
+<button type="button" class="btn btn-primary">Primary</button>
 <button onclick="addRow(document.getElementById('x').value,document.getElementById('y').value)">GENERATE GRID</button>
 <button onclick="showGrid()">SUBMIT</button>
 
@@ -29,27 +33,3 @@
 
 </html>
 
-<style>
-    #reload {
-        float: none;
-    }
-
-    .unselected_cell {
-        background-color: #EED;
-        width: 80px;
-        height: 80px;
-        float: left;
-        border: solid 1px black;
-        cursor: pointer;
-    }
-
-    .selected_cell {
-        background-color: green;
-        width: 80px;
-        height: 80px;
-        float: left;
-        border: solid 1px black;
-        cursor: pointer;
-
-    }
-</style>

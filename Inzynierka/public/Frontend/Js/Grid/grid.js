@@ -1,6 +1,4 @@
 
-
-
     /*
     function handleCellClick(cell) {
     if (cell.className.indexOf("unselected_cell") > -1)
@@ -17,13 +15,6 @@
     let markup=0;
 
     let grid = [];
-
-    function handleButtonClick()
-    {
-        $(".selected_cell").each(function(index) {
-           // console.log($(this).prop('id'));
-        });
-    }
 
     function mouseDown(id)
     {
