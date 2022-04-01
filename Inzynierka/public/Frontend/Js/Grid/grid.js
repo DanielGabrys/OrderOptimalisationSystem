@@ -101,6 +101,7 @@
 
     let x =parseInt(X);
     let y =parseInt(Y);
+    let digits = (x*y).toString().length;
     let size = 1080/y;
 
     document.getElementById("reload").innerHTML='';
@@ -110,7 +111,8 @@
     {
         for (let columns = 0; columns < y; columns++)
         {
-        document.getElementById("reload").innerHTML += '<div id=' + counter + ' class="unselected_cell" onmousedown="mouseDown('+counter+')" onmouseover="MouseOver('+counter+')" onmouseup="mouseUp('+counter+')">'+counter+'</div>';
+        document.getElementById("reload").innerHTML +=
+            '<div id=' + counter + ' class="unselected_cell" onmousedown="mouseDown('+counter+')" onmouseover="MouseOver('+counter+')" onmouseup="mouseUp('+counter+')">'+counter+'</div>';
         counter++;
         };
 
@@ -121,6 +123,10 @@
         {
             block_size[i].style.width=size +"px";    // Change the content
             block_size[i].style.height=size +"px";
+
+            let b_size= block_size[i].clientHeight;
+
+                block_size[i].style.fontSize = b_size/(digits)+"px";
         }
         document.getElementById("reload").style.width=size*y+"px";
         document.getElementById("reload").style.height=size*x+"px";
