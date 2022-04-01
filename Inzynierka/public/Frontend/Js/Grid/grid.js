@@ -72,7 +72,7 @@
         document.getElementById(id).style.background= "#EED";
 
     }
-        console.log(markdown+" "+markup);
+        //console.log(markdown+" "+markup);
         clearSelection();
 
     };
@@ -84,25 +84,46 @@
     }
 
 
-    function addRow(x, y)
+    function addRow(X, Y)
     {
 
-    grid = []
-    let size = 80;
-    let size2 = (size + 2) * y;
+    grid = [];
 
-    document.getElementById("reload").innerHTML = '';
+        let k=0.75;
+        let width = window.innerWidth*k
+            || document.documentElement.clientWidth*k
+            || document.body.clientWidth*k;
+
+    let height = window.innerHeight*k
+            || document.documentElement.clientHeight*k
+            || document.body.clientHeight*k;
+
+
+    let x =parseInt(X);
+    let y =parseInt(Y);
+    let size = 1080/y;
+
+    document.getElementById("reload").innerHTML='';
     let counter = 1
-    for (var rows = 0; rows < x; rows++) {
 
-    for (let columns = 0; columns < y; columns++) {
-    document.getElementById("reload").innerHTML += '<div id=' + counter + ' class="unselected_cell" onmousedown="mouseDown('+counter+')" onmouseover="MouseOver('+counter+')" onmouseup="mouseUp('+counter+')">'+counter+'</div>';
-    document.getElementById("reload").style.width = size2 + "px";
-    counter++;
-            };
-
+    for (let rows = 0; rows < x; rows++)
+    {
+        for (let columns = 0; columns < y; columns++)
+        {
+        document.getElementById("reload").innerHTML += '<div id=' + counter + ' class="unselected_cell" onmousedown="mouseDown('+counter+')" onmouseover="MouseOver('+counter+')" onmouseup="mouseUp('+counter+')">'+counter+'</div>';
+        counter++;
         };
 
+    };
+
+    let block_size=document.getElementsByClassName("unselected_cell");  // Find the elements
+        for(let i = 0; i < block_size.length; i++)
+        {
+            block_size[i].style.width=size +"px";    // Change the content
+            block_size[i].style.height=size +"px";
+        }
+        document.getElementById("reload").style.width=size*y+"px";
+        document.getElementById("reload").style.height=size*x+"px";
 };
     function showGrid()
     {

@@ -1,14 +1,18 @@
 #reload {
-    float: none;
+
+    width: 1080px;
+    margin: auto;
 }
 
 .unselected_cell {
     background-color: #EED;
-    width: 80px;
-    height: 80px;
     float: left;
     border: solid 1px black;
     cursor: pointer;
+    font-size:1vw;
+
+
+
 }
 
 .selected_cell {
@@ -20,3 +24,6 @@
     cursor: pointer;
 
 }
+
+
+
