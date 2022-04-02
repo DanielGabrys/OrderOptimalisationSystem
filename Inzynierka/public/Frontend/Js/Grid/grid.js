@@ -10,6 +10,7 @@
 }
 }
     */
+    clearSelection();
 
     let grid_size=0;
     let grid_size_x=0;
@@ -22,7 +23,7 @@
 
     function mouseDown(id)
     {
-        if(document.getElementById(id).style.background !== "green")
+        if(document.getElementById(id).style.background !== "green" && !grid.includes(id))
     {
         grid.push(id);
         document.getElementById(id).style.background = "green";
@@ -60,7 +61,7 @@
     {
         if (markdown===1 && markup===0)
     {
-        if(document.getElementById(id).style.background !== "green")
+        if(document.getElementById(id).style.background !== "green" && !grid.includes(id))
         {
             grid.push(id);
         }

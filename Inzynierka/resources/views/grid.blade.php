@@ -64,6 +64,7 @@
 
             <div class="col-auto">
                 <button type="sumbit" class="btn btn-success mb-2" onclick="setGridValues();setGridTotalSize()">SUBMIT</button>
+               <!-- <button type="button" class="btn btn-success mb-2" onclick="showGrid()">Show</button> -->
             </div>
         </div>
 

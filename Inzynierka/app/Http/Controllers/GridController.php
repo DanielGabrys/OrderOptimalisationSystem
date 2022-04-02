@@ -38,7 +38,6 @@ class GridController extends Controller
 
         if (in_array((Int) $request->entry, $integer_grid))
         {
-            echo "eee";
             $ok=0;
 
         }
@@ -49,10 +48,10 @@ class GridController extends Controller
             {
                 if($i>0 && $i<(Int) ($request->grid_size_x)-1 && $j>0 && $j<(Int) ($request->grid_size_y)-1 )
                 {
-                   dump($request->entry." ".$counter." ".$i." ".$j);
+
                     if((Int) $request->entry==$counter) {
                         $ok = 0;
-                        echo "elo";
+
 
                     }
                 }
