@@ -35,14 +35,60 @@
         </div>
 
         <button type="button" class="btn btn-primary mb-2" onclick="addRow(document.getElementById('x').value,document.getElementById('y').value)">GENERATE GRID</button>
-
     </form>
+
 </div>
 
 
 <div class="container d-flex justify-content-center ">
 
-    <button type="button" class="btn btn-success mb-2" onclick="showGrid()">SUBMIT</button>
+
+
+    <form id="load_grid" name="load_grid" action="{{route('gridSubmit')}}" method="POST">
+        @csrf
+        <div class="form-row align-items-center">
+            <div class="col-auto">
+                <label class="sr-only" for="inlineFormInputGroup">Username</label>
+                <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">ENTRANCE</div>
+                    </div>
+                    <input type="number" class="form-control" name="entry" id="entry" placeholder="Entrance ID">
+                </div>
+            </div>
+
+            <input type="hidden" name="grid" value="">
+            <input type="hidden" name="grid_size" value="">
+            <input type="hidden" name="grid_size_x" value="">
+            <input type="hidden" name="grid_size_y" value="">
+
+            <div class="col-auto">
+                <button type="sumbit" class="btn btn-success mb-2" onclick="setGridValues();setGridTotalSize()">SUBMIT</button>
+            </div>
+        </div>
+
+        <div class="container d-flex justify-content-center ">
+            @error('entry')
+            <span class="text-danger">{{$message}}</span>
+            @enderror
+        </div>
+
+        <div class="container d-flex justify-content-center ">
+            @error('grid')
+            <span class="text-danger">{{$message}}</span>
+            @enderror
+        </div>
+
+        <div class="container d-flex justify-content-center ">
+            @error('grid_size')
+            <span class="text-danger">{{$message}}</span>
+            @enderror
+
+        </div>
+    </form>
+
+
+
 
 </div>
 

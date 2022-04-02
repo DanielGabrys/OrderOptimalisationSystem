@@ -11,6 +11,10 @@
 }
     */
 
+    let grid_size=0;
+    let grid_size_x=0;
+    let grid_size_y=0;
+
     let markdown=0;
     let markup=0;
 
@@ -54,7 +58,7 @@
 
     function MouseOver(id)
     {
-        if (markdown==1 && markup==0)
+        if (markdown===1 && markup===0)
     {
         if(document.getElementById(id).style.background !== "green")
         {
@@ -63,7 +67,7 @@
         document.getElementById(id).style.background= "green";
 
     }
-        if (markup==1 && markdown==0)
+        if (markup===1 && markdown===0)
     {
         if(document.getElementById(id).style.background === "green")
         {
@@ -87,22 +91,20 @@
     function addRow(X, Y)
     {
 
-    grid = [];
-
-        let k=0.75;
-        let width = window.innerWidth*k
-            || document.documentElement.clientWidth*k
-            || document.body.clientWidth*k;
-
-    let height = window.innerHeight*k
-            || document.documentElement.clientHeight*k
-            || document.body.clientHeight*k;
-
-
     let x =parseInt(X);
     let y =parseInt(Y);
-    let digits = (x*y).toString().length;
     let size = 1080/y;
+
+    let digits = (x*y).toString().length;
+    if (digits<=1)
+        digits=2;
+
+    if(x>0 && y>0)
+    {
+        grid_size_x = x;
+        grid_size_y = y;
+        grid_size = x * y;
+    }
 
     document.getElementById("reload").innerHTML='';
     let counter = 1
@@ -135,4 +137,17 @@
     {
         console.table(grid);
     };
+
+    function setGridValues(){
+        document.load_grid.grid.value = grid;
+        console.table(grid);
+    }
+
+    function setGridTotalSize()
+    {
+        document.load_grid.grid_size.value = grid_size;
+        document.load_grid.grid_size_x.value = grid_size_x;
+        document.load_grid.grid_size_y.value = grid_size_y;
+
+    }
 

@@ -18,3 +18,5 @@ Route::get('/', function () {
 });
 
 Route::get('/grid', [\App\Http\Controllers\GridController::class, 'index']);
+
+Route::post('/grid/gridSubmit', [\App\Http\Controllers\GridController::class, 'submitGrid']) -> name("gridSubmit");
