@@ -10,7 +10,9 @@
 }
 }
     */
-    clearSelection();
+
+
+
 
     let grid_size=0;
     let grid_size_x=0;
@@ -20,6 +22,7 @@
     let markup=0;
 
     let grid = [];
+
 
     function mouseDown(id)
     {
@@ -92,8 +95,20 @@
     function addRow(X, Y)
     {
 
-    let x =parseInt(X);
-    let y =parseInt(Y);
+    let x=0;
+    let y=0;
+
+    if(parseInt(document.load_grid.grid_size_x.value)>0)
+    {
+       x =parseInt(document.load_grid.grid_size_x.value);
+       y =parseInt(document.load_grid.grid_size_y.value);
+    }
+    else
+    {
+        x =parseInt(X);
+        y =parseInt(Y);
+    }
+
     let size = 1080/y;
 
     let digits = (x*y).toString().length;
@@ -140,9 +155,9 @@
     };
 
     function setGridValues(){
-        document.load_grid.grid.value = grid;
-        console.table(grid);
-    }
+            document.load_grid.grid.value = grid;
+       // console.table(grid);
+    };
 
     function setGridTotalSize()
     {
@@ -150,5 +165,48 @@
         document.load_grid.grid_size_x.value = grid_size_x;
         document.load_grid.grid_size_y.value = grid_size_y;
 
+    };
+
+    function renew()
+    {
+
+        let int_grid = gridToInt();
+
+        if(int_grid.length>1)
+        {
+            grid_size_x=parseInt(document.load_grid.grid_size_x.value);
+            grid_size_y=parseInt(document.load_grid.grid_size_y.value);
+            grid_size=grid_size_x*grid_size_y;
+
+
+            for (let i = 0; i < int_grid.length; i++) {
+                //console.log(int_grid[i]);
+                document.getElementById(int_grid[i]).style.background = "green";
+                grid.push(int_grid[i]);
+            }
+        }
+    };
+
+    function gridToInt()
+    {
+        let a = document.load_grid.grid.value;
+        console.log(a);
+
+        let int_grid = a.split(',').map(function(item) {
+            return parseInt(item, 10);
+        });
+
+        return int_grid;
     }
+
+    function clearGrid()
+    {
+        document.load_grid.grid.value = null;
+        document.load_grid.grid_size.value = null;
+        document.load_grid.grid_size_x.value = null
+        document.load_grid.grid_size_y.value = null;
+        grid=[];
+    }
+
+
 

@@ -32,7 +32,7 @@ class GridController extends Controller
             [
                 'required' => 'Pole jest wymagane',
                 'min' => 'Numer z poza zakresu',
-                'max' => 'Numer z poza zakresu',
+                'max' => 'Numer spoza zakresu',
                 'grid.required' => 'Siatka jest pusta'
             ]);
 
@@ -81,4 +81,6 @@ class GridController extends Controller
 
 
     }
+
+
 }

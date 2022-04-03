@@ -34,7 +34,7 @@
             <input type="number" class="form-control" id="y" placeholder="Y" value=5>
         </div>
 
-        <button type="button" class="btn btn-primary mb-2" onclick="addRow(document.getElementById('x').value,document.getElementById('y').value)">GENERATE GRID</button>
+        <button type="button" class="btn btn-primary mb-2" onclick="addRow(document.getElementById('x').value,document.getElementById('y').value); clearGrid();">GENERATE GRID</button>
     </form>
 
 </div>
@@ -53,14 +53,15 @@
                     <div class="input-group-prepend">
                         <div class="input-group-text">ENTRANCE</div>
                     </div>
-                    <input type="number" class="form-control" name="entry" id="entry" placeholder="Entrance ID">
+                    <input type="number" class="form-control" name="entry" id="entry" value="{{old('entry')}}" placeholder="Entrance ID">
                 </div>
             </div>
 
-            <input type="hidden" name="grid" value="">
-            <input type="hidden" name="grid_size" value="">
-            <input type="hidden" name="grid_size_x" value="">
-            <input type="hidden" name="grid_size_y" value="">
+            <input type="hidden" name="grid" value="{{old('grid')}}">
+            <input type="hidden" name="grid_size" value="{{old('grid_size')}}">
+            <input type="hidden" name="grid_size_x" value="{{old('grid_size_x')}}">
+            <input type="hidden" name="grid_size_y" value="{{old('grid_size_y')}}">
+
 
             <div class="col-auto">
                 <button type="sumbit" class="btn btn-success mb-2" onclick="setGridValues();setGridTotalSize()">SUBMIT</button>
@@ -93,11 +94,12 @@
 
 </div>
 
+
 <div id="reload">
     <script>addRow(3,5)</script>
 </div>
 
-
+<script>renew()</script>
 
 </body>
 
