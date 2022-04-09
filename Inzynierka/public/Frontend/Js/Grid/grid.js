@@ -1,22 +1,9 @@
 
-    /*
-    function handleCellClick(cell) {
-    if (cell.className.indexOf("unselected_cell") > -1)
-{
-    cell.className = cell.className.replace("unselected_cell", "selected_cell");
-} else
-{
-    cell.className = cell.className.replace("selected_cell", "unselected_cell");
-}
-}
-    */
-
-
-
 
     let grid_size=0;
     let grid_size_x=0;
     let grid_size_y=0;
+    let grid_entry=0;
 
     let markdown=0;
     let markup=0;
@@ -27,25 +14,25 @@
     function mouseDown(id)
     {
         if(document.getElementById(id).style.background !== "green" && !grid.includes(id))
-    {
-        grid.push(id);
-        document.getElementById(id).style.background = "green";
-
-
-        markdown=1;
-        markup=0;
-    }
-        else
-    {
-        if(document.getElementById(id).style.background === "green")
         {
-            grid.splice(grid.indexOf(id),1)
-        }
-        document.getElementById(id).style.background = "#EED";
+            grid.push(id);
+            document.getElementById(id).style.background = "green";
 
-        markup=1;
-        markdown=0;
-    }
+
+            markdown=1;
+            markup=0;
+        }
+        else
+        {
+            if(document.getElementById(id).style.background === "green")
+            {
+                grid.splice(grid.indexOf(id),1)
+            }
+            document.getElementById(id).style.background = "#EED";
+
+            markup=1;
+            markdown=0;
+        }
         //console.log(markdown+" "+markup);
     };
 
@@ -156,16 +143,13 @@
 
     function setGridValues(){
             document.load_grid.grid.value = grid;
-       // console.table(grid);
-    };
-
-    function setGridTotalSize()
-    {
-        document.load_grid.grid_size.value = grid_size;
-        document.load_grid.grid_size_x.value = grid_size_x;
-        document.load_grid.grid_size_y.value = grid_size_y;
+            document.load_grid.grid_size.value = grid_size;
+            document.load_grid.grid_size_x.value = grid_size_x;
+            document.load_grid.grid_size_y.value = grid_size_y;
+            entryValidation();
 
     };
+
 
     function renew()
     {
@@ -206,6 +190,39 @@
         document.load_grid.grid_size_x.value = null
         document.load_grid.grid_size_y.value = null;
         grid=[];
+    }
+
+    function entryValidation()
+    {
+        let ok=1;
+        let counter=1;
+
+        let entry = parseInt(document.load_grid.entry.value);
+
+        console.log(entry);
+        if (grid.includes(entry))
+        {
+            ok=0;
+        }
+
+        for(let i=0; i< grid_size_x;i++)
+        {
+            for (let j = 0; j <grid_size_y; j++)
+            {
+
+                if(i>0 && i<(grid_size_x)-1 && j>0 && j<(grid_size_y)-1 )
+                {
+
+                    if(entry===counter) {
+                    ok = 0;
+                }
+                }
+                counter++;
+            }
+        }
+
+        document.load_grid.entry_ok.value = ok;
+
     }
 
 

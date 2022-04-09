@@ -61,10 +61,11 @@
             <input type="hidden" name="grid_size" value="{{old('grid_size')}}">
             <input type="hidden" name="grid_size_x" value="{{old('grid_size_x')}}">
             <input type="hidden" name="grid_size_y" value="{{old('grid_size_y')}}">
+            <input type="hidden" name="entry_ok" value="{{old('entry_ok')}}">
 
 
             <div class="col-auto">
-                <button type="sumbit" class="btn btn-success mb-2" onclick="setGridValues();setGridTotalSize()">SUBMIT</button>
+                <button type="sumbit" class="btn btn-success mb-2" onclick="setGridValues();">SUBMIT</button>
                <!-- <button type="button" class="btn btn-success mb-2" onclick="showGrid()">Show</button> -->
             </div>
         </div>
@@ -87,6 +88,15 @@
             @enderror
 
         </div>
+
+
+        <div class="container d-flex justify-content-center ">
+            @error('entry_ok')
+            <span class="text-danger">{{$message}}</span>
+            @enderror
+
+        </div>
+
     </form>
 
 
