@@ -44,11 +44,10 @@ class GridController extends Controller
         {
 
         }
-
-             dump($request->grid);
-            //dump($request->grid_size);
-
-
+        else
+        {
+            $this->gridToArray($request);
+        }
 
     }
 
@@ -83,5 +82,45 @@ class GridController extends Controller
 
     }
 
+    public function gridToArray(Request $request)
+    {
+        $integer_grid = array_map('intval', explode(',', $request->grid));
+        for ($i = 0; $i < count($integer_grid);$i++)
+        {
+            $integer_grid[$i]-=1;
+        }
+        var_dump($integer_grid);
+
+        $grid_array=array();
+        //set zeros
+        for ($i = 0; $i < $request->grid_size_x;$i++)
+        {
+            for ($j = 0; $j < $request->grid_size_y;$j++)
+            {
+                $grid_array[$i][$j]=0;
+            }
+        }
+
+            for ($i = 0; $i < count($integer_grid);$i++)
+            {
+
+                    $y = intval($integer_grid[$i]) / intval($request->grid_size_y) ;
+                    $x = intval($integer_grid[$i]) % intval($request->grid_size_y);
+                    $grid_array[$y][$x] = -1;
+
+            }
+
+            $y = (intval($request->entry)-1 ) / $request->grid_size_y ;
+            $x = (intval($request->entry)-1 )  % $request->grid_size_y;
+            $grid_array[$y][$x] = 1;
+
+            dd($grid_array);
+
+
+
+
+
+
+    }
 
 }
