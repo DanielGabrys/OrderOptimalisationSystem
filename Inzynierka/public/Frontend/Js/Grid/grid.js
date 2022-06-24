@@ -3,7 +3,7 @@
     let grid_size=0;
     let grid_size_x=0;
     let grid_size_y=0;
-    let grid_entry=0;
+    let grid_panel_size=0;
 
     let markdown=0;
     let markup=0;
@@ -68,6 +68,7 @@
 
     }
         //console.log(markdown+" "+markup);
+        console.log(grid);
         clearSelection();
 
     };
@@ -96,7 +97,7 @@
         y =parseInt(Y);
     }
 
-    let size = 1080/y;
+    let size = 1000/y;
 
     let digits = (x*y).toString().length;
     if (digits<=1)
@@ -136,6 +137,201 @@
         document.getElementById("reload").style.width=size*y+"px";
         document.getElementById("reload").style.height=size*x+"px";
 };
+
+    function showSelectedGrid(X,Y,elements,selector)
+    {
+        let x =parseInt(X);
+        let y =parseInt(Y);
+
+        var arr;
+        if (selector==="0")
+            arr = JSON.parse(elements);
+        else if (selector==="1")
+            arr = elements;
+
+
+
+        let size = 700/y;
+
+        let digits = (x*y).toString().length;
+        if (digits<=1)
+            digits=2;
+
+        document.getElementById("reload").innerHTML='';
+        let counter = 1
+
+        for (let rows = 0; rows < x; rows++)
+        {
+            for (let columns = 0; columns < y; columns++)
+            {
+                document.getElementById("reload").innerHTML +=
+                    '<div id=' + counter + ' class="unselected_cell" >'+counter+'</div>';
+
+
+                if(arr[rows][columns]=="-1")
+                {
+                    document.getElementById(counter.toString()).style.background = "green";
+                }
+                if(arr[rows][columns]=="1")
+                {
+                    document.getElementById(counter.toString()).style.background = "yellow";
+                }
+
+                counter++;
+            };
+
+        };
+
+        let block_size=document.getElementsByClassName("unselected_cell");  // Find the elements
+        for(let i = 0; i < block_size.length; i++)
+        {
+            block_size[i].style.width=size +"px";    // Change the content
+            block_size[i].style.height=size +"px";
+
+            let b_size= size;
+
+            block_size[i].style.fontSize = b_size/(digits)+"px";
+            console.log(b_size);
+        }
+        document.getElementById("reload").style.width=size*y+"px";
+        document.getElementById("reload").style.height=size*x+"px";
+
+
+
+    };
+
+    function editSelectedGrid(X,Y,elements)
+    {
+        let x =parseInt(X);
+        let y =parseInt(Y);
+
+        grid_size_x = x;
+        grid_size_y = y;
+        grid_size = x * y;
+
+        var arr = elements
+
+        let size = 1000/y;
+
+        let digits = (x*y).toString().length;
+        if (digits<=1)
+            digits=2;
+
+        document.getElementById("reload").innerHTML='';
+        let counter = 1
+
+        for (let rows = 0; rows < x; rows++)
+        {
+            for (let columns = 0; columns < y; columns++)
+            {
+                document.getElementById("reload").innerHTML +=
+                    '<div id=' + counter + ' class="unselected_cell" onmousedown="mouseDown('+counter+')" onmouseover="MouseOver('+counter+')" onmouseup="mouseUp('+counter+')">'+counter+'</div>';
+
+
+                if(arr[rows][columns]=="-1")
+                {
+
+                    document.getElementById(counter.toString()).style.background = "green";
+                    grid.push(counter);
+                }
+                if(arr[rows][columns]=="1")
+                {
+                    document.getElementById(counter.toString()).style.background = "yellow";
+                }
+
+                counter++;
+
+            };
+
+        };
+
+        let block_size=document.getElementsByClassName("unselected_cell");  // Find the elements
+        for(let i = 0; i < block_size.length; i++)
+        {
+            block_size[i].style.width=size +"px";    // Change the content
+            block_size[i].style.height=size +"px";
+
+            let b_size= size;
+
+            block_size[i].style.fontSize = b_size/(digits)+"px";
+            console.log(b_size);
+        }
+        document.getElementById("reload").style.width=size*y+"px";
+        document.getElementById("reload").style.height=size*x+"px";
+
+
+
+    };
+
+    function editProductsOnGrid(X,Y,elements)
+    {
+        let x =parseInt(X);
+        let y =parseInt(Y);
+
+        var arr = elements;
+
+
+        let size = 700/y;
+
+        let digits = (x*y).toString().length;
+        if (digits<=1)
+            digits=2;
+
+        document.getElementById("reload").innerHTML='';
+        let counter = 1
+
+        for (let rows = 0; rows < x; rows++)
+        {
+            for (let columns = 0; columns < y; columns++)
+            {
+
+                if(arr[rows][columns]=="-1")
+                {
+                    document.getElementById("reload").innerHTML +=
+                        '<a href ="#" data-toggle="modal" data-whatever=' + counter + ' data-target=".bd-example-modal-lg" > <div id=' + counter + ' class="unselected_cell" >'+counter+'</div> </a>';
+
+                    document.getElementById(counter.toString()).style.background = "green";
+                }
+                else  if(arr[rows][columns]=="1")
+                {
+                    document.getElementById("reload").innerHTML +=
+                        '<div id=' + counter + ' class="unselected_cell" >'+counter+'</div>';
+                    document.getElementById(counter.toString()).style.background = "yellow";
+                }
+                else
+                {
+                    document.getElementById("reload").innerHTML +=
+                        '<div id=' + counter + ' class="unselected_cell" >'+counter+'</div>';
+                }
+
+                counter++;
+            };
+
+        };
+
+        let block_size=document.getElementsByClassName("unselected_cell");  // Find the elements
+        for(let i = 0; i < block_size.length; i++)
+        {
+            block_size[i].style.width=size +"px";    // Change the content
+            block_size[i].style.height=size +"px";
+
+            let b_size= size;
+
+            block_size[i].style.fontSize = b_size/(digits)+"px";
+            console.log(b_size);
+        }
+        document.getElementById("reload").style.width=size*y+"px";
+        document.getElementById("reload").style.height=size*x+"px";
+
+
+
+    };
+
+    function setGridsize(y)
+    {
+        ;
+    }
+
     function showGrid()
     {
         console.table(grid);

@@ -2,17 +2,19 @@
 
 namespace App\Models;
 
+use App\Product;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Grid extends Model
+class Grid_Product extends Model
 {
     use HasFactory;
 
-    protected $table = 'grid';
+    protected $table = 'grid_product';
 
     public function product()
     {
-        return $this->belongsToMany(Product::class);
+        return $this->belongsTo(Product::class);
     }
 }
+

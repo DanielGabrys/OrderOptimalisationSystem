@@ -17,7 +17,7 @@
 
 <div class="container d-flex justify-content-center ">
 
-    <form id="load_grid" name="load_grid" action="{{route('gridSubmit')}}" method="POST">
+    <form id="load_grid" name="load_grid" action="{{route('editGridSubmit',$grid->id)}}" method="POST">
         @csrf
         <div class="form-row align-items-center">
             <div class="col-auto">
@@ -26,14 +26,14 @@
                     <div class="input-group-prepend">
                         <div class="input-group-text">ENTRANCE</div>
                     </div>
-                    <input type="number" class="form-control" name="entry" id="entry" value="{{old('entry')}}" placeholder="Entrance ID">
+                    <input type="number" class="form-control" name="entry" id="entry" value="{{old('entry') ?? $grid->entry}}" placeholder="Entrance ID">
                 </div>
             </div>
 
             <input type="hidden" name="grid" value="{{old('grid')}}">
-            <input type="hidden" name="grid_size" value="{{old('grid_size')}}">
-            <input type="hidden" name="grid_size_x" value="{{old('grid_size_x')}}">
-            <input type="hidden" name="grid_size_y" value="{{old('grid_size_y')}}">
+            <input type="hidden" name="grid_size" value="{{old('grid_size') ?? $grid->height*$grid->width}}">
+            <input type="hidden" name="grid_size_x" value="{{old('grid_size_x') ?? $grid->height}}">
+            <input type="hidden" name="grid_size_y" value="{{old('grid_size_y') ?? $grid->width}}">
             <input type="hidden" name="entry_ok" value="{{old('entry_ok')}}">
 
 
@@ -41,7 +41,34 @@
                 <button type="sumbit" class="btn btn-success mb-2" onclick="setGridValues();">SUBMIT</button>
                 <!-- <button type="button" class="btn btn-success mb-2" onclick="showGrid()">Show</button> -->
             </div>
+
         </div>
+
+
+
+            <div class="input-group mb-2 mr-sm-2">
+                @error('grid')
+                    <span class="text-danger">{{$message}}</span>
+                @enderror
+
+                @error('grid_size')
+                <span class="text-danger">{{$message}}</span>
+                @enderror
+
+                @error('grid_size_x')
+                <span class="text-danger">{{$message}}</span>
+                @enderror
+
+                @error('grid_size_y')
+                <span class="text-danger">{{$message}}</span>
+                @enderror
+
+                @error('entry_ok')
+                <span class="text-danger">{{$message}}</span>
+                @enderror
+            </div>
+
+
 
 
 
@@ -51,8 +78,8 @@
 
 <div id="reload">
     <script>
-        addRow(3,5)
-        renew()
+        editSelectedGrid({{$grid->height}},{{$grid->width}},{{$grid->shelfs}})
+        //renew()
     </script>
 </div>
 

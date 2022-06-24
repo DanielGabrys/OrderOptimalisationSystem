@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use \App\Http\Controllers\GridController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,10 +14,34 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', function ()
+{
+    return view('body.index');
 });
 
-Route::get('/grid', [\App\Http\Controllers\GridController::class, 'index']);
+// grid
 
-Route::post('/grid/gridSubmit', [\App\Http\Controllers\GridController::class, 'submitGrid']) -> name("gridSubmit");
+    //add grid
+    Route::get('/grid/add', [GridController::class, 'index'])->name('addGrid');
+
+    Route::post('/grid/gridSubmit', [GridController::class, 'createGridSubmit']) -> name("gridSubmit");
+
+    // show grids
+    Route::get('/grid/showGrids',[GridController::class,'showGrids'])->name('showGrids');
+
+    // delete grid
+    Route::get('/grid/deleteGrid/{id}',[GridController::class,'deleteGrid'])->name('deleteGrid');
+
+    //edit grid
+    Route::get('/grid/editGrid/{id}', [GridController::class, 'editGrid'])->name('editGrid');
+
+    Route::post('/grid/editGridSubmit/{id}', [GridController::class, 'editGridSubmit'])->name('editGridSubmit');
+
+    //edit products on grid
+    Route::get('/grid/editGridProducts/{id}', [GridController::class, 'editGridProducts'])->name('editGridProducts');
+
+    Route::post('/grid/editGridSubmitProducts/{id}', [GridController::class, 'editGridSubmitProducts'])->name('editGridSubmitProducts');
+
+
+
+

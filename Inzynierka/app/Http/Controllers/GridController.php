@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Grid;
+use App\Models\GridProducts;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Ramsey\Uuid\Type\Integer;
@@ -10,7 +13,54 @@ class GridController extends Controller
 {
     public function index()
     {
-        return view('grid');
+        return view('grid.grid');
+    }
+
+    public function showGrids()
+    {
+        $grids =Grid::all();
+        return view('grid.showGrids',['grids'=>$grids]);
+    }
+
+    public function GridOverlook()
+    {
+        $grids =Grid::all();
+        return view('grid.showGrids',['grids'=>$grids]);
+    }
+
+    public function deleteGrid($id)
+    {
+        $grid = Grid::find($id)->delete();
+        return Redirect()->back()->with('success','Pomyślnie usunięto siatkę');
+    }
+
+    public function editGrid($id)
+    {
+        $grid = Grid::find($id);
+        return view('grid.gridEdit',['grid'=>$grid]);
+
+    }
+
+    public function editGridProducts($id)
+    {
+        /*
+        $grid=Grid::find($id);
+        $products = $grid->products()->get();
+        $grid_products= GridProducts::all();
+        //dd($products);
+        return view('grid.gridEditProducts',['gridProducts'=> $products,'grid'=>$grid,'grid','productPositions'=>$grid_products]);
+        */
+        $grid_products = Product::with([
+            'gridProduct'=>
+                function($query) use ($id)
+                {
+                    $query->where('position','=',$id);
+                },
+            ]
+        )->get();
+
+        dd($grid_products);
+
     }
 
     public function ValidateGrid(Request $request)
@@ -19,12 +69,13 @@ class GridController extends Controller
         $max_size="max:".$grid_size;
 
         $rules= [
-                'entry' => ['required','integer','min:1',$max_size],
+              'entry' => ['required','integer','min:1',$max_size],
                 'grid' => ['required'],
                 'grid_size_x' => ['required','integer','min:1'],
                 'grid_size_y' => ['required','integer','min:1'],
                 'grid_size' => ['required','integer','min:1'],
                 'entry_ok' => ['required','integer','min:1','max:1'],
+
         ];
 
         $messages= [
@@ -38,17 +89,52 @@ class GridController extends Controller
         return $request->validate($rules,$messages);
     }
 
-    public function SubmitGrid(Request $request)
+    public function createGridData($grid,$request)
     {
-        if(!$this->ValidateGrid($request))
-        {
+        $shelfts=$this->gridToArray($request);
 
-        }
-        else
+
+        $grid->width = $request->grid_size_y;
+        $grid->height = $request->grid_size_x;
+        $grid->entry = $request->entry;
+        $grid->shelfs = $shelfts;
+
+        $grid->save();
+    }
+
+    public function createGridSubmit(Request $request)
+    {
+
+        if($this->ValidateGrid($request))
         {
-            $this->gridToArray($request);
+            $grid= new Grid;
+            $this->createGridData($grid,$request);
+            return Redirect()->route('showGrids')->with('success','Wczytano pomyślnie siatkę');
         }
 
+
+    }
+
+    public function editGridSubmit(Request $request,$id)
+    {
+        if($this->ValidateGrid($request))
+        {
+            $grid=grid::find($id);
+
+            $this->createGridData($grid,$request);
+            return Redirect()->route('showGrids')->with('success','Zaktualizowano pomyślnie siatkę');
+        }
+    }
+
+    public function editGridSubmitProducts(Request $request,$id)
+    {
+        if($this->ValidateGrid($request))
+        {
+            $grid=grid::find($id);
+
+            $this->createGridData($grid,$request);
+            return Redirect()->route('showGrids')->with('success','Zaktualizowano pomyślnie siatkę');
+        }
     }
 
     public function customValidation(Request $request)
@@ -114,7 +200,10 @@ class GridController extends Controller
             $x = (intval($request->entry)-1 )  % $request->grid_size_y;
             $grid_array[$y][$x] = 1;
 
-            dd($grid_array);
+        //dd($grid_array);
+
+            return json_encode($grid_array);
+
 
 
 
