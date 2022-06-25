@@ -9,10 +9,11 @@ class Grid extends Model
 {
     use HasFactory;
 
-    protected $table = 'grid';
+    protected $table = 'grids';
 
-    public function product()
+    public function grid()
     {
-        return $this->belongsToMany(Product::class);
+        return $this->belongsToMany(Product::class)->withPivot('position');
     }
+
 }

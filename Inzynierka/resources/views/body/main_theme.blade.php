@@ -12,6 +12,7 @@
     <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
 
     <script src="{{asset('Frontend/Js/Grid/grid.js')}}"></script>
+    <script src="{{asset('Frontend/Js/Grid/editGridProducts.js')}}"></script>
 
     <link href="{{asset('Frontend/css/grid/grid.css')}}" rel="stylesheet">
 

@@ -14,7 +14,7 @@ class Product extends Model
 
     public function gridProduct()
     {
-       return $this->belongsTo(Grid_Product::class,'id');
+       return $this->belongsToMany(Grid::class)->withPivot('position');
     }
 
 }

@@ -43,23 +43,17 @@ class GridController extends Controller
 
     public function editGridProducts($id)
     {
-        /*
-        $grid=Grid::find($id);
-        $products = $grid->products()->get();
-        $grid_products= GridProducts::all();
-        //dd($products);
-        return view('grid.gridEditProducts',['gridProducts'=> $products,'grid'=>$grid,'grid','productPositions'=>$grid_products]);
-        */
-        $grid_products = Product::with([
-            'gridProduct'=>
-                function($query) use ($id)
-                {
-                    $query->where('position','=',$id);
-                },
-            ]
-        )->get();
 
-        dd($grid_products);
+
+        $grid=Grid::find($id);
+        $products = $grid->grid()->get();
+
+
+        $array=json_encode($products);
+
+        //dd($products);
+        //dd( $array);
+        return view('grid.gridEditProducts',['gridProducts'=> $products,'grid'=>$grid,'products_array'=>$array]);
 
     }
 

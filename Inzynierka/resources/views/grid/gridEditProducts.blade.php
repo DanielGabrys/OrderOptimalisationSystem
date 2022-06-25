@@ -13,7 +13,7 @@
 
     <div id="reload">
         <script>
-            editProductsOnGrid({{$grid->height}},{{$grid->width}},{{$grid->shelfs}})
+            editProductsOnGrid({{$grid->height}},{{$grid->width}},{{$grid->shelfs}});
             //renew()
         </script>
     </div>
@@ -39,6 +39,7 @@
                         </select>
                         <label for="floatingSelect">Place product on shelf</label>
                     </div>
+
                 </div>
 
                 <div class="modal-body">
@@ -51,33 +52,42 @@
                         </select>
                         <label for="floatingSelect">Delete product from shelf</label>
                     </div>
+
+                </div>
+
+                <div class="modal-body" id="modal">
+                    <!--
+                    <table class="table table table-success table-striped" id="actProducts">
+
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Product Name</th>
+                            <th scope="col">Product ID</th>
+                            <th scope="col">position</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+
+                        @foreach($gridProducts as $gridProduct)
+                            <tr>
+                                <th scope="row">2</th>
+                                <td>{{$gridProduct->id}}</td>
+                                <td>{{$gridProduct->name}}</td>
+                                <td>{{$gridProduct->pivot->position}}</td>
+                            </tr>
+                        </tbody>
+
+                        @endforeach
+
+
+                    </table>
+                    -->
                 </div>
 
 
-                <table class="table table table-success table-striped" id="actProducts">
 
-                    <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Product Name</th>
-                        <th scope="col">Product ID</th>
-                        <th scope="col">position</th>
-                    </tr>
-                    </thead>
-
-                    <tbody>
-
-                    @foreach($gridProducts as $gridProduct)
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>{{$gridProduct->id}}</td>
-                            <td>{{$gridProduct->name}}</td>
-                            <td>{{$gridProduct->position}}</td>
-                        </tr>
-                    </tbody>
-                    @endforeach
-
-                </table>
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -90,12 +100,13 @@
     <script>
         $('.bd-example-modal-lg').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget) // Button that triggered the modal
-            const myArray = button.data('whatever');
-            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+            const id = button.data('whatever');
+            var text = editProductOnGridProductOnCell({!! $products_array !!},id);
+
 
             var modal = $(this)
-            modal.find('.modal-title').text('Schema ' + myArray)
+            document.getElementById("modal").innerHTML = text;
+            //modal.find('.modal-body').text('Schema ' + id)
             modal.set
 
         })

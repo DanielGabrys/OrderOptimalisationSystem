@@ -12,9 +12,5 @@ class Grid_Product extends Model
 
     protected $table = 'grid_product';
 
-    public function product()
-    {
-        return $this->belongsTo(Product::class);
-    }
 }
 
