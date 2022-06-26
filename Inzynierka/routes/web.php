@@ -40,8 +40,11 @@ Route::get('/', function ()
     //edit products on grid
     Route::get('/grid/editGridProducts/{id}', [GridController::class, 'editGridProducts'])->name('editGridProducts');
 
+    Route::get('/grid/editGridCellProducts/{id}/{id2}', [GridController::class, 'editGridCellProducts'])->name('editGridCellProducts');
+
     Route::post('/grid/editGridSubmitProducts/{id}', [GridController::class, 'editGridSubmitProducts'])->name('editGridSubmitProducts');
 
+    Route::post('/grid/deleteGridProduct/{id}', [GridController::class, 'deleteGridProduct'])->name('deleteGridProduct');
 
 
 

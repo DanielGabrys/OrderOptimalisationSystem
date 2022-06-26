@@ -4,26 +4,56 @@
     margin: auto;
 }
 
+.cell {
+
+    float: left;
+    cursor: pointer;
+    text-align: center;
+}
+
+a:link
+{
+    color: black;
+}
+
+a:visited
+{
+    color: black;
+}
+
+a:hover {
+    color: black;
+}
+
+a{
+    color:black;
+}
+
+
 .unselected_cell {
     background-color: #EED;
     float: left;
-    border: solid 1px black;
     cursor: pointer;
-    font-size:1vw;
     text-align: center;
-
+    border: solid 1px black;
 
 
 }
-
 .selected_cell {
     background-color: green;
-    width: 80px;
-    height: 80px;
     float: left;
-    border: solid 1px black;
     cursor: pointer;
+    text-align: center;
+    border: solid 1px black;
+}
 
+.entry_cell
+{
+    background-color: yellow;
+    float: left;
+    cursor: pointer;
+    text-align: center;
+    border: solid 1px black;
 }
 
 

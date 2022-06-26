@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Grid;
+use App\Models\Grid_Product;
 use App\Models\GridProducts;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -41,13 +42,23 @@ class GridController extends Controller
 
     }
 
-    public function editGridProducts($id)
+    public function editGridCellProducts($id,$id2)
     {
-
 
         $grid=Grid::find($id);
         $products = $grid->grid()->get();
 
+        //dd($products);
+        //dd( $array);
+        return view('grid.gridEditSingleCellProducts',['gridProducts'=> $products,'grid'=>$grid]);
+
+    }
+
+    public function editGridProducts($id)
+    {
+
+        $grid=Grid::find($id);
+        $products = $grid->grid()->get();
 
         $array=json_encode($products);
 
@@ -55,6 +66,12 @@ class GridController extends Controller
         //dd( $array);
         return view('grid.gridEditProducts',['gridProducts'=> $products,'grid'=>$grid,'products_array'=>$array]);
 
+    }
+
+    public function deleteGridProduct($id)
+    {
+        $grid = Grid_Product::find($id)->delete();
+        return Redirect()->back()->with('success','Pomyślnie usunięto siatkę');
     }
 
     public function ValidateGrid(Request $request)

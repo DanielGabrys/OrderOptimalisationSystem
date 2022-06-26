@@ -1,3 +1,9 @@
+
+let global_size =700;
+let size = 700
+let x_global = 0;
+let y_global =0;
+
 function editProductOnGridProductOnCell(cell,position_id)
 {
    // console.log(cell);
@@ -5,7 +11,7 @@ function editProductOnGridProductOnCell(cell,position_id)
     const found = cell.filter(e => e.pivot.position === position_id);
 
     //if(found.length>0)
-    //console.log(found[0]['pivot']['position']);
+    //console.log(found);
 
     let table='';
 
@@ -15,8 +21,10 @@ function editProductOnGridProductOnCell(cell,position_id)
         let name= '<td>' + found[key]['name']+ '</td>';
         let id= '<td>' + found[key]['id']+ '</td>';
         let position = '<td>' + found[key]['pivot']['position'] + '</td>';
+        let route ='deleteGridProduct\\'+found[key]['pivot']['id'];
+        let pivot_id = ' <td> <a href =' + route + ' class="btn btn-danger"> Delete </a></td>'
 
-        table += '<tr>' + name + id +position + '</tr>';
+        table += '<tr>' + name + id + position + pivot_id + '</tr>';
 
     }
 
@@ -41,65 +49,54 @@ function editProductOnGridProductOnCell(cell,position_id)
 
 function editProductsOnGrid(X,Y,elements)
 {
-    let x =parseInt(X);
-    let y =parseInt(Y);
+    x_global =parseInt(X);
+    y_global =parseInt(Y);
+
+    size = global_size/y_global;
+
+    document.getElementById("reload").innerHTML ='';
+    document.getElementById("reload").style.width=size*y_global+"px";
+    document.getElementById("reload").style.height=size*x_global+"px";
+
+};
+
+function generateGridCells(x,y,arr,counter)
+{
+    let count =parseInt(counter)-1;
+    let counter2  =parseInt(count/x);
+    let counter3  =parseInt(count%x);
 
 
-    var arr = elements;
+;    //console.log(counter2,counter3);
+    if(arr[counter2][counter3]=="-1")
+    {
+          document.getElementById("b"+counter).innerHTML += '<div id=' + counter + ' class="selected_cell" >'+counter+'</div>';
+    }
+    else  if(arr[counter2][counter3]=="1")
+    {
+        document.getElementById("b"+counter).innerHTML += '<div id=' + counter + ' class="entry_cell" >'+counter+'</div>';
+        document.getElementById("a"+counter).setAttribute('href',"#");
+    }
+    else
+    {
+        document.getElementById("b"+counter).innerHTML +='<div id=' + counter + ' class="unselected_cell" >'+counter+'</div>';
+        document.getElementById("a"+counter).setAttribute('href',"#");
+    }
 
+    let cell = document.getElementById("b"+counter);
+    cell.style.width=size +"px";
+    cell.style.height=size +"px";
 
-    let size = 700/y;
+    let cell2 = document.getElementById(counter);
+    cell2.style.width=size +"px";
+    cell2.style.height=size +"px";
+
 
     let digits = (x*y).toString().length;
     if (digits<=1)
         digits=2;
 
-    document.getElementById("reload").innerHTML='';
-    let counter = 1
+    cell.style.fontSize = size/(digits)+"px"
+    cell2.style.fontSize = size/(digits)+"px"
 
-    for (let rows = 0; rows < x; rows++)
-    {
-        for (let columns = 0; columns < y; columns++)
-        {
-
-            if(arr[rows][columns]=="-1")
-            {
-                document.getElementById("reload").innerHTML +=
-                    '<a href ="#" data-toggle="modal" data-whatever=' + counter + ' data-target=".bd-example-modal-lg" > <div id=' + counter + ' class="unselected_cell" onclick="" >'+counter+'</div> </a>';
-
-                document.getElementById(counter.toString()).style.background = "green";
-            }
-            else  if(arr[rows][columns]=="1")
-            {
-                document.getElementById("reload").innerHTML +=
-                    '<div id=' + counter + ' class="unselected_cell" >'+counter+'</div>';
-                document.getElementById(counter.toString()).style.background = "yellow";
-            }
-            else
-            {
-                document.getElementById("reload").innerHTML +=
-                    '<div id=' + counter + ' class="unselected_cell" >'+counter+'</div>';
-            }
-
-            counter++;
-        };
-
-    };
-
-    let block_size=document.getElementsByClassName("unselected_cell");  // Find the elements
-    for(let i = 0; i < block_size.length; i++)
-    {
-        block_size[i].style.width=size +"px";    // Change the content
-        block_size[i].style.height=size +"px";
-
-        let b_size= size;
-
-        block_size[i].style.fontSize = b_size/(digits)+"px";
-        //console.log(b_size);
-    }
-    document.getElementById("reload").style.width=size*y+"px";
-    document.getElementById("reload").style.height=size*x+"px";
-
-
-
-};
+}
