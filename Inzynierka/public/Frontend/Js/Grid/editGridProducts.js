@@ -70,7 +70,7 @@ function generateGridCells(x,y,arr,counter)
 ;    //console.log(counter2,counter3);
     if(arr[counter2][counter3]=="-1")
     {
-          document.getElementById("b"+counter).innerHTML += '<div id=' + counter + ' class="selected_cell" >'+counter+'</div>';
+          document.getElementById("b"+counter).innerHTML += '<div id=' + counter + ' class="selected_cell" data-bs-toggle="tooltip" data-bs-placement="top" title="Tooltip on top" >'+counter+'</div>';
     }
     else  if(arr[counter2][counter3]=="1")
     {

@@ -21,15 +21,15 @@
         @foreach(range(1, $grid->height*$grid->width) as $y)
 
             <a id="{{"a".$y}}" href ="{{route('editGridCellProducts',[$grid->id,$y])}}">
-                <div id ="{{"b".$y}}" class="cell">
+                <div id ="{{"b".$y}}" class="cell" >
                     <script> generateGridCells({{$grid->width}},{{$grid->height}},{{$grid->shelfs}},{{$y}})</script>
                 </div>
             </a>
 
-
         @endforeach
 
     </div>
+
 
 
 
