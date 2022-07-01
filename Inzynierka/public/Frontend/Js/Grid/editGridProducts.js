@@ -7,43 +7,27 @@ let y_global =0;
 function editProductOnGridProductOnCell(cell,position_id)
 {
    // console.log(cell);
-
     const found = cell.filter(e => e.pivot.position === position_id);
 
     //if(found.length>0)
     //console.log(found);
 
-    let table='';
+    let name='';
 
     for (const key in found)
     {
-
-        let name= '<td>' + found[key]['name']+ '</td>';
-        let id= '<td>' + found[key]['id']+ '</td>';
-        let position = '<td>' + found[key]['pivot']['position'] + '</td>';
-        let route ='deleteGridProduct\\'+found[key]['pivot']['id'];
-        let pivot_id = ' <td> <a href =' + route + ' class="btn btn-danger"> Delete </a></td>'
-
-        table += '<tr>' + name + id + position + pivot_id + '</tr>';
-
+        name+= '<p>' + found[key]['name']+ '</p>';
     }
 
+    let hint = document.getElementById(position_id);
+
+    hint.setAttribute('title',name);
+
+    var tooltip = new bootstrap.Tooltip(hint, {
+        title : name
+    });
 
 
-    var text = '<table class="table table table-success table-striped" id="actProducts">' +
-                    '<thead>' +
-                        ' <tr>' +
-                            ' <th scope="col">Product Name</th>' +
-                            ' <th scope="col">Product ID</th>' +
-                            ' <th scope="col">position</th>' +
-                        ' </tr>' +
-                    '</thead>'+
-                    '<tbody>'+
-                            table+
-                    '</tbody> '+
-                '</table>';
-
-    return text;
 
 }
 
@@ -60,6 +44,7 @@ function editProductsOnGrid(X,Y,elements)
 
 };
 
+
 function generateGridCells(x,y,arr,counter)
 {
     let count =parseInt(counter)-1;
@@ -70,7 +55,7 @@ function generateGridCells(x,y,arr,counter)
 ;    //console.log(counter2,counter3);
     if(arr[counter2][counter3]=="-1")
     {
-          document.getElementById("b"+counter).innerHTML += '<div id=' + counter + ' class="selected_cell" data-bs-toggle="tooltip" data-bs-placement="top" title="Tooltip on top" >'+counter+'</div>';
+          document.getElementById("b"+counter).innerHTML += '<div id=' + counter + ' class="selected_cell" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true"  title="Tooltip on top" >'+counter+'</div>';
     }
     else  if(arr[counter2][counter3]=="1")
     {
@@ -100,3 +85,4 @@ function generateGridCells(x,y,arr,counter)
     cell2.style.fontSize = size/(digits)+"px"
 
 }
+

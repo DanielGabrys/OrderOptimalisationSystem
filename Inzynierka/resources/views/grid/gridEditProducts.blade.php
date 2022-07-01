@@ -11,6 +11,11 @@
 
     @endif
 
+    <button type="button" id="myTooltip" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-animation="true">
+        Tooltip on bottom
+    </button>
+
+
     <div id="reload">
 
         <script>
@@ -20,8 +25,8 @@
 
         @foreach(range(1, $grid->height*$grid->width) as $y)
 
-            <a id="{{"a".$y}}" href ="{{route('editGridCellProducts',[$grid->id,$y])}}">
-                <div id ="{{"b".$y}}" class="cell" >
+            <a id="{{"a".$y}}" href ="{{route('editGridCellProducts',[$grid->id,$y])}}" >
+                <div id ="{{"b".$y}}" class="cell" onmouseover="editProductOnGridProductOnCell({{$products_array}},{{$y}})" >
                     <script> generateGridCells({{$grid->width}},{{$grid->height}},{{$grid->shelfs}},{{$y}})</script>
                 </div>
             </a>
@@ -29,7 +34,6 @@
         @endforeach
 
     </div>
-
 
 
 
