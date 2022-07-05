@@ -46,13 +46,12 @@ class GridController extends Controller
     {
 
         $grid=Grid::find($id);
-        $products = $grid->grid()->get();
+        $products = $grid->grid()-> where('position','=',$id2)->get();
 
-        $array=json_encode($products);
 
         //dd($products);
         //dd( $array);
-        return view('grid.gridEditSingleCellProducts',['gridProducts'=> $products,'grid'=>$grid,'products_array'=>$array]);
+        return view('grid.gridEditSingleCellProducts',['CellProducts'=> $products,'grid'=>$grid]);
 
     }
 

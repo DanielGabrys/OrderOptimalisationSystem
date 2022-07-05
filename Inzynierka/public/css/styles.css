@@ -5872,6 +5872,10 @@ textarea.form-control-lg {
   border-radius: 0.25rem;
 }
 
+.custom-tooltip {
+    --bs-tooltip-bg: var(--bs-primary);
+}
+
 .popover {
   position: absolute;
   top: 0;

@@ -4,34 +4,73 @@ let size = 700
 let x_global = 0;
 let y_global =0;
 
-function editProductOnGridProductOnCell(cell,position_id)
+let data=0;
+
+function getData(products_positions)
+{
+
+   data=products_positions;
+}
+
+function editProductOnGridProductOnCell(position_id)
 {
    // console.log(cell);
-    const found = cell.filter(e => e.pivot.position === position_id);
+    const found = data.filter(e => e.pivot.position === position_id);
 
     //if(found.length>0)
     //console.log(found);
 
     let name='';
+    let id='';
+    let table='';
+    let text2='';
+    let counter =0;
 
     for (const key in found)
     {
-        name+= '<p>' + found[key]['name']+ '</p>';
+        name = '<p>' + found[key]['name']+ '</p>';
+        id= '<td>' + found[key]['id']+ '</td>';
+
+        table += '<tr>' + name + id + '</tr>';
+        text2 += '<h6>' + found[key]['name'] + '</h6>';
+
+        counter ++;
     }
 
-    let hint = document.getElementById(position_id);
+    /*
+    let text = '<table class="table table table-success table-striped" id="actProducts">' +
+        '<thead>' +
+        ' <tr>' +
+        ' <th scope="col">Product Name</th>' +
+        ' <th scope="col">Product ID</th>' +
+        ' </tr>' +
+        '</thead>'+
+        '<tbody>'+
+        table+
+        '</tbody> '+
+        '</table>';
 
-    hint.setAttribute('title',name);
+     */
 
-    var tooltip = new bootstrap.Tooltip(hint, {
-        title : name
-    });
+
+    if(counter>0)
+    {
+        let hint = document.getElementById("b" + position_id);
+        let tooltip = new bootstrap.Tooltip(hint,
+            {
+                title: text2,
+                placement: "bottom",
+                html: true,
+
+            });
+    }
+
 
 
 
 }
 
-function editProductsOnGrid(X,Y,elements)
+function editProductsOnGrid(X,Y)
 {
     x_global =parseInt(X);
     y_global =parseInt(Y);
@@ -55,7 +94,7 @@ function generateGridCells(x,y,arr,counter)
 ;    //console.log(counter2,counter3);
     if(arr[counter2][counter3]=="-1")
     {
-          document.getElementById("b"+counter).innerHTML += '<div id=' + counter + ' class="selected_cell" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true"  title="Tooltip on top" >'+counter+'</div>';
+          document.getElementById("b"+counter).innerHTML += '<div id=' + counter + ' class="selected_cell" >'+counter+'</div>';
     }
     else  if(arr[counter2][counter3]=="1")
     {
