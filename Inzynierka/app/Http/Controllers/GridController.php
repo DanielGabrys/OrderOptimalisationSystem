@@ -48,10 +48,17 @@ class GridController extends Controller
         $grid=Grid::find($id);
         $products = $grid->grid()-> where('position','=',$id2)->get();
 
+        // ids of products on the cell
+        $products_id = $grid->grid()->get()->pluck('id');
 
-        //dd($products);
-        //dd( $array);
-        return view('grid.gridEditSingleCellProducts',['CellProducts'=> $products,'grid'=>$grid]);
+        // products which are not on list
+        $accessable_products = Product::select('products.id','name')->whereNotIn('id', $products_id)->get();
+
+        /*
+        Select id from products where id not in (select grid_product.product_id from `products` inner join `grid_product` on `products`.`id` = `grid_product`.`product_id` where `grid_product`.`grid_id` = 15);
+        */
+
+        return view('grid.gridEditSingleCellProducts',['CellProducts'=> $products,'grid'=>$grid,'accessable_products'=>$accessable_products,'cell_id'=>$id2]);
 
     }
 
@@ -71,8 +78,8 @@ class GridController extends Controller
 
     public function deleteGridProduct($id)
     {
-        $grid = Grid_Product::find($id)->delete();
-        return Redirect()->back()->with('success','Pomyślnie usunięto siatkę');
+        $grid_product = Grid_Product::find($id)->delete();
+        return Redirect()->back()->with('success','Pomyślnie usunięto product z komórki siatki');
     }
 
     public function ValidateGrid(Request $request)
@@ -138,15 +145,21 @@ class GridController extends Controller
         }
     }
 
-    public function editGridSubmitProducts(Request $request,$id)
+    public function addGridCellProduct(Request $request)
     {
-        if($this->ValidateGrid($request))
-        {
-            $grid=grid::find($id);
+           // $product=Product::find($product_id);
 
-            $this->createGridData($grid,$request);
-            return Redirect()->route('showGrids')->with('success','Zaktualizowano pomyślnie siatkę');
-        }
+
+            $grid_product = new Grid_Product;
+            $grid_product->grid_id= $request->grid_id;
+            $grid_product->product_id= $request->product_id;
+            $grid_product->position= $request->cell_id;
+
+            //dd($grid_product);
+
+            $grid_product->save();
+
+            return Redirect()->back()->with('success','Dodano pomyślnie product do pola siatki');
     }
 
     public function customValidation(Request $request)

@@ -11,32 +11,38 @@
 
     @endif
 
-    <div class="py-12">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-8">
 
-                    <div class="form-floating">
-                        <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
-                            <option selected>Open this select menu</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
-                        </select>
-                        <label for="floatingSelect">Place product on shelf</label>
+    <div class="container-fluid d-flex justify-content-center">
+
+            <form class="form-inline" action="{{route('addGridCellProduct')}}" method="POST">
+                @csrf
+                <div class="input-group mb-2 mr-sm-2">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">Place product on shelf</div>
                     </div>
 
+                    <select class="form-select" name="product_id"  id="product_id" >
+                        @foreach($accessable_products as $product)
+                            <option value="{{$product->id}}">{{$product->id}} {{$product->name}}</option>
+                        @endforeach
+                    </select>
                 </div>
-            </div>
+
+                <input type="hidden" name="grid_id" value="{{$grid->id}}">
+                <input type="hidden" name="cell_id" value="{{$cell_id}}">
+
+                <button type="submit" class="btn btn-primary mb-2"> ADD </button>
+
+            </form>
         </div>
-    </div>
 
     <div class="py-12">
         <div class="container">
             <div class="row">
                 <div class="col-md-8">
 
-                    <table class="table table-success table-striped">
+                    <div class="card-header">
+                    <table class="table ">
                         <thead>
                         <tr>
                             <th scope="col">#</th>
@@ -51,13 +57,16 @@
                         <tr>
                             <th scope="row">{{$loop->iteration}}</th>
                             <td>{{$product->name}}</td>
-                            <td>{{$product->grid->position}}</td>
-                            <td>@mdo</td>
+                            <td>{{$product->id}}</td>
+                            <td>{{$product->pivot->position}}</td>
+                            <td><a href ="{{route('deleteGridProduct',$product->pivot->id)}}" class="btn btn-danger"> Delete </a></td>
+
                         </tr>
                         @endforeach
 
                         </tbody>
                     </table>
+                </div>
 
                 </div>
             </div>

@@ -32,19 +32,26 @@ Route::get('/', function ()
     // delete grid
     Route::get('/grid/deleteGrid/{id}',[GridController::class,'deleteGrid'])->name('deleteGrid');
 
-    //edit grid
+    //edit grid structure
     Route::get('/grid/editGrid/{id}', [GridController::class, 'editGrid'])->name('editGrid');
 
+    //submit edited grid structure
     Route::post('/grid/editGridSubmit/{id}', [GridController::class, 'editGridSubmit'])->name('editGridSubmit');
 
-    //edit products on grid
+
+    //edit products on grid - grid view
     Route::get('/grid/editGridProducts/{id}', [GridController::class, 'editGridProducts'])->name('editGridProducts');
+
+    //edit specific products on grid
 
     Route::get('/grid/editGridCellProducts/{id}/{id2}', [GridController::class, 'editGridCellProducts'])->name('editGridCellProducts');
 
-    Route::post('/grid/editGridSubmitProducts/{id}', [GridController::class, 'editGridSubmitProducts'])->name('editGridSubmitProducts');
+    //add specific product to grid specific cell
+    Route::post('/grid/addGridSubmitProducts', [GridController::class, 'addGridCellProduct'])->name('addGridCellProduct');
 
-    Route::post('/grid/deleteGridProduct/{id}', [GridController::class, 'deleteGridProduct'])->name('deleteGridProduct');
+
+    // delete specific product from grid
+    Route::get('/grid/deleteGridProduct/{id}', [GridController::class, 'deleteGridProduct'])->name('deleteGridProduct');
 
 
 
