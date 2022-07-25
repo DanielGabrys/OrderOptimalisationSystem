@@ -15,7 +15,7 @@
 
         <script>
             getData({!! $products_array !!})
-            editProductsOnGrid({{$grid->height}},{{$grid->width}},{{$grid->shelfs}});
+            editProductsOnGrid({{$grid->height}},{{$grid->width}});
         </script>
 
 

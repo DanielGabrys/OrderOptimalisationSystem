@@ -13,6 +13,7 @@
 
     <script src="{{asset('Frontend/Js/Grid/grid.js')}}"></script>
     <script src="{{asset('Frontend/Js/Grid/editGridProducts.js')}}"></script>
+    <script src="{{asset('Frontend/Js/Grid/detailedGrid.js')}}"></script>
 
     <link href="{{asset('Frontend/css/grid/grid.css')}}" rel="stylesheet">
 

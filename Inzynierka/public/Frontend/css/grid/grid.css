@@ -30,33 +30,33 @@ a{
 }
 
 
-.unselected_cell {
-    background-color: #EED;
+.unselected_cell, .selected_cell, .entry_cell, .field_cell
+{
     float: left;
     cursor: pointer;
     text-align: center;
     border: solid 1px black;
-
-
 }
-.selected_cell {
+
+.unselected_cell
+{
+    background-color: #EED;
+}
+
+.selected_cell
+{
     background-color: green;
-    float: left;
-    cursor: pointer;
-    text-align: center;
-    border: solid 1px black;
 }
 
 .entry_cell
 {
     background-color: yellow;
-    float: left;
-    cursor: pointer;
-    text-align: center;
-    border: solid 1px black;
 }
 
-
+.field_cell
+{
+    background-color: orange;
+}
 
 
 
