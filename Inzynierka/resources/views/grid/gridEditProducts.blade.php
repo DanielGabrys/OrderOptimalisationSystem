@@ -11,29 +11,61 @@
 
     @endif
 
-    <div id="reload">
 
-        <script>
-            getData({!! $products_array !!})
-            editProductsOnGrid({{$grid->height}},{{$grid->width}});
-        </script>
+        <div id="reload">
+
+            <script>
+                getData({!! $products_array !!})
+                editProductsOnGrid({{$grid->height}},{{$grid->width}});
+            </script>
 
 
-        @foreach(range(1, $grid->height*$grid->width) as $y)
+            @foreach(range(1, $grid->height*$grid->width) as $y)
 
-            <a id="{{"a".$y}}" href ="{{route('editGridCellProducts',[$grid->id,$y])}}" >
-                <div id ="{{"b".$y}}" class="cell" >
-                    <script>
-                        editProductOnGridProductOnCell({{$y}})
-                        generateGridCells({{$grid->width}},{{$grid->height}},{{$grid->shelfs}},{{$y}})
-                    </script>
-                </div>
-            </a>
+                <a id="{{"a".$y}}" href ="{{route('editGridCellProducts',[$grid->id,$y])}}" >
+                    <div id ="{{"b".$y}}" class="cell" >
+                        <script>
+                            editProductOnGridProductOnCell({{$y}})
+                            generateGridCells({{$grid->width}},{{$grid->height}},{{$grid->shelfs}},{{$y}})
+                        </script>
+                    </div>
+                </a>
 
-        @endforeach
+            @endforeach
 
-    </div>
+        </div>
 
+
+
+
+    <div class="overflow-auto p-3 mb-3 mb-md-0 mr-md-3 bg-light" style="max-height: 200px; cursor: pointer">
+
+            <table class="table table-dark table-striped">
+
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Product</th>
+                    <th scope="col">Schelf</th>
+                    <th scope="col">Desired Position</th>
+                </tr>
+                </thead>
+
+
+                        <tbody>
+                            @foreach($gridProducts as $product)
+
+                                <tr onclick="ColorizeSelectedCell({{$product->pivot->position}});">
+                                    <th scope="row">{{$loop->iteration}}</th>
+                                    <td>{{$product->name}}</td>
+                                    <td>{{$product->pivot->position}}</td>
+                                    <td>{{$product->pivot->desired_position}}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+            </table>
+
+        </div>
 
 
 

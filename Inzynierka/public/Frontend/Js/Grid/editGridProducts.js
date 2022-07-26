@@ -1,4 +1,7 @@
+let colorized_id="0";
+let colorized_class_name="";
 
+let in_use=0;
 let global_size =700;
 let size = 700
 let x_global = 0;
@@ -37,24 +40,12 @@ function editProductOnGridProductOnCell(position_id)
         counter ++;
     }
 
-    /*
-    let text = '<table class="table table table-success table-striped" id="actProducts">' +
-        '<thead>' +
-        ' <tr>' +
-        ' <th scope="col">Product Name</th>' +
-        ' <th scope="col">Product ID</th>' +
-        ' </tr>' +
-        '</thead>'+
-        '<tbody>'+
-        table+
-        '</tbody> '+
-        '</table>';
-
-     */
 
 
     if(counter>0)
     {
+
+
         let hint = document.getElementById("b" + position_id);
         let tooltip = new bootstrap.Tooltip(hint,
             {
@@ -63,6 +54,8 @@ function editProductOnGridProductOnCell(position_id)
                 html: true,
 
             });
+
+       this.in_use=position_id;
     }
 
 
@@ -77,9 +70,12 @@ function editProductsOnGrid(X,Y)
 
     size = global_size/y_global;
 
-    document.getElementById("reload").innerHTML ='';
-    document.getElementById("reload").style.width=size*y_global+"px";
-    document.getElementById("reload").style.height=size*x_global+"px";
+    let reload =document.getElementById("reload");
+
+    reload.innerHTML='';
+    reload.style.width=size*y_global+"px";
+    reload.style.height=size*x_global+"px";
+
 
 };
 
@@ -107,6 +103,9 @@ function generateGridCells(x,y,arr,counter)
         document.getElementById("a"+counter).setAttribute('href',"#");
     }
 
+    if(this.in_use===counter)
+        document.getElementById(counter).className="product_cell";
+
     let cell = document.getElementById("b"+counter);
     cell.style.width=size +"px";
     cell.style.height=size +"px";
@@ -122,6 +121,24 @@ function generateGridCells(x,y,arr,counter)
 
     cell.style.fontSize = size/(digits)+"px"
     cell2.style.fontSize = size/(digits)+"px"
+
+
+}
+
+
+function ColorizeSelectedCell(id)
+{
+
+   let counter=id;
+
+    if(colorized_id!=="0") {
+        document.getElementById(colorized_id).className = colorized_class_name;
+    }
+
+    colorized_class_name = document.getElementById(counter).className;
+    colorized_id= counter;
+
+    document.getElementById(counter).className="colorized_cell";
 
 }
 

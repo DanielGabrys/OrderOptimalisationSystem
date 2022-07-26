@@ -78,7 +78,7 @@ class GridController extends Controller
     {
 
         $grid=Grid::find($id);
-        $products = $grid->grid()->get();
+        $products = $grid->grid()->orderByRaw('position ASC')->get();
 
         $array=json_encode($products);
 

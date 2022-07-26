@@ -13,7 +13,7 @@ class Grid extends Model
 
     public function grid()
     {
-        return $this->belongsToMany(Product::class)->withPivot('position','id');
+        return $this->belongsToMany(Product::class)->withPivot('position','id','desired_position');
     }
 
 }
