@@ -26,6 +26,9 @@ Route::get('/', function ()
 
     Route::post('/grid/gridSubmit', [GridController::class, 'createGridSubmit']) -> name("gridSubmit");
 
+    // activate grid
+    Route::get('/grid/ActivateGrid/{id}',[GridController::class,'activateGrid'])->name('activateGrid');
+
     // show grids
     Route::get('/grid/showGrids',[GridController::class,'showGrids'])->name('showGrids');
 

@@ -5,7 +5,7 @@
         <div class="py-12">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-8">
+                    <div class="col-md-10">
 
                         @if(session('success'))
 
@@ -20,7 +20,6 @@
 
                         <div class="card">
 
-
                             <div class="card-header"> All Grids </div>
 
                             <table class="table">
@@ -28,11 +27,15 @@
 
 
                                 <tr>
-                                    <th scope="col">ID</th>
-                                    <th scope="col">Width</th>
-                                    <th scope="col">Height</th>
+                                    <th scope="col">NR</th>
+                                    <th scope="col">Size</th>
                                     <th scope="col">Entry</th>
                                     <th scope="col">Created</th>
+                                    <th scope="col">Active</th>
+                                    <th scope="col"></th>
+                                    <th scope="col"></th>
+                                    <th scope="col"></th>
+                                    <th scope="col"></th>
 
                                 </tr>
 
@@ -42,14 +45,19 @@
 
                                 @foreach($grids as $grid)
                                     <tr>
-                                        <td >{{$grid->id}}</td>
-                                        <td >{{$grid->width}} </td>
-                                        <td >{{$grid->height}}</td>
+                                        <td >{{$loop->iteration}}</td>
+                                        <td >{{$grid->height}}x{{$grid->width}}</td>
                                         <td >{{$grid->entry}}</td>
                                         <td>{{$grid->created_at->diffForHumans()}}</td>
+
+                                        @if($grid->isActive)
+                                             <td> <a href ="{{route('activateGrid',$grid->id)}}" class="btn btn-success"> ACTIVE</a></td>
+                                        @else
+                                            <td> <a href ="{{route('activateGrid',$grid->id)}}" class="btn btn-secondary"> ACTIVE</a></td>
+                                        @endif
                                         <td> <a href ="#" class="btn btn-info" data-toggle="modal" data-whatever="{{$grid->height}}_{{$grid->width}}_{{$grid->id}}_{{$grid->shelfs}}" data-target=".bd-example-modal-lg"> Show </a>
                                         </td>
-                                        <td> <a href ="{{route('editGrid',$grid->id)}}" class="btn btn-success"> Edit Grid</a></td>
+                                        <td> <a href ="{{route('editGrid',$grid->id)}}" class="btn btn-warning"> Edit Grid</a></td>
                                         <td> <a href ="{{route('editGridProducts',$grid->id)}}" class="btn btn-warning"> Edit products </a></td>
                                         <td> <a href ="{{route('deleteGrid',$grid->id)}}" class="btn btn-danger"> Delete </a></td>
 

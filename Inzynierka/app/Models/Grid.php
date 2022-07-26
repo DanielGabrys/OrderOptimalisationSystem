@@ -10,6 +10,7 @@ class Grid extends Model
     use HasFactory;
 
     protected $table = 'grids';
+    protected $fillable = ['isActive'];
 
     public function grid()
     {

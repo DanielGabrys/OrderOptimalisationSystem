@@ -23,6 +23,13 @@ class GridController extends Controller
         return view('grid.showGrids',['grids'=>$grids]);
     }
 
+    public function activateGrid($id)
+    {
+        Grid::query()->update(['isActive'=>0]);
+        Grid::find($id)->update(['isActive'=>1]);
+        return Redirect()->back()->with('success','Aktywowano siatkę');
+    }
+
     public function GridOverlook()
     {
         $grids =Grid::all();
