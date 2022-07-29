@@ -30,7 +30,7 @@ a{
 }
 
 
-.unselected_cell, .selected_cell, .entry_cell, .field_cell, .colorized_cell, .product_cell
+.unselected_cell, .selected_cell, .entry_cell, .field_cell, .colorized_cell, .product_cell, .path_cell
 {
     float: left;
     cursor: pointer;
@@ -67,6 +67,12 @@ a{
 {
     background-color: #FFA07A;
 }
+
+.path_cell
+{
+    background-color: orange;
+}
+
 
 
 

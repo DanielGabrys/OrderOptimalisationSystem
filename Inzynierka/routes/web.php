@@ -57,4 +57,6 @@ Route::get('/', function ()
     Route::get('/grid/deleteGridProduct/{id}', [GridController::class, 'deleteGridProduct'])->name('deleteGridProduct');
 
 
+// dikstra
 
+    Route::get('/grid/calculateDikstra',[GridController::class, 'calculateDikstra'])->name('calculateDikstra');

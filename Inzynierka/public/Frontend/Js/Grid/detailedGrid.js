@@ -1,6 +1,6 @@
 let fields = 0;
 
-function detailedProductsOnGrid(X,Y,siz,fields)
+function detailedProductsOnGrid(X,Y,siz)
 {
     x_global =parseInt(X);
     y_global =parseInt(Y);
@@ -10,11 +10,13 @@ function detailedProductsOnGrid(X,Y,siz,fields)
     document.getElementById("reload").innerHTML ='';
     document.getElementById("reload").style.width=size*y_global+"px";
     document.getElementById("reload").style.height=size*x_global+"px";
+}
 
+function initialize_fields(fields)
+{
     this.fields = (fields);
-
     console.log(fields);
-};
+}
 
 function changeFieldsColorToOrange(counter)
 {
@@ -25,6 +27,5 @@ function changeFieldsColorToOrange(counter)
             document.getElementById(counter).className="field_cell";
         }
     }
-
 
 }

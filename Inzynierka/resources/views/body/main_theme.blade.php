@@ -14,6 +14,7 @@
     <script src="{{asset('Frontend/Js/Grid/grid.js')}}"></script>
     <script src="{{asset('Frontend/Js/Grid/editGridProducts.js')}}"></script>
     <script src="{{asset('Frontend/Js/Grid/detailedGrid.js')}}"></script>
+    <script src="{{asset('Frontend/Js/Dikstra/Dikstra.js')}}"></script>
 
     <link href="{{asset('Frontend/css/grid/grid.css')}}" rel="stylesheet">
 
@@ -111,7 +112,7 @@
 
 
                     <div class="sb-sidenav-menu-heading">Kalkulacje</div>
-                    <a class="nav-link" href="charts.html">
+                    <a class="nav-link" href="{{route('calculateDikstra')}}">
                         <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                         Algorytm Dikstry
                     </a>

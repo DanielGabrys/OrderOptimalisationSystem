@@ -107,7 +107,8 @@
     <div id="reload">
 
         <script>
-            detailedProductsOnGrid({{$field_size[1]}},{{$field_size[0]}},200,{{$fields}});
+            detailedProductsOnGrid({{$field_size[1]}},{{$field_size[0]}},200);
+            initialize_fields({{$fields}})
         </script>
 
 

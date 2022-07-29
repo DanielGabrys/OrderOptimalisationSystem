@@ -424,4 +424,23 @@ class GridController extends Controller
         return $size;
     }
 
+
+   //dikstra part
+
+    public function calculateDikstra()
+    {
+
+        $grid=Grid::all()->where('isActive','=',1)->first();
+        $products = $grid->grid()->orderByRaw('position ASC')->get();
+
+        $array=json_encode($products);
+
+        //dd($products);
+        //dd( $array);
+        return view('dikstra.dikstra',['gridProducts'=> $products,'grid'=>$grid,'products_array'=>$array]);
+
+    }
+
+
+
 }
