@@ -12,7 +12,7 @@ class Product extends Model
     protected $table = 'products';
 
 
-    public function gridProduct()
+    public function grids()
     {
        return $this->belongsToMany(Grid::class)->withPivot('position','id','desired_position');
     }

@@ -114,7 +114,11 @@
                 modal.find('.modal-title').text('Schema ' + myArray[2])
                 modal.set
 
-                showSelectedGrid(myArray[0],myArray[1],myArray[3],"0")
+                showGrid = new ShowGrid();
+                showGrid.getProductsData({!! $grids_array !!},{{$grid->shelfs}});
+                showGrid.setSize(myArray[0],myArray[1],700)
+                showGrid.showSelectedGrid(myArray[0],myArray[1],myArray[3])
+                showGrid.getHints(myArray[2],{!! $grids_array !!})
                 })
 
             </script>

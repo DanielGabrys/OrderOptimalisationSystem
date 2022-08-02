@@ -19,8 +19,13 @@ class GridController extends Controller
 
     public function showGrids()
     {
-        $grids =Grid::all();
-        return view('grid.showGrids',['grids'=>$grids]);
+        $grids_products=Grid::with('products')->get();
+        $grids = Grid::all();
+
+        $grids_array=json_encode($grids_products);
+        //dd($grids_array);
+
+        return view('grid.showGrids',['grids'=>$grids,'grids_array'=>$grids_array]);
     }
 
     public function activateGrid($id)
@@ -30,11 +35,6 @@ class GridController extends Controller
         return Redirect()->back()->with('success','Aktywowano siatkę');
     }
 
-    public function GridOverlook()
-    {
-        $grids =Grid::all();
-        return view('grid.showGrids',['grids'=>$grids]);
-    }
 
     public function deleteGrid($id)
     {
@@ -45,7 +45,10 @@ class GridController extends Controller
     public function editGrid($id)
     {
         $grid = Grid::find($id);
-        return view('grid.gridEdit',['grid'=>$grid]);
+        $products = $grid->products()->orderByRaw('position ASC')->get();
+
+        $array=json_encode($products);
+        return view('grid.gridEdit',['gridProducts'=> $products,'grid'=>$grid,'products_array'=>$array]);
 
     }
 
@@ -53,11 +56,11 @@ class GridController extends Controller
     {
 
         $grid=Grid::find($id);
-        $products = $grid->grid()-> where('position','=',$id2)->get();
-        $array=json_encode($grid->grid()->get());
+        $products = $grid->products()-> where('position','=',$id2)->get();
+        $array=json_encode($grid->products()->get());
 
         // ids of products on the cell
-        $products_id = $grid->grid()->get()->pluck('id');
+        $products_id = $grid->products()->get()->pluck('id');
 
         // products which are not on list
         $accessable_products = Product::select('products.id','name')->whereNotIn('id', $products_id)->get();
@@ -85,7 +88,7 @@ class GridController extends Controller
     {
 
         $grid=Grid::find($id);
-        $products = $grid->grid()->orderByRaw('position ASC')->get();
+        $products = $grid->products()->orderByRaw('position ASC')->get();
 
         $array=json_encode($products);
 
@@ -431,7 +434,7 @@ class GridController extends Controller
     {
 
         $grid=Grid::all()->where('isActive','=',1)->first();
-        $products = $grid->grid()->orderByRaw('position ASC')->get();
+        $products = $grid->products()->orderByRaw('position ASC')->get();
 
         $array=json_encode($products);
 
@@ -441,6 +444,13 @@ class GridController extends Controller
 
     }
 
+
+   //native algorithm
+
+    public function nativeAlgorithm()
+    {
+
+    }
 
 
 }

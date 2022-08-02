@@ -12,9 +12,13 @@
     <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
 
     <script src="{{asset('Frontend/Js/Grid/grid.js')}}"></script>
-    <script src="{{asset('Frontend/Js/Grid/editGridProducts.js')}}"></script>
-    <script src="{{asset('Frontend/Js/Grid/detailedGrid.js')}}"></script>
-    <script src="{{asset('Frontend/Js/Dikstra/Dikstra.js')}}"></script>
+    <script src="{{asset('Frontend/Js/Dikstra/DikstraGrid.js')}}"></script>
+
+    <script src="{{asset('Frontend/Js/Grid/BasicGrid.js')}}"></script>
+    <script src="{{asset('Frontend/Js/Grid/ProductsGrid.js')}}"></script>
+    <script src="{{asset('Frontend/Js/Grid/DetailedGrid.js')}}"></script>
+    <script src="{{asset('Frontend/Js/Grid/ShowGrid.js')}}"></script>
+
 
     <link href="{{asset('Frontend/css/grid/grid.css')}}" rel="stylesheet">
 
@@ -116,10 +120,13 @@
                         <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                         Algorytm Dikstry
                     </a>
-                    <a class="nav-link" href="tables.html">
-                        <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                        Najkrótsza ścieżka
+
+                    <div class="sb-sidenav-menu-heading">Najkrószta ścieżka</div>
+                    <a class="nav-link" href="{{route('nativeAlgorithm')}}">
+                        <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                        Natywny Algorytm
                     </a>
+
                 </div>
             </div>
             <div class="sb-sidenav-footer">

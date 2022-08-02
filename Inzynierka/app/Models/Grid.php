@@ -12,7 +12,7 @@ class Grid extends Model
     protected $table = 'grids';
     protected $fillable = ['isActive'];
 
-    public function grid()
+    public function products()
     {
         return $this->belongsToMany(Product::class)->withPivot('position','id','desired_position');
     }

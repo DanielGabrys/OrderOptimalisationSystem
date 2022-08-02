@@ -77,10 +77,27 @@
 </div>
 
 <div id="reload">
+
     <script>
-        editSelectedGrid({{$grid->height}},{{$grid->width}},{{$grid->shelfs}})
-        //renew()
+        ProductGrid.setSize({{$grid->height}},{{$grid->width}},700);
+        ProductGrid.getProductsData({!! $products_array !!},{{$grid->shelfs}});
     </script>
+
+
+    @foreach(range(1, $grid->height*$grid->width) as $y)
+
+        <a id="{{"a".$y}}"  >
+            <div id ="{{"b".$y}}" class="cell" >
+                <script>
+                    ProductGrid.generateGridCells({{$grid->height}},{{$grid->width}},{{$y}})
+                    ProductGrid.getHints({{$y}})
+                    ProductGrid.colorizeProductsOnGrid({{$y}})
+                </script>
+            </div>
+        </a>
+
+    @endforeach
+
 </div>
 
 @endsection

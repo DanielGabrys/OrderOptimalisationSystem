@@ -15,8 +15,8 @@
         <div id="reload">
 
             <script>
-                getData({!! $products_array !!})
-                editProductsOnGrid({{$grid->height}},{{$grid->width}});
+                ProductGrid.setSize({{$grid->height}},{{$grid->width}},700);
+                ProductGrid.getProductsData({!! $products_array !!},{{$grid->shelfs}});
             </script>
 
 
@@ -25,8 +25,9 @@
                 <a id="{{"a".$y}}" href ="{{route('editGridCellProducts',[$grid->id,$y])}}" >
                     <div id ="{{"b".$y}}" class="cell" >
                         <script>
-                            editProductOnGridProductOnCell({{$y}})
-                            generateGridCells({{$grid->width}},{{$grid->height}},{{$grid->shelfs}},{{$y}})
+                           ProductGrid.generateGridCells({{$grid->height}},{{$grid->width}},{{$y}})
+                           ProductGrid.getHints({{$y}})
+                           ProductGrid.colorizeProductsOnGrid({{$y}})
                         </script>
                     </div>
                 </a>
@@ -51,11 +52,10 @@
                 </tr>
                 </thead>
 
-
                         <tbody>
                             @foreach($gridProducts as $product)
 
-                                <tr onclick="ColorizeSelectedCell({{$product->pivot->position}});">
+                                <tr onclick="ProductGrid.colorizeSelectedCell({{$product->pivot->position}});">
                                     <th scope="row">{{$loop->iteration}}</th>
                                     <td>{{$product->name}}</td>
                                     <td>{{$product->pivot->position}}</td>

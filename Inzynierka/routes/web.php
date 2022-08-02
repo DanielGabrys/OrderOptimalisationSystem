@@ -60,3 +60,7 @@ Route::get('/', function ()
 // dikstra
 
     Route::get('/grid/calculateDikstra',[GridController::class, 'calculateDikstra'])->name('calculateDikstra');
+
+// native algoritm
+
+    Route::get('/grid/nativeAlgorithm',[GridController::class, 'nativeAlgorithm'])->name('nativeAlgorithm');

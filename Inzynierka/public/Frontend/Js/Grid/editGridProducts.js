@@ -1,18 +1,19 @@
 let colorized_id="0";
 let colorized_class_name="";
 
-let in_use=0;
 let global_size =700;
 let size = 700
 let x_global = 0;
 let y_global =0;
 
 let data=0;
+let shelves={};
 
-function getData(products_positions)
+function getData(products_positions,products)
 {
 
    data=products_positions;
+   shelves=products;
 }
 
 function editProductOnGridProductOnCell(position_id)
@@ -24,18 +25,13 @@ function editProductOnGridProductOnCell(position_id)
     //console.log(found);
 
     let name='';
-    let id='';
-    let table='';
-    let text2='';
+    let text='';
     let counter =0;
 
     for (const key in found)
     {
         name = '<p>' + found[key]['name']+ '</p>';
-        id= '<td>' + found[key]['id']+ '</td>';
-
-        table += '<tr>' + name + id + '</tr>';
-        text2 += '<h6>' + found[key]['name'] + '</h6>';
+        text += '<h6>' + found[key]['name'] + '</h6>';
 
         counter ++;
     }
@@ -49,7 +45,7 @@ function editProductOnGridProductOnCell(position_id)
         let hint = document.getElementById("b" + position_id);
         let tooltip = new bootstrap.Tooltip(hint,
             {
-                title: text2,
+                title: text,
                 placement: "bottom",
                 html: true,
 
@@ -80,7 +76,7 @@ function editProductsOnGrid(X,Y)
 };
 
 
-function generateGridCells(x,y,arr,counter)
+function generateGridCells(x,y,counter)
 {
     let count =parseInt(counter)-1;
     let counter2  =parseInt(count/x);
@@ -88,11 +84,11 @@ function generateGridCells(x,y,arr,counter)
 
 
 ;    //console.log(counter2,counter3);
-    if(arr[counter2][counter3]=="-1")
+    if(shelves[counter2][counter3]=="-1")
     {
           document.getElementById("b"+counter).innerHTML += '<div id=' + counter + ' class="selected_cell" >'+counter+'</div>';
     }
-    else  if(arr[counter2][counter3]=="1")
+    else  if(shelves[counter2][counter3]=="1")
     {
         document.getElementById("b"+counter).innerHTML += '<div id=' + counter + ' class="entry_cell" >'+counter+'</div>';
         document.getElementById("a"+counter).setAttribute('href',"#");

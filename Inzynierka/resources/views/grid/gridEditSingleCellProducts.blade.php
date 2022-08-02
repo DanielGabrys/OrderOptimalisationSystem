@@ -107,8 +107,8 @@
     <div id="reload">
 
         <script>
-            detailedProductsOnGrid({{$field_size[1]}},{{$field_size[0]}},200);
-            initialize_fields({{$fields}})
+            detailedGrid.setSize({{$field_size[1]}},{{$field_size[0]}},200);
+            detailedGrid.getDetailedFields({{$fields}},{{$grid->shelfs}})
         </script>
 
 
@@ -117,8 +117,8 @@
             <a id="{{"a".$neibours[$loop->index]}}" >
                 <div id ="{{"b".$neibours[$loop->index]}}" class="cell" >
                     <script>
-                        generateGridCells({{$grid->width}},{{$grid->height}},{{$grid->shelfs}},{{$neibours[$loop->index]}})
-                        changeFieldsColorToOrange({{$neibours[$loop->index]}})
+                      detailedGrid.generateGridCells({{$grid->height}},{{$grid->width}},{{$neibours[$loop->index]}})
+                      detailedGrid.changeFieldsColorToOrange({{$neibours[$loop->index]}})
                     </script>
                 </div>
             </a>

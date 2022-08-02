@@ -8,9 +8,10 @@
     <div id="reload">
 
         <script>
-            getData({!! $products_array !!})
-            editProductsOnGrid({{$grid->height}},{{$grid->width}});
-            shelvesToGraph({{$grid->height}},{{$grid->width}},{{$grid->shelfs}})
+            dikstra = new DikstraGrid();
+            dikstra.getProductsData({!! $products_array !!},{{$grid->shelfs}});
+            dikstra.setSize({{$grid->height}},{{$grid->width}},700)
+            dikstra.shelvesToGraph({{$grid->height}},{{$grid->width}},{{$grid->shelfs}})
         </script>
 
 
@@ -19,8 +20,9 @@
             <a id="{{"a".$y}}" >
                 <div id ="{{"b".$y}}" class="cell" >
                     <script>
-                        editProductOnGridProductOnCell({{$y}})
-                        generateGridCells({{$grid->width}},{{$grid->height}},{{$grid->shelfs}},{{$y}})
+                        dikstra.generateGridCells({{$grid->width}},{{$grid->height}},{{$y}})
+                        dikstra.getHints({{$y}})
+                        dikstra.colorizeProductsOnGrid({{$y}})
                     </script>
                 </div>
             </a>
