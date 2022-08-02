@@ -25,7 +25,7 @@ class BasicGrid
     let counter2  =parseInt(counter0/y);
     let counter3  =parseInt(counter0%y);
 
-    //console.log(counter,counter2,counter3,this.shelfs[counter2][counter3]);
+    //console.log(x,y,counter,counter2,counter3,this.shelfs[counter2][counter3]);
 
     if(this.shelfs[counter2][counter3]=="-1")
     {
