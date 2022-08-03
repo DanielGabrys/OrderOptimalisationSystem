@@ -3,7 +3,6 @@
     let grid_size=0;
     let grid_size_x=0;
     let grid_size_y=0;
-    let grid_panel_size=0;
 
     let markdown=0;
     let markup=0;
@@ -11,7 +10,7 @@
     let grid = [];
 
 
-    function mouseDown(id)
+    function mouseDownk(id)
     {
         if(document.getElementById(id).style.background !== "green" && !grid.includes(id))
         {
@@ -36,7 +35,7 @@
         //console.log(markdown+" "+markup);
     };
 
-    function mouseUp(id)
+    function mouseUpk(id)
     {
 
         markdown=0;
@@ -47,7 +46,7 @@
 
     };
 
-    function MouseOver(id)
+    function MouseOverk(id)
     {
         if (markdown===1 && markup===0)
     {
@@ -82,6 +81,8 @@
 
     function addRow(X, Y)
     {
+
+        this.setS
 
     let x=0;
     let y=0;
