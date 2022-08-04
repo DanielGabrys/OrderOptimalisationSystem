@@ -29,7 +29,12 @@
             <input type="number" class="form-control" id="y" placeholder="Y" value=5>
         </div>
 
-        <button type="button" class="btn btn-primary mb-2" onclick="addRow(document.getElementById('x').value,document.getElementById('y').value); clearGrid();">GENERATE GRID</button>
+        <button type="button" class="btn btn-primary mb-2"
+                onclick="
+                        createGrid.clearGrid();
+                        createGrid.addRow(document.getElementById('x').value,document.getElementById('y').value);
+
+               ">GENERATE GRID</button>
     </form>
 
 </div>
@@ -57,7 +62,7 @@
 
 
             <div class="col-auto">
-                <button type="sumbit" class="btn btn-success mb-2" onclick="setGridValues();">SUBMIT</button>
+                <button type="submit" class="btn btn-success mb-2" onclick="createGrid.setGridValues();">SUBMIT</button>
                <!-- <button type="button" class="btn btn-success mb-2" onclick="showGrid()">Show</button> -->
             </div>
         </div>
@@ -85,15 +90,16 @@
         </div>
 
 
-
     </form>
 
 </div>
 
 <div id="reload">
-    <script>addRow(3,5)</script>
+    <script>
+        createGrid.addRow(3,5)
+    </script>
 </div>
 
-<script>renew()</script>
+<script>createGrid.renew()</script>
 
 @endsection

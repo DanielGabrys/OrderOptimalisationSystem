@@ -11,13 +11,16 @@
     <link href="{{asset('css/styles.css')}}" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
 
-    <script src="{{asset('Frontend/Js/Grid/grid.js')}}"></script>
-    <script src="{{asset('Frontend/Js/Dikstra/DikstraGrid.js')}}"></script>
+
 
     <script src="{{asset('Frontend/Js/Grid/BasicGrid.js')}}"></script>
+    <script src="{{asset('Frontend/Js/Grid/CreateGrid.js')}}"></script>
     <script src="{{asset('Frontend/Js/Grid/ProductsGrid.js')}}"></script>
     <script src="{{asset('Frontend/Js/Grid/DetailedGrid.js')}}"></script>
     <script src="{{asset('Frontend/Js/Grid/ShowGrid.js')}}"></script>
+    <script src="{{asset('Frontend/Js/Grid/EditStructureGrid.js')}}"></script>
+
+    <script src="{{asset('Frontend/Js/Dikstra/DikstraGrid.js')}}"></script>
 
 
     <link href="{{asset('Frontend/css/grid/grid.css')}}" rel="stylesheet">

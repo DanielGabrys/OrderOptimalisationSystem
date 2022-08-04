@@ -12,10 +12,13 @@
 @endif
 
 <div class="container-fluid d-flex justify-content-center">
-
+    <blockquote class="blockquote">
+        <p style="color: red" class="mb-0">Uwaga, aby edytować komórkę na której znajdują się już produkty należy wcześniej usunąćgit dane produkty</p>
+    </blockquote>
 </div>
 
 <div class="container d-flex justify-content-center ">
+
 
     <form id="load_grid" name="load_grid" action="{{route('editGridSubmit',$grid->id)}}" method="POST">
         @csrf
@@ -38,13 +41,11 @@
 
 
             <div class="col-auto">
-                <button type="sumbit" class="btn btn-success mb-2" onclick="setGridValues();">SUBMIT</button>
+                <button type="sumbit" class="btn btn-success mb-2" onclick="editgridstructure.setGridValues();">SUBMIT</button>
                 <!-- <button type="button" class="btn btn-success mb-2" onclick="showGrid()">Show</button> -->
             </div>
 
         </div>
-
-
 
             <div class="input-group mb-2 mr-sm-2">
                 @error('grid')
@@ -68,10 +69,6 @@
                 @enderror
             </div>
 
-
-
-
-
     </form>
 
 </div>
@@ -79,24 +76,10 @@
 <div id="reload">
 
     <script>
-        ProductGrid.setSize({{$grid->height}},{{$grid->width}},700);
-        ProductGrid.getProductsData({!! $products_array !!},{{$grid->shelfs}});
+        editgridstructure.setSize({{$grid->height}},{{$grid->width}},700);
+        editgridstructure.getProductsData({!! $products_array !!},{{$grid->shelfs}});
+        editgridstructure.editSelectedGrid({{$grid->shelfs}});
     </script>
-
-
-    @foreach(range(1, $grid->height*$grid->width) as $y)
-
-        <a id="{{"a".$y}}"  >
-            <div id ="{{"b".$y}}" class="cell" >
-                <script>
-                    ProductGrid.generateGridCells({{$grid->height}},{{$grid->width}},{{$y}})
-                    ProductGrid.getHints({{$y}})
-                    ProductGrid.colorizeProductsOnGrid({{$y}})
-                </script>
-            </div>
-        </a>
-
-    @endforeach
 
 </div>
 

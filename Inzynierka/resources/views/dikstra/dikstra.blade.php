@@ -8,10 +8,10 @@
     <div id="reload">
 
         <script>
-            dikstra = new DikstraGrid();
-            dikstra.getProductsData({!! $products_array !!},{{$grid->shelfs}});
+
             dikstra.setSize({{$grid->height}},{{$grid->width}},700)
-            dikstra.shelvesToGraph({{$grid->height}},{{$grid->width}},{{$grid->shelfs}})
+            dikstra.getProductsData({!! $products_array !!},{{$grid->shelfs}});
+            dikstra.shelvesToGraph();
         </script>
 
 
@@ -20,7 +20,7 @@
             <a id="{{"a".$y}}" >
                 <div id ="{{"b".$y}}" class="cell" >
                     <script>
-                        dikstra.generateGridCells({{$grid->width}},{{$grid->height}},{{$y}})
+                        dikstra.generateGridCells({{$grid->height}},{{$grid->width}},{{$y}})
                         dikstra.getHints({{$y}})
                         dikstra.colorizeProductsOnGrid({{$y}})
                     </script>
@@ -48,7 +48,7 @@
                 <input type="number" class="form-control" id="end" >
             </div>
 
-            <button type="button" class="btn btn-primary mb-2" onclick="setStartEnd(document.getElementById('start').value,document.getElementById('end').value);">CALCULATE</button>
+            <button type="button" class="btn btn-primary mb-2" onclick="dikstra.setStartEnd(document.getElementById('start').value,document.getElementById('end').value);">CALCULATE</button>
         </form>
 
     </div>
@@ -71,7 +71,7 @@
                 <tr>
                     <td id="start_table">  </td>
                     <td id="end_table"> </td>
-                    <td id="steps"> </script> </td>
+                    <td id="steps">  </td>
                     <td id="path"> </td>
                 </tr>
             </tbody>
