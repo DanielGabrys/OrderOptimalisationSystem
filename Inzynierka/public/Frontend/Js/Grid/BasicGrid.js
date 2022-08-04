@@ -5,6 +5,13 @@ class BasicGrid
     size=0; // px
 
     shelfs={};
+    products_positions={};
+
+    getProductsData(products_positions,shelfs)
+    {
+        this.products_positions=products_positions;
+        this.shelfs=shelfs;
+    }
 
     setSize(height,width,size)
     {

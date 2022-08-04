@@ -61,7 +61,7 @@ class CreateGrid extends BasicGrid
 
         }
         //console.log(markdown+" "+markup);
-        console.log(this.grid);
+        //console.log(this.grid);
         this.clearSelection();
 
     };
@@ -120,11 +120,6 @@ class CreateGrid extends BasicGrid
                     '<div id=' + counter + ' class="unselected_cell" onmousedown="createGrid.mouseDown('+counter+')" onmouseover="createGrid.mouseOVER('+counter+')" onmouseup="createGrid.mouseUp('+counter+')">'+counter+'</div>';
                 counter++;
 
-                //let cell=document.getElementById(counter);
-
-                //cell.style.width=this.size+"px";
-                //cell.style.height=this.size+"px";
-                //cell.style.fontSize = this.size/(digits)+"px"
 
             };
 

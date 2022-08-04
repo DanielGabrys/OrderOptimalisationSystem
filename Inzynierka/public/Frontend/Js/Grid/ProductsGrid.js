@@ -1,15 +1,7 @@
 class ProductsGrid extends BasicGrid
 {
-    products_positions;
-
     colorized_id="0";
     colorized_class_name="";
-
-    getProductsData(products_positions,shelfs)
-    {
-        this.products_positions=products_positions;
-        this.shelfs=shelfs;
-    }
 
     getHints(position_id)
     {
