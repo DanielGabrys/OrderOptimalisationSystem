@@ -444,11 +444,18 @@ class GridController extends Controller
 
     }
 
-
    //native algorithm
-
     public function nativeAlgorithm()
     {
+
+        $grid=Grid::all()->where('isActive','=',1)->first();
+        $products = $grid->products()->orderByRaw('position ASC')->get();
+
+        $array=json_encode($products);
+
+        return view('shortestPath.naive',['gridProducts'=> $products,'grid'=>$grid,'products_array'=>$array]);
+
+
 
     }
 

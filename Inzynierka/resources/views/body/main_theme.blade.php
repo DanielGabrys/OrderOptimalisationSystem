@@ -22,6 +22,8 @@
 
     <script src="{{asset('Frontend/Js/Dikstra/DikstraGrid.js')}}"></script>
 
+    <script src="{{asset('Frontend/Js/ShortestPath/Naive.js')}}"></script>
+
 
     <link href="{{asset('Frontend/css/grid/grid.css')}}" rel="stylesheet">
 

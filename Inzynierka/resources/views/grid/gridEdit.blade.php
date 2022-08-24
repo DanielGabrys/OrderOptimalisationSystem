@@ -13,7 +13,7 @@
 
 <div class="container-fluid d-flex justify-content-center">
     <blockquote class="blockquote">
-        <p style="color: red" class="mb-0">Uwaga, aby edytować komórkę na której znajdują się już produkty należy wcześniej usunąćgit dane produkty</p>
+        <p style="color: red" class="mb-0">Uwaga, aby edytować komórkę na której znajdują się już produkty należy wcześniej usunąć dane produkty</p>
     </blockquote>
 </div>
 

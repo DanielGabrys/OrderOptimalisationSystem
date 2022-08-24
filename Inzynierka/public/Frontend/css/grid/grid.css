@@ -2,6 +2,8 @@
 
     width: 1080px;
     margin: auto;
+    margin-bottom: 10px;
+    margin-top: 10px;
 }
 
 .cell {
@@ -30,7 +32,7 @@ a{
 }
 
 
-.unselected_cell, .selected_cell, .entry_cell, .field_cell, .colorized_cell, .product_cell, .path_cell
+.unselected_cell, .selected_cell, .entry_cell, .field_cell, .colorized_cell, .colorized_naive_cell, .product_cell, .path_cell
 {
     float: left;
     cursor: pointer;
@@ -61,6 +63,11 @@ a{
 .colorized_cell
 {
     background-color: orange;
+}
+
+.colorized_naive_cell
+{
+    background-color: red;
 }
 
 .product_cell
