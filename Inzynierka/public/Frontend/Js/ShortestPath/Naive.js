@@ -1,111 +1,148 @@
-class Naive extends DikstraGrid
+class Naive extends Base
 {
 
-    nodes =new Map();
-    weights =[];
-    node_graph={};
+    order = [];
 
-    addButtonlisteners(products)
+    node_graph;
+    factorial_nr;
+
+    nextOrder()
     {
 
+        let counter =1;
+        let arr =[];
+        for(let i=0;i<this.order.length;i++)
+        {
+            arr[i]=i;
+        }
+
+        this.factorial_nr=this.factorial(arr.length);
+
+        while(true)
+        {
+
+            let index = arr[0];
+
+            if (index === arr.length - 1) {
+                console.log('finished');
+                break;
+            }
+
+           // console.log(arr);
+
+
+                this.percentage(counter);
+                counter++;
+
+               // console.log(counter, arr);
+
+            if (arr[arr.length - 1] > index)
+            {
+
+                let temp_dist = this.calculateDistance(arr);
+
+                if (temp_dist < this.distance) {
+                    this.distance = temp_dist;
+                    this.naive_path = this.getNaivePath(arr);
+                }
+            }
+                //console.log(arr,temp_dist,this.distance,this.naive_path);
+
+                // STEP 1 of the algorithm
+                let largestI = -1;
+                for (let i = 0; i < arr.length - 1; i++)
+                {
+                    if (arr[i] < arr[i + 1]) {
+                        largestI = i;
+                    }
+                }
+
+                // STEP 2
+                let largestJ = -1;
+                for (let j = 0; j < arr.length; j++)
+                {
+                    if (arr[largestI] < arr[j]) {
+                        largestJ = j;
+                    }
+                }
+
+                // STEP 3
+
+                this.swap(arr, largestI, largestJ);
+
+
+                // STEP 4: reverse from largestI + 1 to the end
+
+                let endArray = arr.splice(largestI + 1);
+                endArray.reverse();
+                arr = arr.concat(endArray);
+
+            }
+
+        this.getDetailedNaivePath();
+        this.create_result_table();
+
+        console.log(this.distance,this.naive_path);
+
+    }
+
+    swap(a,i,j)
+    {
+        let temp =a[i];
+        a[i]=a[j];
+        a[j]=temp;
+    }
+
+    factorial(n)
+    {
+        //base case
+        if(n === 0 || n === 1)
+        {
+            return 1;
+            //recursive case
+        }
+
+        else
+        {
+            return n * this.factorial(n-1);
+        }
+    }
+
+    percentage(n)
+    {
+        let per =(n/this.factorial_nr *100).toFixed(2);
+        this.calc_percentage = per;
+
+        console.log(n,this.factorial_nr,per);
+    }
+
+    naive()
+    {
         let load_button = document.getElementById("load");
         load_button.addEventListener('click',function ()
             {
                 console.log(naive.nodes);
+                naive.setNodeGraph(naive.nodes);
+                naive.nextOrder();
+
             }
         );
+    }
 
-       let  arr = new Map();
+    setOrderInArray(map)
+    {
+        let array=[];
 
-        for (const key in products)
+        let counter =0;
+        map.forEach (function(value)
         {
+            array[counter]=value
+            counter++;
+        })
 
-            let table = document.getElementById("selection_table");
-            let element = document.getElementById("bt"+key);
-
-
-            element.addEventListener("click", function()
-            {
-                //this.nodes.push(products[key]['pivot']['desired_position']);
-
-                if(!arr.has(parseInt(key)+1))
-                {
-                    let desired_position= products[key]['pivot']['desired_position'];
-                    let position= products[key]['pivot']['position'];
-
-
-                    naive.colorize_selected(position)
-
-                    arr.set(parseInt(key)+1,desired_position);
-                    naive.nodes=arr;
-
-                    // console.log(naive.nodes);
-
-                    let rows = table.rows.length;
-                    let row = table.insertRow(rows);
-                    row.id = "trs" + key;
-
-                    let cell0 = row.insertCell(0)
-                    let cell1 = row.insertCell(1);
-                    let cell2 = row.insertCell(2);
-                    let cell3 = row.insertCell(3);
-                    let cell4 = row.insertCell(4);
-
-                    cell0.innerHTML = (parseInt(key) + 1).toString();
-                    cell1.innerHTML = products[key]['name'];
-                    cell2.innerHTML = position;
-                    cell3.innerHTML = desired_position;
-                    cell4.innerHTML = '<button type="button" id="btr' + key + '" class="btn btn-primary mb-2" >DELETE</button>';
-
-
-                    document.getElementById("btr" + key).addEventListener("click", function ()
-                    {
-
-                        naive.decolorize_selected(position);
-                        let row_to_delete = document.getElementById('trs' + key);
-                        row_to_delete.parentElement.removeChild(row_to_delete);
-
-                        let row_to_add = arr.delete(parseInt(key) + 1);
-                        naive.nodes = arr;
-
-                        // console.log(naive.nodes);
-
-
-                    });
-
-                }
-            });
-
-        }
-
+        this.order=array;
     }
 
-    setNodeGraph(node_arr)
-    {
-      for(let i=0;i<node_arr.length;i++)
-      {
-          for(let j=i+1;j<node_arr.length;j++)
-          {
-              this.dijkstra(this.graph,node_arr[i],node_arr[j])
-              this.node_graph[i][i]=0; //diagonal
-              this.node_graph[i][j]= this.steps;
-          }
-      }
-
-      console.log(this.node_graph);
-    }
-
-
-    colorize_selected(id)
-    {
-        document.getElementById(id).className="colorized_naive_cell";
-        console.log("b");
-    }
-
-    decolorize_selected(id)
-    {
-        document.getElementById(id).className="product_cell";
-    }
 }
 
 naive = new Naive();

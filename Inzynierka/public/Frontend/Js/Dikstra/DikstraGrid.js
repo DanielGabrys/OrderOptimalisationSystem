@@ -120,7 +120,7 @@ class DikstraGrid extends ProductsGrid
 
         const path = this.tracePath(shortestDistances, start, end);
 
-
+        /*
         console.log(
             "Shortest path is: ",
             path.join(" -> "),
@@ -128,9 +128,13 @@ class DikstraGrid extends ProductsGrid
             shortestDistances[end].cost
         );
 
+         */
+
         this.steps = shortestDistances[end].cost;
         this.path = path.join(" -> ");
         this.path_array = path;
+
+        return this.steps;
 
 
     };
