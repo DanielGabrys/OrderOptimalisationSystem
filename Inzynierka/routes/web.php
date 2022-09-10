@@ -64,3 +64,8 @@ Route::get('/', function ()
 // native algoritm
 
     Route::get('/grid/nativeAlgorithm',[GridController::class, 'nativeAlgorithm'])->name('nativeAlgorithm');
+
+// rectagle_division
+
+    Route::get('/grid/rectangleDivision',[GridController::class, 'rectangleDivision'])->name('rectangleDivision');
+

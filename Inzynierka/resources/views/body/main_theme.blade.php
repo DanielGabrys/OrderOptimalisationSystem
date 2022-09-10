@@ -24,6 +24,7 @@
 
     <script src="{{asset('Frontend/Js/ShortestPath/Base.js')}}"></script>
     <script src="{{asset('Frontend/Js/ShortestPath/Naive.js')}}"></script>
+    <script src="{{asset('Frontend/Js/ShortestPath/RectangleDivision.js')}}"></script>
 
 
     <link href="{{asset('Frontend/css/grid/grid.css')}}" rel="stylesheet">
@@ -132,6 +133,12 @@
                         <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                         Natywny Algorytm
                     </a>
+
+                    <a class="nav-link" href="{{route('rectangleDivision')}}">
+                        <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                        Podział prostokątny
+                    </a>
+
 
                 </div>
             </div>

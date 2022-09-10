@@ -459,5 +459,18 @@ class GridController extends Controller
 
     }
 
+    //rectangle division
+    public function rectangleDivision()
+    {
+
+        $grid=Grid::all()->where('isActive','=',1)->first();
+        $products = $grid->products()->orderByRaw('position ASC')->get();
+
+        $array=json_encode($products);
+
+        return view('shortestPath.rectangle_division',['gridProducts'=> $products,'grid'=>$grid,'products_array'=>$array]);
+
+    }
+
 
 }

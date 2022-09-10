@@ -9,6 +9,9 @@
 
         <script>
 
+            base.setSize({{$grid->height}},{{$grid->width}},500)
+            base.getProductsData({!! $products_array !!},{{$grid->shelfs}});
+            base.shelvesToGraph();
             naive.setSize({{$grid->height}},{{$grid->width}},500)
             naive.getProductsData({!! $products_array !!},{{$grid->shelfs}});
             naive.shelvesToGraph();
@@ -20,9 +23,9 @@
             <a id="{{"a".$y}}" >
                 <div id ="{{"b".$y}}" class="cell" >
                     <script>
-                        naive.generateGridCells({{$grid->height}},{{$grid->width}},{{$y}})
-                        naive.getHints({{$y}})
-                        naive.colorizeProductsOnGrid({{$y}})
+                        base.generateGridCells({{$grid->height}},{{$grid->width}},{{$y}})
+                        base.getHints({{$y}})
+                        base.colorizeProductsOnGrid({{$y}})
                     </script>
                 </div>
             </a>
@@ -135,9 +138,13 @@
     </div>
 
     <script>
-        console.log(naive.products_positions);
+
+
+        base.addButtonlisteners(base.products_positions);
         naive.getEntry({{$grid->entry}});
-        naive.addButtonlisteners(naive.products_positions);
+
+        console.log(base.products_positions);
+
         naive.naive();
     </script>
 

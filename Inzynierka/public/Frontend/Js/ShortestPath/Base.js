@@ -34,12 +34,12 @@ class Base extends DikstraGrid
                     let position= products[key]['pivot']['position'];
 
 
-                    naive.colorize_selected(position)
+                    base.colorize_selected(position)
 
                     arr.set(parseInt(key)+1,desired_position);
-                    naive.nodes=arr;
+                    base.nodes=arr;
 
-                    // console.log(naive.nodes);
+                    console.log(base.nodes);
 
                     let rows = table.rows.length;
                     let row = table.insertRow(rows);
@@ -61,14 +61,14 @@ class Base extends DikstraGrid
                     document.getElementById("btr" + key).addEventListener("click", function ()
                     {
 
-                        naive.decolorize_selected(position);
+                        base.decolorize_selected(position);
                         let row_to_delete = document.getElementById('trs' + key);
                         row_to_delete.parentElement.removeChild(row_to_delete);
 
                         let row_to_add = arr.delete(parseInt(key) + 1);
-                        naive.nodes = arr;
+                        base.nodes = arr;
 
-                        // console.log(naive.nodes);
+                        console.log(base.nodes);
 
 
                     });
@@ -77,13 +77,15 @@ class Base extends DikstraGrid
             });
 
         }
+        //this.nodes=base.nodes;
 
     }
+
+
 
     setNodeGraph(map)
     {
         let array=[];
-        let naive_array=[];
 
 
         //console.log(map);
@@ -99,16 +101,22 @@ class Base extends DikstraGrid
 
         this.order=array;
 
-        for(let i=0;i<array.length;i++)
+    }
+
+    setDikstraGraph()
+    {
+
+        let naive_array=[];
+        for(let i=0;i<this.order.length;i++)
         {
-            let arr2 = new Array(array.length);
+            let arr2 = new Array(this.order.length);
             arr2.fill(0);
 
-            for(let j=i;j<array.length;j++)
+            for(let j=i;j<this.order.length;j++)
             {
                 if(i!==j)
                 {
-                    this.dijkstra(this.graph,array[i],array[j]);
+                    this.dijkstra(this.graph,this.order[i],this.order[j]);
                     arr2[j]= this.steps;
                 }
                 else
@@ -119,13 +127,11 @@ class Base extends DikstraGrid
             }
 
             naive_array[i]=arr2;
-
-
         }
 
-        for(let i=0;i<array.length;i++)
+        for(let i=0;i<this.order.length;i++)
         {
-            for (let j = i; j < array.length; j++)
+            for (let j = i; j < this.order.length; j++)
             {
                 naive_array[j][i]=naive_array[i][j];
             }
@@ -133,8 +139,8 @@ class Base extends DikstraGrid
 
         this.node_graph=naive_array
         console.log(this.node_graph);
-    }
 
+    }
 
     colorize_selected(id)
     {
@@ -185,17 +191,21 @@ class Base extends DikstraGrid
     getDetailedNaivePath()
     {
 
-        for(let i=0;i<this.naive_path.length-1;i++)
+        this.distance=0;
+        for(let i=0;i<this.final_path.length-1;i++)
         {
-            let key = this.naive_path[i]+"->"+this.naive_path[i+1];
+            let key = this.final_path[i]+"->"+this.final_path[i+1];
 
-            let dist = this.dijkstra(this.graph,this.naive_path[i],this.naive_path[i+1])
+            let dist = this.dijkstra(this.graph,this.final_path[i],this.final_path[i+1])
 
             this.detailed_final_path.set(key,this.path);
             this.detailed_final_distances[i] = dist;
+
+            this.distance+=dist;
+            console.log(this.distance);
         }
 
-        console.log(this.detailed_final_path);
+      //  console.log(this.detailed_final_path);
     }
 
     create_result_table()
@@ -208,7 +218,7 @@ class Base extends DikstraGrid
         let dist = table.insertRow(0);
         dist.insertCell(0).innerHTML = this.distance.toString();
 
-        this.detailed_final_path.forEach (function(value, key)
+        for (const [key, value] of this.detailed_final_path)
         {
 
             let rows = table.rows.length;
@@ -224,14 +234,16 @@ class Base extends DikstraGrid
             cell0.innerHTML = counter ;
             cell1.innerHTML = key;
             cell2.innerHTML = value;
-            cell3.innerHTML = naive.detailed_final_distances[counter-1];
+            cell3.innerHTML = this.detailed_final_distances[counter-1];
 
             counter ++;
 
-        });
+        };
 
-        console.log(this.detailed_final_distances);
+        //console.log(this.detailed_final_distances);
 
     }
 
 }
+
+base = new Base();

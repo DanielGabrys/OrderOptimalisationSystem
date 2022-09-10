@@ -1,6 +1,21 @@
 class Naive extends Base
 {
+    /*
+    constructor(base)
+    {
+        super();
+        this.entry=base.entry;
+        this.nodes = base.nodes;
+        this.node_graph=base.node_graph;
 
+        this.final_path = base.final_path;
+        this.detailed_final_path = base.detailed_final_path;
+        this.detailed_final_distances = base.detailed_final_path
+
+        this.distance = base.distance;
+        this.calc_percentage = base.calc_percentage;
+    }
+    */
     order = [];
 
     node_graph;
@@ -43,10 +58,10 @@ class Naive extends Base
 
                 if (temp_dist < this.distance) {
                     this.distance = temp_dist;
-                    this.naive_path = this.getNaivePath(arr);
+                    this.final_path = this.getNaivePath(arr);
                 }
             }
-                //console.log(arr,temp_dist,this.distance,this.naive_path);
+                //console.log(arr,temp_dist,this.distance,this.final_path);
 
                 // STEP 1 of the algorithm
                 let largestI = -1;
@@ -82,7 +97,7 @@ class Naive extends Base
         this.getDetailedNaivePath();
         this.create_result_table();
 
-        console.log(this.distance,this.naive_path);
+        console.log(this.distance,this.final_path);
 
     }
 
@@ -121,8 +136,10 @@ class Naive extends Base
         let load_button = document.getElementById("load");
         load_button.addEventListener('click',function ()
             {
+                naive.nodes = base.nodes;
                 console.log(naive.nodes);
                 naive.setNodeGraph(naive.nodes);
+                naive.setDikstraGraph();
                 naive.nextOrder();
 
             }
@@ -146,4 +163,5 @@ class Naive extends Base
 }
 
 naive = new Naive();
+
 
