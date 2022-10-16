@@ -7,6 +7,8 @@ use App\Models\Grid_Product;
 use App\Models\GridProducts;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Ramsey\Uuid\Type\Integer;
 
@@ -444,6 +446,35 @@ class GridController extends Controller
 
     }
 
+    public function dikstraMatrix(Request $request)
+    {
+
+        $grid=Grid::all()->where('isActive','=',1)->first();
+        $matrix = $request->json_matrix;
+        $name = "matrix_".$grid->id.'.json';
+
+        Storage::disk('public')->put($name, $matrix);
+        return Redirect()->back()->with('success','Pomyślnie');
+
+    }
+
+    public function calculateNaiveSubmit(Request $request)
+    {
+
+        $grid=Grid::all()->where('isActive','=',1)->first();
+        $matrix = $request->json_matrix;
+        $number = $request->number;
+
+        $name = "permutation_".$number.'.json';
+        $path = "naive_combinations/";
+
+        Storage::disk('public')->put($path.$name, $matrix);
+        return Redirect()->back()->with('success','Pomyślnie');
+
+    }
+
+
+
    //native algorithm
     public function nativeAlgorithm()
     {
@@ -451,12 +482,17 @@ class GridController extends Controller
         $grid=Grid::all()->where('isActive','=',1)->first();
         $products = $grid->products()->orderByRaw('position ASC')->get();
 
+        $name = "matrix_".$grid->id.'.json';
+        $path = storage_path() . "/app/public/";
         $array=json_encode($products);
+        $path_matrix = file_get_contents($path ."/".$name);
 
-        return view('shortestPath.naive',['gridProducts'=> $products,'grid'=>$grid,'products_array'=>$array]);
+        return view('shortestPath.naive',['gridProducts'=> $products,'grid'=>$grid,'products_array'=>$array,'path_matrix'=>$path_matrix]);
+    }
 
-
-
+    public function calculateNaive()
+    {
+        return view('shortestPath.combinations');
     }
 
     //rectangle division
@@ -466,9 +502,21 @@ class GridController extends Controller
         $grid=Grid::all()->where('isActive','=',1)->first();
         $products = $grid->products()->orderByRaw('position ASC')->get();
 
+        $name = "matrix_".$grid->id.'.json';
+        $path = storage_path() . "/app/public/";
         $array=json_encode($products);
+        $path_matrix = file_get_contents($path ."/".$name);
 
-        return view('shortestPath.rectangle_division',['gridProducts'=> $products,'grid'=>$grid,'products_array'=>$array]);
+
+        //dd($path_matrix);
+
+        return view('shortestPath.rectangle_division',[
+            'gridProducts'=> $products,
+            'grid'=>$grid,
+            'products_array'=>$array,
+            'path_matrix'=>$path_matrix,
+            ]
+        );
 
     }
 

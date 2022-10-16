@@ -106,6 +106,8 @@
 
         <button type="button" id="load" class="btn btn-success mb-2" >SUBMIT</button>
 
+        <button type="button" id="load" class="btn btn-success mb-2" >SUBMIT</button>
+
     </div>
 
 
@@ -142,9 +144,7 @@
 
         base.addButtonlisteners(base.products_positions);
         naive.getEntry({{$grid->entry}});
-
-        console.log(base.products_positions);
-
+        naive.getPathMatrix({!! $path_matrix !!});
         naive.naive();
     </script>
 

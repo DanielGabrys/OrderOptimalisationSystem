@@ -1,4 +1,4 @@
-class RectangleDivision extends Base {
+class RectangleDivision extends Naive {
 
     center_x;
     center_y;
@@ -9,11 +9,18 @@ class RectangleDivision extends Base {
     checking_indexes =[];
     indexes_counter=0;
 
-    constructor() {
+    path_matrix;
+    detailedPathMatrix;
+    detailedKeyPathArray;
+
+    final_final_path=[];
+
+
+    constructor()
+    {
         super();
         let x_devider = this.width / this.divider //pionowo
         let y_devider = this.height / this.divider //poziomo
-
 
         this.rectangles["one"] = {};
         this.rectangles["one"]["position"] = {};
@@ -23,7 +30,6 @@ class RectangleDivision extends Base {
         this.rectangles["three"]["position"] = {};
         this.rectangles["four"] = {};
         this.rectangles["four"]["position"] = {};
-
     }
 
     divideGrid()
@@ -34,29 +40,136 @@ class RectangleDivision extends Base {
         this.calculatePoints("position",this.center_x,this.center_y);
         this.minimumNode();
         //console.log(this.rectangles);
+        //this.calculateNewCentralPoints();
 
-        this.calculateNewCentralPoints();
-       // console.log(this.rectangles);
+        this.detailedKeyPathArray = this.createDetailedMatrix();
+        this.getSelectedPathMatrix();
+        this.calculateDistanceFromRegionCenter();
+        //console.log(this.rectangles);
 
         this.sort();
         //console.log(this.rectangles);
 
-         this.result = this.result.concat(this.getFinalResult("one"));
-         this.result = this.result.concat(this.getFinalResult("two"));
-         this.result = this.result.concat(this.getFinalResult("three"));
-         this.result = this.result.concat(this.getFinalResult("four"));
+         let result = new Array(4);
 
-         this.final_path = this.result;
-         let beggining = [this.entry];
-         this.final_path= beggining.concat(this.final_path,beggining);
-         this.swip();
+            result[0] = this.result.concat(this.getFinalResult("one"));
+            result[1] = this.result.concat(this.getFinalResult("two"));
+            result[2] = this.result.concat(this.getFinalResult("three"));
+            result[3] = this.result.concat(this.getFinalResult("four"));
 
+         console.log(result);
+
+         let endings =[];
+
+         for(let i=0;i<4;i++)
+         {
+             this.final_path = result[i];
+
+
+             let entry = [this.entry];
+             let beggining = 0;
+             let end = 0;
+
+
+             if(result[i].length===0)
+             {
+                 continue;
+             }
+             else if(this.final_final_path.length===0)
+             {
+                 this.final_path.unshift(this.entry);
+             }
+             else
+             {
+                 if(result[i - 1][result[i - 1].length-1])
+                     this.final_path.unshift(result[i - 1][result[i - 1].length - 1]);
+             }
+
+             if (i === 3)
+             {
+                 this.final_path = this.final_path.concat(entry);
+             }
+             else
+             {
+                 if(result[i + 1][0])
+                    this.final_path = this.final_path.concat(result[i + 1][0]);
+             }
+
+
+             // this.final_path = beggining.concat(this.final_path, beggining);
+             //console.log(this.final_path);
+             //this.swip();
+
+
+             let max_size = 8;
+             let size = 0;
+             if (result[i].length > max_size)
+             {
+                 size = max_size;
+             }
+             else
+             {
+                 size = result[i].length;
+             }
+
+             if(size<=2)
+             {
+                 this.final_path
+             }
+
+             console.log("test ",this.final_path);
+             for (let j = 1; j < this.final_path.length - size +1; j++)
+             {
+                 let size2=size;
+                 if(i===3)
+                 {
+                     size2--;
+                 }
+                 console.log(j,size2);
+                 this.nextOrder(j, size2); //works for size2>2
+                 //console.log("j ",j,this.final_path.length - size);
+
+             }
+
+
+
+
+             if(i!==0)
+             {
+                 endings.push(this.final_final_path.length - 2);
+
+                 if(endings.length>0 && endings[endings.length-1]-endings[endings.length-2]<4)
+                 {
+                    // console.log("elo");
+                     endings.splice(-1);
+                 }
+             }
+
+
+             this.final_final_path= this.final_final_path.concat(this.final_path);
+
+
+             console.log("result", this.final_final_path);
+
+
+
+         }
+        this.final_path=this.cutFinalPath(endings);
+        if(this.final_path[this.final_path.length-1]!==this.entry)
+         {
+             this.final_path.push(this.entry);
+         }
+
+
+        this.getFinalDistance();
         this.getDetailedNaivePath();
         this.create_result_table();
 
-        console.log(this.rectangles);
-        console.log(this.final_path);
-        console.log(this.detailed_final_path);
+
+        console.log("final",this.final_path);
+        console.log(endings);
+
+
 
     }
 
@@ -95,20 +208,26 @@ class RectangleDivision extends Base {
         }
     }
 
-    calculateNewCentralPoints()
+    calculateDistanceFromRegionCenter()
     {
         for (const key in this.rectangles)
         {
-            let pos =this.calculatePositionXY(this.rectangles[key]["min"]);
-            //this.rectangles[key]["center_x"]=pos["x"];
-            //this.rectangles[key]["center_y"]=pos["y"];
 
-            for (const key2 in this.rectangles[key]["position"])
-            {
-                let dist = this.calculatePointsDistance(key2,pos["x"],pos["y"]);
-                this.rectangles[key]["position"][key2] = dist;
+            for (const key2 in this.rectangles[key]["position"]) {
+                if (this.rectangles[key]["min"] === key2)
+                {
+                    this.rectangles[key]["position"][key2] = 0;
+                }
+                else
+                {
+                    let name = this.rectangles[key]["min"] + "->" + key2
+                    this.rectangles[key]["position"][key2] = this.path_matrix[name];
+                }
+
+
             }
         }
+
     }
 
     calculatePointsDistance(node, c_x, c_y) {
@@ -170,7 +289,6 @@ class RectangleDivision extends Base {
             this.rectangles[key]["min_value"] = minimum;
             this.rectangles[key][index_of_min] = minimum;
         }
-
 
     }
 
@@ -276,6 +394,286 @@ class RectangleDivision extends Base {
         }
 
 
+    }
+
+    getPathMatrix(path)
+    {
+        this.path_matrix=path;
+        console.log(this.path_matrix);
+    }
+
+    getSelectedPathMatrix()
+    {
+        for (let i=0; i<this.detailedKeyPathArray.length;i++)
+        {
+
+        }
+
+    }
+
+    createDetailedMatrix()
+    {
+        let arr = [];
+        for (let i=0; i<this.order.length;i++)
+        {
+            for (let j=0; j<this.order.length;j++)
+            {
+
+                if(i!==j)
+                {
+                    let key =this.order[i]+"->"+this.order[j];
+                    arr.push(key);
+                }
+
+            }
+        }
+
+        return arr;
+
+    }
+
+    nextOrder(start,size)
+    {
+
+        let counter =1;
+        let arr =[];
+        let point_array =[];
+
+        for(let i=0;i<size;i++)
+        {
+            arr[i]=i;
+        }
+
+        for(let i=0;i<size;i++)
+        {
+            point_array[i]=this.final_path[start+i];
+        }
+
+        let part_path=[];
+        this.distance=Infinity;
+
+        while(true)
+        {
+
+
+            let index = arr[0];
+            //console.log(index,arr.length);
+            if (index === arr.length - 1 || arr.length<2)
+            {
+                console.log('finished');
+                break;
+            }
+
+             console.log(arr);
+
+
+            //this.percentage(counter);
+            counter++;
+
+
+            //console.log(counter, arr);
+
+             {
+                     //let temp_dist = this.calculateDistance(arr);
+                     let temp_dist = this.calculateDistanceFromFile(start, arr, point_array);
+                     //console.log("distance", temp_dist, this.distance, );
+
+                     if (temp_dist < this.distance)
+                     {
+                         //console.log("distance", temp_dist, this.distance, arr);
+                         this.distance = temp_dist;
+                         part_path = this.getNaivePath(start, arr, point_array);
+                     }
+            }
+            //console.log(arr,temp_dist,this.distance,this.final_path);
+
+            // STEP 1 of the algorithm
+            let largestI = -1;
+            for (let i = 0; i < arr.length - 1; i++)
+            {
+                if (arr[i] < arr[i + 1]) {
+                    largestI = i;
+                }
+            }
+
+            // STEP 2
+            let largestJ = -1;
+            for (let j = 0; j < arr.length; j++)
+            {
+                if (arr[largestI] < arr[j]) {
+                    largestJ = j;
+                }
+            }
+
+            // STEP 3
+
+            this.swap(arr, largestI, largestJ);
+
+
+            // STEP 4: reverse from largestI + 1 to the end
+
+            let endArray = arr.splice(largestI + 1);
+            endArray.reverse();
+            arr = arr.concat(endArray);
+
+
+        }
+
+        //this.getDetailedNaivePath();
+        //this.create_result_table();
+
+        console.log(part_path,this.final_path);
+
+    }
+
+    calculateDistanceFromFile(start_point,arr,point_arr)
+    {
+
+        let start = this.final_path[start_point-1] + "->" +  point_arr[arr[0]];
+        let tepm_dist = this.path_matrix[start];
+
+
+        if(this.final_path.length - start_point - arr.length===0)
+        {
+            let end = point_arr[arr[arr.length-1]] + "->" +  this.final_path[this.final_final_path.length-1];
+            tepm_dist += this.path_matrix[end];
+        }
+       // console.log("tm",start,tepm_dist,this.final_path,start_point);
+
+        for(let i=0;i<arr.length-1;i++)
+        {
+
+            let name = point_arr[arr[i]] + "->" + point_arr[arr[i+1]];
+
+            tepm_dist+= this.path_matrix[name];
+
+        }
+
+       // console.log(tepm_dist,arr,point_arr,start_name);
+        return tepm_dist;
+    }
+
+    getNaivePath(start,arr,point_array)
+    {
+        let path = [];
+
+        for(let i=0;i<arr.length;i++)
+        {
+
+            path[i]=point_array[arr[i]];
+        }
+
+        for(let i=start;i<start+arr.length;i++)
+        {
+            this.final_path[i] = path[i-start];
+        }
+
+        //console.log("start",start,"path: ",path,"final",this.final_path);
+       return path;
+
+    }
+
+    getFinalDistance()
+    {
+        for(let i=0;i<this.final_path.length-1;i++)
+        {
+
+            let name = this.final_path[i] + "->" +  this.final_path[i+1];
+            this.distance+= this.path_matrix[name];
+        }
+
+    }
+
+    loadExample(products)
+    {
+        let dictstring = JSON.stringify(document.getElementById("nodes").value);
+
+        dictstring= dictstring.substring(1);
+        dictstring= dictstring.substring(0,dictstring.length-1);
+        let arr = dictstring.split(',');
+
+
+        console.log(arr);
+
+        for (let i=0;i<arr.length;i++)
+        {
+
+            this.colorize_selected(arr[i]);
+            const found = products.filter(e => e.pivot.position == arr[i]);
+
+            for (const key in found)
+            {
+                //console.log(arr[i], found);
+                this.order.push(found[key]['pivot']['desired_position']);
+            }
+
+        }
+
+        //console.log(this.order);
+        this.divideGrid();
+
+    }
+
+
+    cutFinalPath(endings)
+    {
+        let path =[]
+        let index=0;
+        console.log(index,this.final_final_path.length);
+        while(index <this.final_final_path.length)
+        {
+
+            console.log(index);
+            if(endings.includes(index))
+            {
+                if(this.final_final_path[index]===this.final_final_path[index+2] && this.final_final_path[index+1]===this.final_final_path[index+3])
+                {
+                    index++;
+
+                }
+                else
+                {
+                   let search =index+4;
+                   for(let i=index;i<index+3;i++)
+                   {
+                       let temp =-1;
+                       for(let j=search;j<this.final_final_path.length;j++)
+                       {
+
+                           //console.log(this.final_path[j],this.final_path[i],i);
+                           if(this.final_final_path[j] === this.final_final_path[i])
+                           {
+                               temp = i;
+                               let sum = temp-index;
+                               console.log("temp ",temp,index,sum);
+
+                               if(sum>1)
+                               {
+
+                                   path.push(this.final_final_path[index]);
+                                   path.push(this.final_final_path[index+1]);
+                                   index++
+                               }
+                               else
+                               {
+                                   index++;
+                               }
+                               break;
+                           }
+
+                       }
+                   }
+                }
+            }
+            else
+            {
+               path.push(this.final_final_path[index]);
+            }
+
+            index++;
+
+        }
+        return path;
     }
 
 }

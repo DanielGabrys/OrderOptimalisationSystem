@@ -2,6 +2,8 @@ class DikstraGrid extends ProductsGrid
 {
 
     graph = {};
+    neighborhood_map = {};
+
     path_array = {};
 
     start = 0;
@@ -45,6 +47,32 @@ class DikstraGrid extends ProductsGrid
             this.graph=graph;
         }
         //console.log(shelves,this.graph);
+    }
+
+    shelvesToNeighborhoodMap()
+    {
+        let counter =0;
+        for (const key in this.graph)
+        {
+            for (const key2 in this.graph)
+            {
+                if(key !== key2)
+                {
+                    let name = key + "->" + key2;
+                    let dist = this.dijkstra(this.graph, key, key2)
+                    this.neighborhood_map[name]=dist;
+
+                    counter++;
+                    console.log(counter);
+                }
+
+            }
+        }
+
+        let dictstring = JSON.stringify(this.neighborhood_map);
+        console.log(dictstring);
+
+        document.getElementById("json_matrix").setAttribute('value',dictstring);
     }
 
     printTable = (table) => {

@@ -60,9 +60,12 @@ Route::get('/', function ()
 // dikstra
 
     Route::get('/grid/calculateDikstra',[GridController::class, 'calculateDikstra'])->name('calculateDikstra');
+    Route::post('/grid/calculateDikstra/Matrix',[GridController::class, 'dikstraMatrix'])->name('dikstraMatrix');
 
 // native algoritm
 
+    Route::get('/grid/calculateNaive',[GridController::class, 'calculateNaive'])->name('calculateNaive');
+    Route::post('/grid/calculateNaiveSubmit',[GridController::class, 'calculateNaiveSubmit'])->name('combinationMatrix');
     Route::get('/grid/nativeAlgorithm',[GridController::class, 'nativeAlgorithm'])->name('nativeAlgorithm');
 
 // rectagle_division

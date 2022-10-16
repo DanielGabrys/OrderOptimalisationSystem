@@ -16,6 +16,9 @@ class Naive extends Base
         this.calc_percentage = base.calc_percentage;
     }
     */
+
+    path_matrix;
+
     order = [];
 
     node_graph;
@@ -32,6 +35,7 @@ class Naive extends Base
         }
 
         this.factorial_nr=this.factorial(arr.length);
+        this.factorial_nr=this.factorial_nr - this.factorial(arr.length-1);
 
         while(true)
         {
@@ -51,14 +55,17 @@ class Naive extends Base
 
                // console.log(counter, arr);
 
-            if (arr[arr.length - 1] > index)
+           // if (arr[arr.length - 1] > index)
             {
 
-                let temp_dist = this.calculateDistance(arr);
+                //let temp_dist = this.calculateDistance(arr);
+                let temp_dist= this.calculateDistanceFromFile(arr);
 
-                if (temp_dist < this.distance) {
+                if (temp_dist < this.distance)
+                {
                     this.distance = temp_dist;
                     this.final_path = this.getNaivePath(arr);
+                    console.log("elo",this.final_path);
                 }
             }
                 //console.log(arr,temp_dist,this.distance,this.final_path);
@@ -139,7 +146,7 @@ class Naive extends Base
                 naive.nodes = base.nodes;
                 console.log(naive.nodes);
                 naive.setNodeGraph(naive.nodes);
-                naive.setDikstraGraph();
+               // naive.setDikstraGraph();
                 naive.nextOrder();
 
             }
@@ -158,6 +165,32 @@ class Naive extends Base
         })
 
         this.order=array;
+    }
+
+    calculateDistanceFromFile(arr)
+    {
+            let start_name = this.entry + "->" + this.order[arr[0]];
+            let end_name =   this.order[arr[arr.length-1]] + "->" +  this.entry ;
+            let start = this.path_matrix[start_name];
+            let end = this.path_matrix[end_name];
+
+            let tepm_dist = start + end;
+            for(let i=0;i<arr.length-1;i++)
+            {
+
+                let name = this.order[arr[i]] + "->" + this.order[arr[i+1]];
+
+                tepm_dist+= this.path_matrix[name];
+
+            }
+
+            //console.log(tepm_dist,arr);
+            return tepm_dist;
+    }
+
+    getPathMatrix(path)
+    {
+        this.path_matrix=path;
     }
 
 }

@@ -25,6 +25,7 @@
     <script src="{{asset('Frontend/Js/ShortestPath/Base.js')}}"></script>
     <script src="{{asset('Frontend/Js/ShortestPath/Naive.js')}}"></script>
     <script src="{{asset('Frontend/Js/ShortestPath/RectangleDivision.js')}}"></script>
+    <script src="{{asset('Frontend/Js/ShortestPath/Combinations.js')}}"></script>
 
 
     <link href="{{asset('Frontend/css/grid/grid.css')}}" rel="stylesheet">
@@ -126,6 +127,11 @@
                     <a class="nav-link" href="{{route('calculateDikstra')}}">
                         <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                         Algorytm Dikstry
+                    </a>
+
+                    <a class="nav-link" href="{{route('calculateNaive')}}">
+                        <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                        Algorytm Naiwny Kombinacje
                     </a>
 
                     <div class="sb-sidenav-menu-heading">Najkrószta ścieżka</div>

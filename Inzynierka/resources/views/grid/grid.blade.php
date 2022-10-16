@@ -100,6 +100,8 @@
     </script>
 </div>
 
-<script>createGrid.renew()</script>
+<script>
+    createGrid.renew()
+</script>
 
 @endsection
