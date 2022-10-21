@@ -1,25 +1,5 @@
 class Naive extends Base
 {
-    /*
-    constructor(base)
-    {
-        super();
-        this.entry=base.entry;
-        this.nodes = base.nodes;
-        this.node_graph=base.node_graph;
-
-        this.final_path = base.final_path;
-        this.detailed_final_path = base.detailed_final_path;
-        this.detailed_final_distances = base.detailed_final_path
-
-        this.distance = base.distance;
-        this.calc_percentage = base.calc_percentage;
-    }
-    */
-
-    path_matrix;
-
-    order = [];
 
     node_graph;
     factorial_nr;
@@ -34,8 +14,9 @@ class Naive extends Base
             arr[i]=i;
         }
 
-        this.factorial_nr=this.factorial(arr.length);
-        this.factorial_nr=this.factorial_nr - this.factorial(arr.length-1);
+       // this.factorial_nr=this.factorial(arr.length);
+       // this.factorial_nr=this.factorial_nr - this.factorial(arr.length-1);
+
 
         while(true)
         {
@@ -65,7 +46,7 @@ class Naive extends Base
                 {
                     this.distance = temp_dist;
                     this.final_path = this.getNaivePath(arr);
-                    console.log("elo",this.final_path);
+                    //console.log("elo",this.final_path);
                 }
             }
                 //console.log(arr,temp_dist,this.distance,this.final_path);
@@ -135,7 +116,7 @@ class Naive extends Base
         let per =(n/this.factorial_nr *100).toFixed(2);
         this.calc_percentage = per;
 
-        console.log(n,this.factorial_nr,per);
+        //console.log(n,this.factorial_nr,per);
     }
 
     naive()
@@ -151,6 +132,11 @@ class Naive extends Base
 
             }
         );
+    }
+
+    naive2()
+    {
+                naive.nextOrder();
     }
 
     setOrderInArray(map)

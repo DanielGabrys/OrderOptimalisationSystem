@@ -72,3 +72,6 @@ Route::get('/', function ()
 
     Route::get('/grid/rectangleDivision',[GridController::class, 'rectangleDivision'])->name('rectangleDivision');
 
+// genetic algorithm
+
+Route::get('/grid/geneticAlgo',[GridController::class, 'geneticAlgo'])->name('geneticAlgo');

@@ -11,6 +11,9 @@ class Base extends DikstraGrid
 
     distance = Infinity;
     calc_percentage = 0;
+    order=[];
+
+    path_matrix;
 
     addButtonlisteners(products)
     {
@@ -243,6 +246,41 @@ class Base extends DikstraGrid
         //console.log(this.detailed_final_distances);
 
     }
+
+    getPathMatrix(path)
+    {
+        this.path_matrix=path;
+        console.log(this.path_matrix);
+    }
+
+    loadExample(products)
+    {
+        let dictstring = JSON.stringify(document.getElementById("nodes").value);
+
+        dictstring= dictstring.substring(1);
+        dictstring= dictstring.substring(0,dictstring.length-1);
+        let arr = dictstring.split(',');
+
+
+        console.log(arr);
+
+        for (let i=0;i<arr.length;i++)
+        {
+
+            this.colorize_selected(arr[i]);
+            const found = products.filter(e => e.pivot.position == arr[i]);
+
+            for (const key in found)
+            {
+                //console.log(arr[i], found);
+                this.order.push(found[key]['pivot']['desired_position']);
+            }
+
+        }
+
+        console.log("order",this.order);
+    }
+
 
 }
 

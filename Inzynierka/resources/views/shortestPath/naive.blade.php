@@ -99,26 +99,20 @@
         </div>
 
 
+    <div class="container-fluid d-flex justify-content-center">
 
+        <input type="text" class="form-control" id="nodes" name="nodes" style="width: 400px;">
+        <input type="hidden" class="form-control" id="example_json" name="example_json" style="width: 400px;">
+        <button type="button" id="load_example" class="btn btn-success btn-sm" style="font-size: 10px;" >SUBMIT</button>
+
+    </div>
 
 
     <div class="container-fluid d-flex justify-content-center">
 
         <button type="button" id="load" class="btn btn-success mb-2" >SUBMIT</button>
 
-        <button type="button" id="load" class="btn btn-success mb-2" >SUBMIT</button>
-
     </div>
-
-
-
-
-    <div class="container-fluid d-flex justify-content-center">
-        <div class="badge bg-primary text-wrap" style="width: 10%;" id="percentage">
-            0%
-        </div>
-    </div>
-
 
 
     <div class="p-3 mb-3 mb-md-0 mr-md-3 bg-light">
@@ -146,6 +140,20 @@
         naive.getEntry({{$grid->entry}});
         naive.getPathMatrix({!! $path_matrix !!});
         naive.naive();
+
+
+        naive.getPathMatrix({!! $path_matrix !!});
+        let element = document.getElementById("load_example");
+        element.addEventListener("click", function()
+            {
+            naive.loadExample(base.products_positions)
+            naive.naive2();
+
+        }
+        );
+
+
+
     </script>
 
     <script>

@@ -26,6 +26,10 @@
     <script src="{{asset('Frontend/Js/ShortestPath/Naive.js')}}"></script>
     <script src="{{asset('Frontend/Js/ShortestPath/RectangleDivision.js')}}"></script>
     <script src="{{asset('Frontend/Js/ShortestPath/Combinations.js')}}"></script>
+    <script src="{{asset('Frontend/Js/ShortestPath/GeneticAlgo/GeneticAlgo.js')}}"></script>
+
+
+
 
 
     <link href="{{asset('Frontend/css/grid/grid.css')}}" rel="stylesheet">
@@ -143,6 +147,11 @@
                     <a class="nav-link" href="{{route('rectangleDivision')}}">
                         <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                         Podział prostokątny
+                    </a>
+
+                    <a class="nav-link" href="{{route('geneticAlgo')}}">
+                        <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                        Algorytm genetyczny
                     </a>
 
 

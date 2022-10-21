@@ -9,7 +9,6 @@ class RectangleDivision extends Naive {
     checking_indexes =[];
     indexes_counter=0;
 
-    path_matrix;
     detailedPathMatrix;
     detailedKeyPathArray;
 
@@ -117,7 +116,7 @@ class RectangleDivision extends Naive {
                  this.final_path
              }
 
-             console.log("test ",this.final_path);
+             console.log("elo ",this.final_path);
              for (let j = 1; j < this.final_path.length - size +1; j++)
              {
                  let size2=size;
@@ -127,7 +126,7 @@ class RectangleDivision extends Naive {
                  }
                  console.log(j,size2);
                  this.nextOrder(j, size2); //works for size2>2
-                 //console.log("j ",j,this.final_path.length - size);
+                 console.log("j ",j,this.final_path);
 
              }
 
@@ -138,13 +137,14 @@ class RectangleDivision extends Naive {
              {
                  endings.push(this.final_final_path.length - 2);
 
-                 if(endings.length>0 && endings[endings.length-1]-endings[endings.length-2]<4)
+                 if(endings.length>0 && endings[endings.length-1]-endings[endings.length-2]<=4)
                  {
                     // console.log("elo");
-                     endings.splice(-1);
+                    // endings.splice(-1);
                  }
              }
 
+             console.log("pre result", this.final_path);
 
              this.final_final_path= this.final_final_path.concat(this.final_path);
 
@@ -155,6 +155,7 @@ class RectangleDivision extends Naive {
 
          }
         this.final_path=this.cutFinalPath(endings);
+        this.final_path = this.final_final_path;
         if(this.final_path[this.final_path.length-1]!==this.entry)
          {
              this.final_path.push(this.entry);
@@ -164,10 +165,12 @@ class RectangleDivision extends Naive {
         this.getFinalDistance();
         this.getDetailedNaivePath();
         this.create_result_table();
+        this.finalPathToString();
 
 
         console.log("final",this.final_path);
         console.log(endings);
+        //this.partialCut();
 
 
 
@@ -399,7 +402,7 @@ class RectangleDivision extends Naive {
     getPathMatrix(path)
     {
         this.path_matrix=path;
-        console.log(this.path_matrix);
+       // console.log(this.path_matrix);
     }
 
     getSelectedPathMatrix()
@@ -533,12 +536,12 @@ class RectangleDivision extends Naive {
         let tepm_dist = this.path_matrix[start];
 
 
-        if(this.final_path.length - start_point - arr.length===0)
+        if(point_arr[arr[arr.length-1]] === this.entry)
         {
-            let end = point_arr[arr[arr.length-1]] + "->" +  this.final_path[this.final_final_path.length-1];
+            let end = point_arr[arr[arr.length-1]] + "->" +  this.final_path[this.final_path.length-1];
             tepm_dist += this.path_matrix[end];
         }
-       // console.log("tm",start,tepm_dist,this.final_path,start_point);
+        //console.log("tm",start,tepm_dist,this.final_path,start_point);
 
         for(let i=0;i<arr.length-1;i++)
         {
@@ -674,6 +677,68 @@ class RectangleDivision extends Naive {
 
         }
         return path;
+    }
+
+    finalPathToString()
+    {
+        let str ="";
+        for(let i=0;i<this.final_final_path.length;i++)
+        {
+            if(!(i===0 || i===this.final_final_path.length-1))
+            str+=this.final_final_path[i]+',';
+        }
+        console.log(str);
+    }
+
+    partialCut()
+    {
+        for(let i=1;i<this.final_final_path.length;i++)
+        {
+            let arr=this.final_final_path;
+            let index =i;
+            let positions=[];
+            for(let j=1;j<this.final_final_path.length;j++)
+            {
+
+                if(this.final_final_path[i]===this.final_final_path[j])
+                {
+                    positions.push(j);
+                }
+            }
+
+            for(let i=0;i<positions.length;i++)
+            {
+                let arr2 = arr;
+                let counter=0;
+                for (let j = 0; j < positions.length; j++)
+                {
+                    if(i!==j)
+                    {
+                        arr2.splice(positions[j], 1);
+                        counter++;
+                    }
+                }
+
+                let dist = this.calculateFullDistance(arr2);
+                console.log(dist,arr, arr2, positions[i], arr2[positions[i]]);
+            }
+            break;
+        }
+
+    }
+
+    calculateFullDistance(arr)
+    {
+        let dist=0;
+        for(let i=0;i<arr.length-1;i++)
+        {
+            let name = arr[i] + "->" + arr[i+1];
+
+            if(arr[i] !== arr[i+1])
+                 dist+= this.path_matrix[name];
+            //console.log(name,this.path_matrix[name]);
+        }
+        return dist;
     }
 
 }

@@ -520,5 +520,26 @@ class GridController extends Controller
 
     }
 
+    public function geneticAlgo()
+    {
+
+        $grid=Grid::all()->where('isActive','=',1)->first();
+        $products = $grid->products()->orderByRaw('position ASC')->get();
+
+        $name = "matrix_".$grid->id.'.json';
+        $path = storage_path() . "/app/public/";
+        $array=json_encode($products);
+        $path_matrix = file_get_contents($path ."/".$name);
+
+        return view('shortestPath.geneticAlgo',[
+                'gridProducts'=> $products,
+                'grid'=>$grid,
+                'products_array'=>$array,
+                'path_matrix'=>$path_matrix,
+            ]
+        );
+
+    }
+
 
 }
