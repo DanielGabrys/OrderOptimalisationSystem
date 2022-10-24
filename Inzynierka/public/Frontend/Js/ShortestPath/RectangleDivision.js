@@ -9,10 +9,7 @@ class RectangleDivision extends Naive {
     checking_indexes =[];
     indexes_counter=0;
 
-    detailedPathMatrix;
     detailedKeyPathArray;
-
-    final_final_path=[];
 
 
     constructor()
@@ -51,127 +48,27 @@ class RectangleDivision extends Naive {
 
          let result = new Array(4);
 
-            result[0] = this.result.concat(this.getFinalResult("one"));
+            result[0] = [this.entry].concat(this.getFinalResult("one"));
             result[1] = this.result.concat(this.getFinalResult("two"));
             result[2] = this.result.concat(this.getFinalResult("three"));
             result[3] = this.result.concat(this.getFinalResult("four"));
+            result[3].push(this.entry);
 
          console.log(result);
 
-         let endings =[];
-
          for(let i=0;i<4;i++)
          {
-             this.final_path = result[i];
-
-
-             let entry = [this.entry];
-             let beggining = 0;
-             let end = 0;
-
-
-             if(result[i].length===0)
-             {
-                 continue;
-             }
-             else if(this.final_final_path.length===0)
-             {
-                 this.final_path.unshift(this.entry);
-             }
-             else
-             {
-                 if(result[i - 1][result[i - 1].length-1])
-                     this.final_path.unshift(result[i - 1][result[i - 1].length - 1]);
-             }
-
-             if (i === 3)
-             {
-                 this.final_path = this.final_path.concat(entry);
-             }
-             else
-             {
-                 if(result[i + 1][0])
-                    this.final_path = this.final_path.concat(result[i + 1][0]);
-             }
-
-
-             // this.final_path = beggining.concat(this.final_path, beggining);
-             //console.log(this.final_path);
-             //this.swip();
-
-
-             let max_size = 8;
-             let size = 0;
-             if (result[i].length > max_size)
-             {
-                 size = max_size;
-             }
-             else
-             {
-                 size = result[i].length;
-             }
-
-             if(size<=2)
-             {
-                 this.final_path
-             }
-
-             console.log("elo ",this.final_path);
-             for (let j = 1; j < this.final_path.length - size +1; j++)
-             {
-                 let size2=size;
-                 if(i===3)
-                 {
-                     size2--;
-                 }
-                 console.log(j,size2);
-                 this.nextOrder(j, size2); //works for size2>2
-                 console.log("j ",j,this.final_path);
-
-             }
-
-
-
-
-             if(i!==0)
-             {
-                 endings.push(this.final_final_path.length - 2);
-
-                 if(endings.length>0 && endings[endings.length-1]-endings[endings.length-2]<=4)
-                 {
-                    // console.log("elo");
-                    // endings.splice(-1);
-                 }
-             }
-
-             console.log("pre result", this.final_path);
-
-             this.final_final_path= this.final_final_path.concat(this.final_path);
-
-
-             console.log("result", this.final_final_path);
-
-
-
-         }
-        this.final_path=this.cutFinalPath(endings);
-        this.final_path = this.final_final_path;
-        if(this.final_path[this.final_path.length-1]!==this.entry)
-         {
-             this.final_path.push(this.entry);
+            this.final_path=this.final_path.concat(result[i]);
          }
 
-
+        this.getRawFinalPath();
         this.getFinalDistance();
-        this.getDetailedNaivePath();
-        this.create_result_table();
-        this.finalPathToString();
-
+        //this.getDetailedNaivePath();
+        //this.create_result_table();
 
         console.log("final",this.final_path);
-        console.log(endings);
-        //this.partialCut();
-
+        this.finalPathToString(this.final_path);
+        //this.finalPathByNodesToString(this.final_path)
 
 
     }
@@ -587,145 +484,7 @@ class RectangleDivision extends Naive {
 
     }
 
-    loadExample(products)
-    {
-        let dictstring = JSON.stringify(document.getElementById("nodes").value);
 
-        dictstring= dictstring.substring(1);
-        dictstring= dictstring.substring(0,dictstring.length-1);
-        let arr = dictstring.split(',');
-
-
-        console.log(arr);
-
-        for (let i=0;i<arr.length;i++)
-        {
-
-            this.colorize_selected(arr[i]);
-            const found = products.filter(e => e.pivot.position == arr[i]);
-
-            for (const key in found)
-            {
-                //console.log(arr[i], found);
-                this.order.push(found[key]['pivot']['desired_position']);
-            }
-
-        }
-
-        //console.log(this.order);
-        this.divideGrid();
-
-    }
-
-
-    cutFinalPath(endings)
-    {
-        let path =[]
-        let index=0;
-        console.log(index,this.final_final_path.length);
-        while(index <this.final_final_path.length)
-        {
-
-            console.log(index);
-            if(endings.includes(index))
-            {
-                if(this.final_final_path[index]===this.final_final_path[index+2] && this.final_final_path[index+1]===this.final_final_path[index+3])
-                {
-                    index++;
-
-                }
-                else
-                {
-                   let search =index+4;
-                   for(let i=index;i<index+3;i++)
-                   {
-                       let temp =-1;
-                       for(let j=search;j<this.final_final_path.length;j++)
-                       {
-
-                           //console.log(this.final_path[j],this.final_path[i],i);
-                           if(this.final_final_path[j] === this.final_final_path[i])
-                           {
-                               temp = i;
-                               let sum = temp-index;
-                               console.log("temp ",temp,index,sum);
-
-                               if(sum>1)
-                               {
-
-                                   path.push(this.final_final_path[index]);
-                                   path.push(this.final_final_path[index+1]);
-                                   index++
-                               }
-                               else
-                               {
-                                   index++;
-                               }
-                               break;
-                           }
-
-                       }
-                   }
-                }
-            }
-            else
-            {
-               path.push(this.final_final_path[index]);
-            }
-
-            index++;
-
-        }
-        return path;
-    }
-
-    finalPathToString()
-    {
-        let str ="";
-        for(let i=0;i<this.final_final_path.length;i++)
-        {
-            if(!(i===0 || i===this.final_final_path.length-1))
-            str+=this.final_final_path[i]+',';
-        }
-        console.log(str);
-    }
-
-    partialCut()
-    {
-        for(let i=1;i<this.final_final_path.length;i++)
-        {
-            let arr=this.final_final_path;
-            let index =i;
-            let positions=[];
-            for(let j=1;j<this.final_final_path.length;j++)
-            {
-
-                if(this.final_final_path[i]===this.final_final_path[j])
-                {
-                    positions.push(j);
-                }
-            }
-
-            for(let i=0;i<positions.length;i++)
-            {
-                let arr2 = arr;
-                let counter=0;
-                for (let j = 0; j < positions.length; j++)
-                {
-                    if(i!==j)
-                    {
-                        arr2.splice(positions[j], 1);
-                        counter++;
-                    }
-                }
-
-                let dist = this.calculateFullDistance(arr2);
-                console.log(dist,arr, arr2, positions[i], arr2[positions[i]]);
-            }
-            break;
-        }
-
-    }
 
     calculateFullDistance(arr)
     {
@@ -741,6 +500,15 @@ class RectangleDivision extends Naive {
         return dist;
     }
 
+    getRawFinalPath()
+    {
+        let temp=[];
+        for(let i=0;i<this.final_path.length;i++)
+        {
+            temp[i]=this.final_path[i];
+        }
+        this.raw_final_path= temp.splice(1,temp.length-2);
+    }
 }
 
 rectangleDiv = new RectangleDivision();

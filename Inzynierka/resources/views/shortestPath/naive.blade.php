@@ -8,7 +8,7 @@
     <div id="reload">
 
         <script>
-
+            naive = new Naive();
             base.setSize({{$grid->height}},{{$grid->width}},500)
             base.getProductsData({!! $products_array !!},{{$grid->shelfs}});
             base.shelvesToGraph();

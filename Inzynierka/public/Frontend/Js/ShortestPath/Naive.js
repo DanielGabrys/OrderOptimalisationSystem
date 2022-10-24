@@ -1,6 +1,5 @@
 class Naive extends Base
 {
-
     node_graph;
     factorial_nr;
 
@@ -31,7 +30,6 @@ class Naive extends Base
            // console.log(arr);
 
 
-                this.percentage(counter);
                 counter++;
 
                // console.log(counter, arr);
@@ -45,7 +43,7 @@ class Naive extends Base
                 if (temp_dist < this.distance)
                 {
                     this.distance = temp_dist;
-                    this.final_path = this.getNaivePath(arr);
+                    this.final_path = this.getFinalPath(arr);
                     //console.log("elo",this.final_path);
                 }
             }
@@ -94,29 +92,6 @@ class Naive extends Base
         let temp =a[i];
         a[i]=a[j];
         a[j]=temp;
-    }
-
-    factorial(n)
-    {
-        //base case
-        if(n === 0 || n === 1)
-        {
-            return 1;
-            //recursive case
-        }
-
-        else
-        {
-            return n * this.factorial(n-1);
-        }
-    }
-
-    percentage(n)
-    {
-        let per =(n/this.factorial_nr *100).toFixed(2);
-        this.calc_percentage = per;
-
-        //console.log(n,this.factorial_nr,per);
     }
 
     naive()
@@ -181,6 +156,5 @@ class Naive extends Base
 
 }
 
-naive = new Naive();
 
 

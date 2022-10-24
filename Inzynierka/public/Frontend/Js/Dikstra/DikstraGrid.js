@@ -9,6 +9,7 @@ class DikstraGrid extends ProductsGrid
     start = 0;
     end = 0;
     path = 0;
+    path
     steps = 0;
 
     shelvesToGraph() {

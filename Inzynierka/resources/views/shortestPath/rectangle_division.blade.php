@@ -103,6 +103,8 @@
         <input type="hidden" class="form-control" id="example_json" name="example_json" style="width: 400px;">
         <button type="button" id="load_example" class="btn btn-success btn-sm" style="font-size: 10px;" >SUBMIT</button>
 
+        <input type="number" class="form-control" id="random" name="random" style="width: 80px;">
+        <button type="button" id="load_random" class="btn btn-warning btn-sm" style="font-size: 10px;" >RANDOM</button>
 
     </div>
 
@@ -135,22 +137,19 @@
     </div>
 
     <script>
-        console.log(naive.products_positions);
 
         rectangleDiv.getEntry({{$grid->entry}});
-        base.addButtonlisteners(base.products_positions);
+        base.addButtonlisteners(base.products_positions);;
         rectangleDiv.RectangleStart();
         rectangleDiv.getPathMatrix({!! $path_matrix !!});
 
         let element = document.getElementById("load_example");
         element.addEventListener("click", function(){ rectangleDiv.loadExample(base.products_positions) });
 
-    </script>
-
-    <script>
 
 
     </script>
+
 
 @endsection
 

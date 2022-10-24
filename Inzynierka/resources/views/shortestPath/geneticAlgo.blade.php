@@ -8,13 +8,10 @@
     <div id="reload">
 
         <script>
-
-            base.setSize({{$grid->height}},{{$grid->width}},500)
-            base.getProductsData({!! $products_array !!},{{$grid->shelfs}});
-            base.shelvesToGraph();
-            //rectangleDiv.setSize({{$grid->height}},{{$grid->width}},500)
-           // rectangleDiv.getProductsData({!! $products_array !!},{{$grid->shelfs}});
-            //rectangleDiv.shelvesToGraph();
+            genetic = new GeneticAlgo();
+            genetic.setSize({{$grid->height}},{{$grid->width}},500)
+            genetic.getProductsData({!! $products_array !!},{{$grid->shelfs}});
+            genetic.shelvesToGraph();
         </script>
 
 
@@ -23,9 +20,9 @@
             <a id="{{"a".$y}}" >
                 <div id ="{{"b".$y}}" class="cell" >
                     <script>
-                        base.generateGridCells({{$grid->height}},{{$grid->width}},{{$y}})
-                        base.getHints({{$y}})
-                        base.colorizeProductsOnGrid({{$y}})
+                        genetic.generateGridCells({{$grid->height}},{{$grid->width}},{{$y}})
+                        genetic.getHints({{$y}})
+                        genetic.colorizeProductsOnGrid({{$y}})
                     </script>
                 </div>
             </a>
@@ -103,16 +100,27 @@
         <input type="hidden" class="form-control" id="example_json" name="example_json" style="width: 400px;">
         <button type="button" id="load_example" class="btn btn-success btn-sm" style="font-size: 10px;" >SUBMIT</button>
 
+        <input type="number" class="form-control" id="random" name="random" style="width: 80px;">
+        <button type="button" id="load_random" class="btn btn-warning btn-sm" style="font-size: 10px;" >RANDOM</button>
+
 
     </div>
 
+    <div class="container-fluid d-flex justify-content-center" id="path_selector">
 
+        <a class="btn btn-primary btn-sm" id="path_left" > < </a>
+        <input type="number" class="form-control" id="path_etape" name="path_etape" value="0" style="width: 70px;">
+        <a class="btn btn-primary btn-sm" id="path_right" > > </a>
+    </div>
+
+
+   <!--
     <div class="container-fluid d-flex justify-content-center">
 
         <button type="button" id="load" class="btn btn-success btn-sm" style="font-size: 10px;" >SUBMIT</button>
-
         <a class="btn btn-primary btn-sm" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1"> > </a>
     </div>
+    -->
 
 
 
@@ -137,20 +145,41 @@
     <script>
 
 
-        genetic = new GeneticAlgo();
+        document.getElementById("path_etape").hidden = true;
+        document.getElementById("path_left").hidden = true;
+        document.getElementById("path_right").hidden = true;
 
         genetic.getPathMatrix({!! $path_matrix !!});
         genetic.getEntry({{$grid->entry}});
-        //base.addButtonlisteners(base.products_positions);
-        //rectangleDiv.RectangleStart();
-
-
 
         let element = document.getElementById("load_example");
         element.addEventListener("click", function()
-        { genetic.loadExample(base.products_positions);
+        { genetic.loadExample(genetic.products_positions);
           genetic.startGenetic();
         });
+
+        let element2 = document.getElementById("load_random");
+        element2.addEventListener("click", function()
+        {
+            genetic.loadRandom(document.getElementById("random").value)
+            genetic.startGenetic();
+        });
+
+
+        let right_path = document.getElementById("path_right");
+        right_path.addEventListener("click", function()
+        {
+            genetic.colorizeSinglePathNodes(document.getElementById("path_etape").value,1);
+        });
+
+        let left_path = document.getElementById("path_left");
+        left_path.addEventListener("click", function()
+        {
+            genetic.colorizeSinglePathNodes(document.getElementById("path_etape").value,0);
+        });
+
+
+
 
     </script>
 

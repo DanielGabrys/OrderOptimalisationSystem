@@ -1,11 +1,13 @@
 
-class GeneticAlgo extends Base
+class GeneticAlgo extends RectangleDivision
 {
-    populationSize=1000;
+    populationSize=4000;
     population =[];
     fitness =[];
     bestDistance = Infinity;
     bestPath =[];
+    iteration =100;
+    currentIteration=0;
 
     createPopulation()
     {
@@ -20,9 +22,10 @@ class GeneticAlgo extends Base
         }
 
         //mixing basic population
-        for(let i=0;i<this.populationSize;i++)
+        for(let i=1;i<this.populationSize;i++)
         {
-            this.population[i] = this.shuffle(this.population[i]);
+            //this.population[i] = this.shuffle(this.population[i]);
+            this.population[i] = this.population[0];
         }
 
         console.log(this.population);
@@ -48,6 +51,7 @@ class GeneticAlgo extends Base
                 array[randomIndex], array[currentIndex]];
         }
 
+       // console.log("swap",array);
     return array;
 }
 
@@ -94,21 +98,43 @@ class GeneticAlgo extends Base
 
     startGenetic()
     {
-        this.createPopulation();
-        this.loadPopulation();
 
-        for(let i=0;i<1000;i++)
+
+        this.divideGrid();
+        console.log("prev",this.order);
+        this.rebaseOrder();
+        console.log(this.raw_final_path,this.order);
+
+
+        this.createPopulation();
+
+        for(let i=0;i<this.iteration;i++)
         {
             this.calcFitness();
             this.normalizeFitness();
             this.nextGeneration();
+            this.currentIteration++;
 
-
-            console.log("final", this.bestPath, this.bestDistance);
-            console.log(i,this.population);
+            console.log(i, this.bestDistance);
+            //console.log(i,this.population);
         }
 
-        this.showFinalPath();
+
+
+        this.final_path = this.getFinalPath();
+        this.getDetailedNaivePath();
+        this.create_result_table();
+        //this.showFinalPath();
+        //console.log(this.bestPath,this.bestDistance)
+        console.log(this.final_path);
+        console.log(this.detailed_final_path_array);
+       // this.ColorizeAllFinalPath();
+
+        document.getElementById("path_etape").hidden = false;
+        document.getElementById("path_left").hidden = false;
+        document.getElementById("path_right").hidden = false;
+
+
     }
 
     normalizeFitness()
@@ -132,8 +158,6 @@ class GeneticAlgo extends Base
         for(let i=0;i<this.population.length;i++)
         {
             let order1 = this.pickOne(this.population,this.fitness);
-            let order2 = this.pickOne(this.population,this.fitness);
-            //let order = crossOver(order1,order2);
             order1 = this.mutate(order1);
 
             newPopulation[i] = order1;
@@ -162,16 +186,94 @@ class GeneticAlgo extends Base
 
     mutate(order)
     {
-        let indexA=Math.floor(Math.random() * order.length);
-        let indexB=Math.floor(Math.random() * order.length);
+
+        let rate =Math.random();
+        if(rate>0.5)
+        {
+            this.mutate_dist(order);
+            return order;
+        }
+        else
+        {
+            let arr = this.crossOver(order,4,1);
+            return arr;
+        }
+
+    }
+
+    mutate_dist(order)
+    {
+        let max=0;
+        let distances =[];
+        let dist_sum=0;
+        for(let i=0;i<this.order.length-1;i++)
+        {
+            let name = this.order[order[i]] + "->" + this.order[order[i + 1]];
+            let dist = this.path_matrix[name];
+
+            distances[i]=dist;
+            dist_sum+=dist;
+        }
+
+        let normalize_arr=[]
+        let index =0;
+        for(let i=0;i<distances.length;i++)
+        {
+            for(let j=0;j<distances[i];j++)
+            {
+                normalize_arr[j+index]=distances[i]
+            }
+            index=normalize_arr.length;
+        }
+
+        let number = Math.floor(Math.random()*normalize_arr.length);
+
+        let counter=0;
+        let index2=0;
+        for(let i=0;i<normalize_arr.length;i++)
+        {
+
+            if(normalize_arr[i]!==normalize_arr[i+1])
+                counter++;
+            if(normalize_arr[i] === normalize_arr[number])
+            {
+                index2 = counter;
+                break;
+            }
+        }
+
+        let indexA,indexB;
+
+
+        if(index2<order.length-2)
+        {
+            indexA = index2 + 1;
+            indexB = index2 + 2;
+        }
+        else
+        {
+            indexA = index2 ;
+            indexB = index2 -1;
+        }
 
         let temp =order[indexA];
         order[indexA]=order[indexB];
         order[indexB]=temp;
-
-        //console.log("o",order,indexB,indexA)
-        return order
     }
+
+    mutate_neighbors(order,chance)
+    {
+
+        let rate = (Math.random());
+        if(rate>chance)
+        {
+            let index = Math.floor(Math.random() * order.length - 1);
+            let temp = order[index];
+            order[index] = order[index + 1];
+            order[index + 1] = temp;
+        }
+    }
+
 
     showFinalPath()
     {
@@ -187,11 +289,61 @@ class GeneticAlgo extends Base
         console.log(this.final_path);
     }
 
-    loadPopulation()
+
+    crossOver(orderA,range,chance)
     {
-        ;
+        let rate = (Math.random());
+
+        if(chance>rate)
+        {
+            let start = Math.floor(Math.random()*orderA.length);
+            //let end = Math.floor(Math.random() *(orderA.length - start)+start+1);
+            let end = Math.floor(Math.random()*range) +start;
+            if (end>orderA.length-1)
+                end=orderA.length-1;
+
+            let neworder = orderA.slice(start, end);
+            let arr_start =orderA.slice(0,start);
+            let arr_end =orderA.slice(end,orderA.length);
+
+           // console.log("neworder",start,end,orderA,neworder,arr_start,arr_end);
+            let shuffled =this.shuffle(neworder);
+            //console.log("newo",neworder);
+
+            let array = arr_start.concat(shuffled,arr_end);
+            //console.log("end",array);
+
+            return array;
+
+        }
+
+        return  orderA;
+
+
     }
 
+
+    getFinalPath()
+    {
+        let arr=[this.entry];
+        for (let i =0;i<this.bestPath.length;i++)
+        {
+            arr[i+1]=this.order[this.bestPath[i]];
+        }
+        arr.push(this.entry)
+
+        console.log("array",arr,this.bestPath);
+        return arr;
+    }
+
+    rebaseOrder()
+    {
+        this.order=[];
+        for (let i=0;i<this.raw_final_path.length;i++)
+        {
+            this.order[i]=this.raw_final_path[i];
+        }
+    }
 
 }
 

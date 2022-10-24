@@ -6,14 +6,18 @@ class Base extends DikstraGrid
     node_graph;
 
     final_path = [];
+    raw_final_path =[]
     detailed_final_path = new Map();
+    detailed_final_path_array = [];
     detailed_final_distances = [];
 
     distance = Infinity;
-    calc_percentage = 0;
     order=[];
+    node_order= new Map;
 
     path_matrix;
+    final_path_indexes=[];
+    current_colorized=-1;
 
     addButtonlisteners(products)
     {
@@ -83,8 +87,6 @@ class Base extends DikstraGrid
         //this.nodes=base.nodes;
 
     }
-
-
 
     setNodeGraph(map)
     {
@@ -176,7 +178,7 @@ class Base extends DikstraGrid
         return tepm_dist;
     }
 
-    getNaivePath(arr)
+    getFinalPath(arr)
     {
         let start = [this.entry];
         let path = [];
@@ -193,27 +195,30 @@ class Base extends DikstraGrid
 
     getDetailedNaivePath()
     {
-
         this.distance=0;
         for(let i=0;i<this.final_path.length-1;i++)
         {
             let key = this.final_path[i]+"->"+this.final_path[i+1];
-
+            //console.log(this.final_path[i],this.final_path[i+1]);
             let dist = this.dijkstra(this.graph,this.final_path[i],this.final_path[i+1])
 
             this.detailed_final_path.set(key,this.path);
+            this.detailed_final_path_array[i]=this.path_array;
+            this.final_path_indexes.push(key);
+            //console.log(key,this.path);
+
             this.detailed_final_distances[i] = dist;
 
             this.distance+=dist;
-            console.log(this.distance);
         }
 
-      //  console.log(this.detailed_final_path);
+      //console.log(this.detailed_final_path);
     }
 
     create_result_table()
     {
 
+        console.log(this.detailed_final_path,this.final_path_indexes);
         let table = document.getElementById("result_table");
 
         let counter =1;
@@ -221,12 +226,15 @@ class Base extends DikstraGrid
         let dist = table.insertRow(0);
         dist.insertCell(0).innerHTML = this.distance.toString();
 
-        for (const [key, value] of this.detailed_final_path)
-        {
+        //path.insertCell(0).innerHTML = this.finalPathToString(this.final_path);
 
+        for(let i=0;i<this.final_path_indexes.length;i++)
+        //for (const [key, value] of this.detailed_final_path)
+        {
             let rows = table.rows.length;
 
             let row = table.insertRow(rows);
+            row.id="detailed_path"+i;
 
             let cell0 = row.insertCell(0);
             let cell1 = row.insertCell(1);
@@ -235,8 +243,8 @@ class Base extends DikstraGrid
 
 
             cell0.innerHTML = counter ;
-            cell1.innerHTML = key;
-            cell2.innerHTML = value;
+            cell1.innerHTML = this.final_path_indexes[i];
+            cell2.innerHTML = this.detailed_final_path.get(this.final_path_indexes[i]);
             cell3.innerHTML = this.detailed_final_distances[counter-1];
 
             counter ++;
@@ -281,6 +289,122 @@ class Base extends DikstraGrid
         console.log("order",this.order);
     }
 
+    finalPathToString(array)
+    {
+        let str ="";
+        for(let i=0;i<array.length;i++)
+        {
+            str+=array[i]+',';
+        }
+        console.log(str);
+        return str;
+    }
+
+    finalPathByNodesToString(array)
+    {
+        let str ="";
+        for(let i=1;i<array.length-1;i++)
+        {
+            str+=this.node_order.get(parseInt(this.final_final_path[i]))+',';
+        }
+        console.log(str);
+        return str;
+    }
+
+    loadRandom(x)
+    {
+        if(x>0)
+        {
+
+            let array=[];
+            let randomized =[];
+            for (const key in this.products_positions)
+            {
+                let pos = this.products_positions[key]['pivot']['position'];
+
+                if(!array.includes(pos))
+                {
+                    array.push(pos);
+                }
+            }
+
+            for(let i=0;i<x;i++)
+            {
+                let random = Math.floor((Math.random()*array.length));
+                randomized.push(array[random]);
+                array.splice(random,1);
+
+            }
+
+            // console.log(array);
+            // console.log(randomized);
+
+            for (let i=0;i<randomized.length;i++)
+            {
+
+                this.colorize_selected(randomized[i]);
+
+
+                const found = this.products_positions.filter(e => e.pivot.position == randomized[i]);
+
+                for (const key in found)
+                {
+                    // console.log(arr[i], found);
+                    let pos = found[key]['pivot']['desired_position'];
+                    this.order.push(pos);
+                    this.node_order.set(pos,randomized[i])
+                }
+
+            }
+
+        }
+    }
+
+    ColorizeFinalPathByStep(id)
+    {
+
+        for (let i = 0; i <= this.detailed_final_path_array.length; i++)
+        {
+          this.colorizeSinglePathNodes(id,this.detailed_final_path_array[i])
+        }
+    }
+
+
+    colorizeSinglePathNodes(id,sign)
+    {
+        this.decolorizeSinglePathNodes();
+
+        let index=0;
+        if(sign===1)
+            index = parseInt(id)+1;
+        else if(sign===0)
+            index= parseInt(id)-1
+
+
+        document.getElementById("path_etape").setAttribute("value", index.toString());
+
+        for (let i =0; i<index; i++)
+        {
+            for (let j = 0; j < this.detailed_final_path_array[i].length; j++)
+            {
+                let way = document.getElementById(this.detailed_final_path_array[i][j]).className = "path_cell";
+            }
+        }
+    }
+
+    decolorizeSinglePathNodes()
+    {
+
+        for (let i =0; i<this.detailed_final_path_array.length; i++)
+        {
+
+            for (let j = 0; j < this.detailed_final_path_array[i].length; j++)
+            {
+                //console.log(i,j,this.detailed_final_path_array[i]);
+                let way = document.getElementById(this.detailed_final_path_array[i][j]).className = "unselected_cell";
+            }
+        }
+    }
 
 }
 
