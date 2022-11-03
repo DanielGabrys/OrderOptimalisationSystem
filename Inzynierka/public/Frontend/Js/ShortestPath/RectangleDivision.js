@@ -2,7 +2,7 @@ class RectangleDivision extends Naive {
 
     center_x;
     center_y;
-    divider = 2;
+    RecDivider = 2;
 
     rectangles = {};
     result =[];
@@ -15,9 +15,14 @@ class RectangleDivision extends Naive {
     constructor()
     {
         super();
-        let x_devider = this.width / this.divider //pionowo
-        let y_devider = this.height / this.divider //poziomo
+        let x_devider = this.width / this.RecDivider //pionowo
+        let y_devider = this.height / this.RecDivider //poziomo
 
+        this.resetRectangle();
+    }
+
+    resetRectangle()
+    {
         this.rectangles["one"] = {};
         this.rectangles["one"]["position"] = {};
         this.rectangles["two"] = {};
@@ -35,7 +40,7 @@ class RectangleDivision extends Naive {
 
         this.calculatePoints("position",this.center_x,this.center_y);
         this.minimumNode();
-        //console.log(this.rectangles);
+        console.log(this.rectangles);
         //this.calculateNewCentralPoints();
 
         this.detailedKeyPathArray = this.createDetailedMatrix();
@@ -61,16 +66,21 @@ class RectangleDivision extends Naive {
             this.final_path=this.final_path.concat(result[i]);
          }
 
+         this.getFinalDistance();
+         console.log("best",this.distance);
+
+    }
+
+    createResults()
+    {
         this.getRawFinalPath();
         this.getFinalDistance();
-        //this.getDetailedNaivePath();
-        //this.create_result_table();
+        this.getDetailedNaivePath();
+        this.create_result_table();
 
         console.log("final",this.final_path);
-        this.finalPathToString(this.final_path);
+        //this.finalPathToString(this.final_path);
         //this.finalPathByNodesToString(this.final_path)
-
-
     }
 
     calculatePoints(pos,center_x,center_y)
@@ -122,6 +132,7 @@ class RectangleDivision extends Naive {
                 {
                     let name = this.rectangles[key]["min"] + "->" + key2
                     this.rectangles[key]["position"][key2] = this.path_matrix[name];
+
                 }
 
 
@@ -150,21 +161,6 @@ class RectangleDivision extends Naive {
         position["y"] = -(x1 + 1);
 
         return position;
-    }
-
-    RectangleStart()
-    {
-        let load_button = document.getElementById("load");
-        load_button.addEventListener('click',function ()
-            {
-                rectangleDiv.nodes = base.nodes;
-                console.log(rectangleDiv.nodes)
-                rectangleDiv.setNodeGraph(rectangleDiv.nodes);
-                rectangleDiv.divideGrid();
-
-
-            }
-        );
     }
 
     minimumNode()
@@ -475,13 +471,15 @@ class RectangleDivision extends Naive {
 
     getFinalDistance()
     {
+        let dist =0;
         for(let i=0;i<this.final_path.length-1;i++)
         {
 
             let name = this.final_path[i] + "->" +  this.final_path[i+1];
-            this.distance+= this.path_matrix[name];
+            dist+= this.path_matrix[name];
         }
 
+        this.distance=dist;
     }
 
 

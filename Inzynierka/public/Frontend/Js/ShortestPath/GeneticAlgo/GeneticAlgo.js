@@ -1,12 +1,12 @@
 
 class GeneticAlgo extends RectangleDivision
 {
-    populationSize=4000;
+    populationSize=1000;
     population =[];
     fitness =[];
     bestDistance = Infinity;
     bestPath =[];
-    iteration =100;
+    iteration =50;
     currentIteration=0;
 
     createPopulation()
@@ -28,7 +28,7 @@ class GeneticAlgo extends RectangleDivision
             this.population[i] = this.population[0];
         }
 
-        console.log(this.population);
+        //console.log(this.population);
 
 
 
@@ -101,12 +101,14 @@ class GeneticAlgo extends RectangleDivision
 
 
         this.divideGrid();
-        console.log("prev",this.order);
         this.rebaseOrder();
-        console.log(this.raw_final_path,this.order);
-
+        this.bestDistance=this.distance;
 
         this.createPopulation();
+        this.bestPath = this.population[0];
+
+       // console.log(this.final_path,this.bestDistance,this.order);
+
 
         for(let i=0;i<this.iteration;i++)
         {
@@ -115,7 +117,7 @@ class GeneticAlgo extends RectangleDivision
             this.nextGeneration();
             this.currentIteration++;
 
-            console.log(i, this.bestDistance);
+           // console.log(i, this.bestDistance,this.bestPath);
             //console.log(i,this.population);
         }
 
@@ -123,18 +125,20 @@ class GeneticAlgo extends RectangleDivision
 
         this.final_path = this.getFinalPath();
         this.getDetailedNaivePath();
-        this.create_result_table();
+        //this.create_result_table();
         //this.showFinalPath();
         //console.log(this.bestPath,this.bestDistance)
-        console.log(this.final_path);
-        console.log(this.detailed_final_path_array);
+       // console.log(this.final_path);
+        //console.log(this.detailed_final_path_array);
        // this.ColorizeAllFinalPath();
 
+    }
+
+    pathTracker()
+    {
         document.getElementById("path_etape").hidden = false;
         document.getElementById("path_left").hidden = false;
         document.getElementById("path_right").hidden = false;
-
-
     }
 
     normalizeFitness()
@@ -332,17 +336,20 @@ class GeneticAlgo extends RectangleDivision
         }
         arr.push(this.entry)
 
-        console.log("array",arr,this.bestPath);
+        //console.log("array",arr,this.bestPath);
         return arr;
     }
 
     rebaseOrder()
     {
-        this.order=[];
-        for (let i=0;i<this.raw_final_path.length;i++)
+
+        let order =[];
+        for (let i=1;i<this.final_path.length-1;i++)
         {
-            this.order[i]=this.raw_final_path[i];
+            order.push(this.final_path[i]);
         }
+
+        this.order =order;
     }
 
 }

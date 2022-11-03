@@ -28,6 +28,8 @@
     <script src="{{asset('Frontend/Js/ShortestPath/Combinations.js')}}"></script>
     <script src="{{asset('Frontend/Js/ShortestPath/GeneticAlgo/GeneticAlgo.js')}}"></script>
 
+    <script src="{{asset('Frontend/Js/OrderOptimalisation/OrderOptimalisation.js')}}"></script>
+
 
 
 
@@ -152,6 +154,11 @@
                     <a class="nav-link" href="{{route('geneticAlgo')}}">
                         <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                         Algorytm genetyczny
+                    </a>
+
+                    <a class="nav-link" href="{{route('orderOptimalisation')}}">
+                        <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                        Optymalizacja zamówień;
                     </a>
 
 

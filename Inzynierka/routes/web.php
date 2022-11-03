@@ -75,3 +75,8 @@ Route::get('/', function ()
 // genetic algorithm
 
 Route::get('/grid/geneticAlgo',[GridController::class, 'geneticAlgo'])->name('geneticAlgo');
+
+
+Route::get('/grid/orderOptimalisation',[GridController::class, 'orderOptimalisation'])->name('orderOptimalisation');
+
+

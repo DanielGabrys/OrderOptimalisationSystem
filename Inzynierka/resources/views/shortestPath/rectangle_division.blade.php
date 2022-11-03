@@ -140,11 +140,28 @@
 
         rectangleDiv.getEntry({{$grid->entry}});
         base.addButtonlisteners(base.products_positions);;
-        rectangleDiv.RectangleStart();
         rectangleDiv.getPathMatrix({!! $path_matrix !!});
 
+
         let element = document.getElementById("load_example");
-        element.addEventListener("click", function(){ rectangleDiv.loadExample(base.products_positions) });
+        element.addEventListener("click", function(){
+            rectangleDiv.loadExample(base.products_positions);
+            rectangleDiv.divideGrid();
+            rectangleDiv.createResults();
+        });
+
+
+        let load_button = document.getElementById("load");
+        load_button.addEventListener('click',function ()
+            {
+                rectangleDiv.nodes = base.nodes;
+                console.log(rectangleDiv.nodes)
+                rectangleDiv.setNodeGraph(rectangleDiv.nodes);
+                rectangleDiv.divideGrid();
+
+
+            }
+        );
 
 
 

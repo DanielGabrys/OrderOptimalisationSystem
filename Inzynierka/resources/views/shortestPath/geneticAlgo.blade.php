@@ -156,6 +156,8 @@
         element.addEventListener("click", function()
         { genetic.loadExample(genetic.products_positions);
           genetic.startGenetic();
+          genetic.createResults();
+            genetic.pathTracker();
         });
 
         let element2 = document.getElementById("load_random");
@@ -163,6 +165,8 @@
         {
             genetic.loadRandom(document.getElementById("random").value)
             genetic.startGenetic();
+            genetic.createResults();
+            genetic.pathTracker();
         });
 
 

@@ -499,28 +499,25 @@ class GridController extends Controller
     public function rectangleDivision()
     {
 
-        $grid=Grid::all()->where('isActive','=',1)->first();
-        $products = $grid->products()->orderByRaw('position ASC')->get();
-
-        $name = "matrix_".$grid->id.'.json';
-        $path = storage_path() . "/app/public/";
-        $array=json_encode($products);
-        $path_matrix = file_get_contents($path ."/".$name);
-
-
-        //dd($path_matrix);
-
-        return view('shortestPath.rectangle_division',[
-            'gridProducts'=> $products,
-            'grid'=>$grid,
-            'products_array'=>$array,
-            'path_matrix'=>$path_matrix,
-            ]
-        );
+        return $this->getGridDataForPath('shortestPath.rectangle_division');
 
     }
 
     public function geneticAlgo()
+    {
+
+        return $this->getGridDataForPath('shortestPath.geneticAlgo');
+
+    }
+
+    public function orderOptimalisation()
+    {
+
+        return $this->getGridDataForPath('OrderOptimalisation.OrderOptimalisation');
+
+    }
+
+    public function getGridDataForPath($view)
     {
 
         $grid=Grid::all()->where('isActive','=',1)->first();
@@ -531,7 +528,7 @@ class GridController extends Controller
         $array=json_encode($products);
         $path_matrix = file_get_contents($path ."/".$name);
 
-        return view('shortestPath.geneticAlgo',[
+        return view($view,[
                 'gridProducts'=> $products,
                 'grid'=>$grid,
                 'products_array'=>$array,
@@ -540,6 +537,4 @@ class GridController extends Controller
         );
 
     }
-
-
 }
