@@ -85,6 +85,12 @@
                         <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                         Stwórz
                     </a>
+
+                    <a class="nav-link" href="{{route('showProducts')}}" >
+                        <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                        Dodaj produkty
+                    </a>
+
                     <a class="nav-link" href="{{route('showGrids')}}">
                         <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                         Zarządzaj istniejącymi
@@ -158,7 +164,7 @@
 
                     <a class="nav-link" href="{{route('orderOptimalisation')}}">
                         <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-                        Optymalizacja zamówień;
+                        Optymalizacja zamówień
                     </a>
 
 

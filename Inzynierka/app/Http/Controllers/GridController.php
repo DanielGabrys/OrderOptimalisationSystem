@@ -517,6 +517,14 @@ class GridController extends Controller
 
     }
 
+    public function orderOptResultsSubmit(Request $request)
+    {
+        $result = $request->results;
+        //$result = $request->results;
+        return view('OrderOptimalisation.OrderOptResults',["orderOptResults"=>$result]);
+    }
+
+
     public function getGridDataForPath($view)
     {
 

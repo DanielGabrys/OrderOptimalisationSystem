@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\GridController;
 
@@ -42,7 +43,20 @@ Route::get('/', function ()
     Route::post('/grid/editGridSubmit/{id}', [GridController::class, 'editGridSubmit'])->name('editGridSubmit');
 
 
-    //edit products on grid - grid view
+
+
+    //show products
+    Route::get('/ShowProducts', [ProductController::class, 'showProducts'])->name('showProducts');
+
+    // add product
+    Route::post('/AddProduct', [ProductController::class, 'addProduct'])->name('addProduct');
+    // delete product
+    Route::get('/DeleteProduct{id}', [ProductController::class, 'deleteProduct'])->name('deleteProduct');
+
+
+
+
+//edit products on grid - grid view
     Route::get('/grid/editGridProducts/{id}', [GridController::class, 'editGridProducts'])->name('editGridProducts');
 
     //edit specific products on grid
@@ -74,9 +88,15 @@ Route::get('/', function ()
 
 // genetic algorithm
 
-Route::get('/grid/geneticAlgo',[GridController::class, 'geneticAlgo'])->name('geneticAlgo');
+    Route::get('/grid/geneticAlgo',[GridController::class, 'geneticAlgo'])->name('geneticAlgo');
+
+// order optimalisation
+    Route::get('/grid/orderOptimalisation',[GridController::class, 'orderOptimalisation'])->name('orderOptimalisation');
+
+    //results
+    Route::post('/grid/orderOptResultsSubmit',[GridController::class, 'orderOptResultsSubmit'])->name('orderOptResults');
+    //Route::get('/grid/orderOptResults',[GridController::class, 'orderOptResults'])->name('orderOptimalisationResults');
 
 
-Route::get('/grid/orderOptimalisation',[GridController::class, 'orderOptimalisation'])->name('orderOptimalisation');
 
 

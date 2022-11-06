@@ -63,7 +63,6 @@
 
                                     </tr>
                                 @endforeach
- cup cup
 
                                 </tbody>
                             </table>

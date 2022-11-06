@@ -17,12 +17,9 @@ return new class extends Migration
         {
             $table->id();
             $table->string('name');
-            $table->float('price', 8, 2);
             $table->float('size_X', 8, 2);
             $table->float('size_Y', 8, 2);
             $table->float('size_Z', 8, 2);
-            $table->string('description')->nullable();
-            $table->float('amount', 8, 2);
             $table->timestamps();
 
 

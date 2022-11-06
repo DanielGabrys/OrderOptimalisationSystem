@@ -92,7 +92,7 @@
         </div>
     </div>
 
-    <div class="container-fluid d-flex justify-content-center">
+    <div class="container-fluid mt-2 d-flex justify-content-center">
         <form class="form-inline">
 
             <div class="input-group mb-2 mr-sm-2">
@@ -159,6 +159,16 @@
     <div class="container-fluid mt-3 d-flex justify-content-center" id="finalCombination">
     </div>
 
+    <div class="container-fluid mt-2 d-flex justify-content-center" >
+        <form class="form-inline" action="{{route('orderOptResults')}}" method="POST">
+            @csrf
+                <input type="hidden" class="form-control" id="results" name="results"  value=15 style="width: 80px;">
+
+            <button type="submit" id="show_results" class="btn btn-warning btn-sm" >Show Results</button>
+        </form>
+
+    </div>
+
 
 
 
@@ -166,11 +176,14 @@
 
     <script>
 
-        document.getElementById("loader").hidden = true;
+
+        hideDivElements();
+
         let element2 = document.getElementById("load_random");
         element2.addEventListener("click", function()
         {
 
+            document.getElementById("loader").hidden = false;
             let size = document.getElementById("join_size").value;
             let orders_num = document.getElementById("orders_number").value;
             let divider = document.getElementById("division").value;
@@ -189,7 +202,6 @@
 
             console.log("orderList",genetic.orderList);
             console.log("colors",genetic.orderColors);
-            document.getElementById("loader").hidden = false;
             console.time('start')
             for(let i=0;i<genetic.orderIteration;i++)
             {
@@ -239,10 +251,29 @@
             document.getElementById("progress").innerHTML=""
             console.timeEnd('start');
 
+            showDivElements();
             console.log(genetic.bestCombination);
 
             genetic.getOrderFinalResult();
+            resultToJSON();
 
+        }
+
+        function hideDivElements()
+        {
+            document.getElementById("loader").hidden = true;
+            document.getElementById("show_results").hidden = true;
+        }
+
+        function showDivElements()
+        {
+            document.getElementById("show_results").hidden = false;
+        }
+
+        function resultToJSON()
+        {
+            let result = JSON.stringify(genetic.bestCombination);
+            document.getElementById("results").value=result;
         }
 
 
