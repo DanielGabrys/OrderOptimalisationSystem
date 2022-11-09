@@ -2,11 +2,11 @@
 
 namespace App\Imports;
 
-use App\Models\Order;
+use App\Models\OrderProducts;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class OrdersImport implements ToModel, WithHeadingRow
+class OrdersProductsImport implements ToModel,WithHeadingRow
 {
     /**
     * @param array $row
@@ -15,9 +15,10 @@ class OrdersImport implements ToModel, WithHeadingRow
     */
     public function model(array $row)
     {
-        return new Order([
-            'id' => $row['id'],
-            'primary' => $row['primary'],
+
+        return new OrderProducts([
+            'order_id' => $row['order_id'],
+            'product_id' => $row['product_id'],
         ]);
     }
 }

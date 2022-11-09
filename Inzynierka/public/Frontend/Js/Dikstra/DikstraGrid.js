@@ -53,25 +53,41 @@ class DikstraGrid extends ProductsGrid
     shelvesToNeighborhoodMap()
     {
         let counter =0;
+        console.log(this.graph);
         for (const key in this.graph)
         {
             for (const key2 in this.graph)
             {
                 if(key !== key2)
                 {
+                    let dist =0;
                     let name = key + "->" + key2;
-                    let dist = this.dijkstra(this.graph, key, key2)
+                    let name_reverse = key2 + "->" + key;
+
+                    if(name_reverse in this.neighborhood_map)
+                    {
+
+                        dist = this.neighborhood_map[name_reverse];
+                    }
+                    else
+                    {
+                        dist = this.dijkstra(this.graph, key, key2)
+                    }
                     this.neighborhood_map[name]=dist;
 
                     counter++;
-                    console.log(counter);
+                   // console.log(counter);
                 }
 
             }
         }
 
         let dictstring = JSON.stringify(this.neighborhood_map);
+        let size = Object.keys(this.neighborhood_map).length;
+
         console.log(dictstring);
+        //console.log(this.neighborhood_map,size);
+
 
         document.getElementById("json_matrix").setAttribute('value',dictstring);
     }
@@ -114,12 +130,13 @@ class DikstraGrid extends ProductsGrid
         let map = this.formatGraph(this.graph);
         //console.log(map);
 
-        var visited = [];
-        var unvisited = [start];
-        var shortestDistances = {[start]: {vertex: start, cost: 0}};
+        let visited = [];
+        let unvisited = [start];
+        let shortestDistances = {[start]: {vertex: start, cost: 0}};
 
-        var vertex;
+        let vertex;
         while ((vertex = unvisited.shift())) {
+           // console.log(visited);
             // Explore unvisited neighbors
             var neighbors = map[vertex].filter((n) => !visited.includes(n.vertex));
 

@@ -49,7 +49,7 @@
             </div>
 
             <button type="button" class="btn btn-primary mb-2" onclick="dikstra.setStartEnd(document.getElementById('start').value,document.getElementById('end').value);">CALCULATE</button>
-            <button type="submit" id ="dikstra-start" class="btn btn-success mb-2" onclick="dikstra.shelvesToNeighborhoodMap()"> CALCULATE FOR ALL </button>
+            <button type="button" id ="dikstra-start" class="btn btn-success mb-2" onclick="dikstra.shelvesToNeighborhoodMap()"> CALCULATE FOR ALL </button>
 
             <input type="hidden" class="form-control" name="json_matrix" id="json_matrix" >
 

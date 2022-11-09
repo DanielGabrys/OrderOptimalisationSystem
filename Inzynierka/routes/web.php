@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\GridController;
@@ -52,6 +53,15 @@ Route::get('/', function ()
     Route::post('/AddProduct', [ProductController::class, 'addProduct'])->name('addProduct');
     // delete product
     Route::get('/DeleteProduct{id}', [ProductController::class, 'deleteProduct'])->name('deleteProduct');
+
+
+    //show orders
+    Route::get('/ShowOrders', [OrderController::class, 'showOrders'])->name('showOrders');
+
+    // addOrder
+    Route::post('/UploadOrders', [OrderController::class, 'uploadOrders'])->name('uploadOrders');
+    // delete order
+    Route::get('/DeleteOrder{id}', [OrderController::class, 'deleteOrder'])->name('deleteOrder');
 
 
 

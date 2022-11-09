@@ -11,7 +11,7 @@ class ProductController extends Controller
     public function showProducts()
     {
         $products = Product::paginate(6);
-        return view('grid.addProducts',['products'=>$products]);
+        return view('products.addProducts',['products'=>$products]);
     }
 
     public function addProduct(Request $request)

@@ -91,6 +91,11 @@
                         Dodaj produkty
                     </a>
 
+                    <a class="nav-link" href="{{route('showOrders')}}" >
+                        <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                        Zamówienia
+                    </a>
+
                     <a class="nav-link" href="{{route('showGrids')}}">
                         <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                         Zarządzaj istniejącymi
