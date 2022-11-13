@@ -83,8 +83,8 @@ Route::get('/', function ()
 
 // dikstra
 
-    Route::get('/grid/calculateDikstra',[GridController::class, 'calculateDikstra'])->name('calculateDikstra');
-    Route::post('/grid/calculateDikstra/Matrix',[GridController::class, 'dikstraMatrix'])->name('dikstraMatrix');
+    Route::get('/grid/Paths/{id}',[GridController::class, 'Paths'])->name('Paths');
+    Route::post('/grid/uploadNodesPaths/{id}',[GridController::class, 'uploadNodesPaths'])->name('uploadNodesPaths');
 
 // native algoritm
 

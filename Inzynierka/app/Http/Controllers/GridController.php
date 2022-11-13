@@ -432,10 +432,10 @@ class GridController extends Controller
 
    //dikstra part
 
-    public function calculateDikstra()
+    public function Paths($id)
     {
 
-        $grid=Grid::all()->where('isActive','=',1)->first();
+        $grid=grid::find($id);
         $products = $grid->products()->orderByRaw('position ASC')->get();
 
         $array=json_encode($products);
@@ -446,14 +446,15 @@ class GridController extends Controller
 
     }
 
-    public function dikstraMatrix(Request $request)
+    public function uploadNodesPaths(Request $request,$id)
     {
 
-        $grid=Grid::all()->where('isActive','=',1)->first();
-        $matrix = $request->json_matrix;
+        $grid=grid::find($id);
         $name = "matrix_".$grid->id.'.json';
+        $path = "nodesPaths/";
 
-        Storage::disk('public')->put($name, $matrix);
+       // Storage::disk('public')->put($path.$name,$request->file('file'));
+        $request->file->storeAs($path, $name,'public');
         return Redirect()->back()->with('success','Pomyślnie');
 
     }
@@ -479,15 +480,8 @@ class GridController extends Controller
     public function nativeAlgorithm()
     {
 
-        $grid=Grid::all()->where('isActive','=',1)->first();
-        $products = $grid->products()->orderByRaw('position ASC')->get();
+        return $this->getGridDataForPath('shortestPath.naive');
 
-        $name = "matrix_".$grid->id.'.json';
-        $path = storage_path() . "/app/public/";
-        $array=json_encode($products);
-        $path_matrix = file_get_contents($path ."/".$name);
-
-        return view('shortestPath.naive',['gridProducts'=> $products,'grid'=>$grid,'products_array'=>$array,'path_matrix'=>$path_matrix]);
     }
 
     public function calculateNaive()
@@ -532,7 +526,7 @@ class GridController extends Controller
         $products = $grid->products()->orderByRaw('position ASC')->get();
 
         $name = "matrix_".$grid->id.'.json';
-        $path = storage_path() . "/app/public/";
+        $path = storage_path() . "/app/public/nodesPaths";
         $array=json_encode($products);
         $path_matrix = file_get_contents($path ."/".$name);
 

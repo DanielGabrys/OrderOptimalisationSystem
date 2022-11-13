@@ -2,6 +2,7 @@ class DikstraGrid extends ProductsGrid
 {
 
     graph = {};
+    graphToExport =[];
     neighborhood_map = {};
 
     path_array = {};
@@ -9,45 +10,57 @@ class DikstraGrid extends ProductsGrid
     start = 0;
     end = 0;
     path = 0;
-    path
     steps = 0;
 
     shelvesToGraph() {
 
         let counter = 1;
         let shelves = this.shelfs;
-        let X= this.height;
-        let Y=this.width;
-        let graph ={};
-
+        let X = this.height;
+        let Y = this.width;
+        let graph = {};
         // initialize graph with zero
-        for (let i = 0; i < X; i++) {
-            for (let j = 0; j < Y; j++) {
-                if (shelves[i][j] !== -1) {
-                    graph[counter] = {};
+        for (let i = 0; i < X; i++)
+        {
+            for (let j = 0; j < Y; j++)
+            {
+                if (shelves[i][j] !== -1)
+                {
+                    let graphToExport = {};
+                    graph[counter]={};
+                    graphToExport["id"] = counter;
+                    graphToExport["neighbours"] = [];
 
                     //up connected node
                     if (i !== 0 && shelves[i - 1][j] !== -1) {
                         graph[counter][counter - Y] = 1;
+                        //graphToExport["neighbours"].push(counter - Y);
                     }
-                    //down connected node
-                    if (i !== Y - 1 && shelves[i + 1][j] !== -1) {
-                        graph[counter][counter + Y] = 1;
-                    }
-                    //left connected node
-                    if (j !== 0 && shelves[i][j - 1] !== -1) {
-                        graph[counter][counter - 1] = 1;
-                    }
-                    //right connected node
-                    if (j !== Y - 1 && shelves[i][j + 1] !== -1) {
-                        graph[counter][counter + 1] = 1;
-                    }
+
+                        //down connected node
+                        if (i !== Y - 1 && shelves[i + 1][j] !== -1) {
+                            graph[counter][counter + Y] = 1;
+                            graphToExport["neighbours"].push(counter + Y);
+                        }
+                        //left connected node
+                        if (j !== 0 && shelves[i][j - 1] !== -1) {
+                            graph[counter][counter - 1] = 1;
+                            //graphToExport["neighbours"].push(counter - 1);
+                        }
+                        //right connected node
+                        if (j !== Y - 1 && shelves[i][j + 1] !== -1) {
+                            graph[counter][counter + 1] = 1;
+                            graphToExport["neighbours"].push(counter + 1);
+                        }
+                        this.graphToExport.push(graphToExport);
+
+
                 }
-                counter++;
+                    counter++;
             }
-            this.graph=graph;
+                this.graph = graph;
         }
-        //console.log(shelves,this.graph);
+            //console.log(shelves,this.graph);
     }
 
     shelvesToNeighborhoodMap()
