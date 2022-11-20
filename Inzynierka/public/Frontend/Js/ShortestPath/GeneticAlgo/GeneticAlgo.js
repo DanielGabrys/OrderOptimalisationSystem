@@ -1,12 +1,12 @@
 
 class GeneticAlgo extends RectangleDivision
 {
-    populationSize=1000;
+    populationSize=2000;
     population =[];
     fitness =[];
     bestDistance = Infinity;
     bestPath =[];
-    iteration =50;
+    iteration =100;
     currentIteration=0;
 
     createPopulation()
@@ -76,21 +76,15 @@ class GeneticAlgo extends RectangleDivision
     calculateDistance(arr)
     {
 
-        let start = this.entry + "->" + this.order[arr[0]];
-        let end= this.order[arr[arr.length-1]] + "->"+ this.entry;
-
-        let dist = this.path_matrix[start] + this.path_matrix[end];
+        let dist = this.getNodesDistance(this.entry,this.order[arr[0]])
+        dist += this.getNodesDistance(this.order[arr[arr.length-1]],this.entry)
 
         for(let i=0;i<arr.length-1;i++)
         {
-
             if(this.order[arr[i]] !== this.order[arr[i+1]])
             {
-                let name = this.order[arr[i]] + "->" + this.order[arr[i + 1]];
-                dist += this.path_matrix[name];
+                dist += this.getNodesDistance(this.order[arr[i]],this.order[arr[i + 1]])
             }
-
-            //console.log(name,this.path_matrix[name]);
 
         }
         return dist;
@@ -117,8 +111,8 @@ class GeneticAlgo extends RectangleDivision
             this.nextGeneration();
             this.currentIteration++;
 
-           // console.log(i, this.bestDistance,this.bestPath);
-            //console.log(i,this.population);
+            console.log(i, this.bestDistance,this.bestPath);
+           // console.log(i,this.population);
         }
 
 
@@ -212,8 +206,8 @@ class GeneticAlgo extends RectangleDivision
         let dist_sum=0;
         for(let i=0;i<this.order.length-1;i++)
         {
-            let name = this.order[order[i]] + "->" + this.order[order[i + 1]];
-            let dist = this.path_matrix[name];
+            //let name = this.order[order[i]] + "->" + this.order[order[i + 1]];
+            let dist = this.getNodesDistance(this.order[order[i]],this.order[order[i + 1]]);
 
             distances[i]=dist;
             dist_sum+=dist;

@@ -195,24 +195,25 @@ class Base extends DikstraGrid
 
     getDetailedNaivePath()
     {
+
         this.distance=0;
+        console.log(this.final_path);
         for(let i=0;i<this.final_path.length-1;i++)
         {
             let key = this.final_path[i]+"->"+this.final_path[i+1];
-            //console.log(this.final_path[i],this.final_path[i+1]);
-            let dist = this.dijkstra(this.graph,this.final_path[i],this.final_path[i+1])
+            let dist = this.getNodesDistance(this.final_path[i],this.final_path[i+1])
+            this.getBFSShortestPath(this.BFSGraph, parseInt(this.final_path[i]),parseInt(this.final_path[i+1]))
 
             this.detailed_final_path.set(key,this.path);
-            this.detailed_final_path_array[i]=this.path_array;
+            this.detailed_final_path_array[i]=this.path;
             this.final_path_indexes.push(key);
-            //console.log(key,this.path);
 
             this.detailed_final_distances[i] = dist;
 
             this.distance+=dist;
         }
 
-      //console.log(this.detailed_final_path);
+      //console.log("elo",this.detailed_final_path);
     }
 
     create_result_table()
@@ -287,6 +288,20 @@ class Base extends DikstraGrid
         }
 
         console.log("order",this.order);
+    }
+
+    getNodesDistance(a,b)
+    {
+        let key =a+"->"+b;
+        let key2 =b+"->"+a;
+        if(!(key in this.path_matrix))
+        {
+            return this.path_matrix[key2];
+        }
+        else
+        {
+            return this.path_matrix[key];
+        }
     }
 
     finalPathToString(array)

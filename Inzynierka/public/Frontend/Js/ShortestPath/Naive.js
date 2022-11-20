@@ -1,7 +1,6 @@
 class Naive extends Base
 {
     node_graph;
-    factorial_nr;
 
     nextOrder()
     {
@@ -12,10 +11,6 @@ class Naive extends Base
         {
             arr[i]=i;
         }
-
-       // this.factorial_nr=this.factorial(arr.length);
-       // this.factorial_nr=this.factorial_nr - this.factorial(arr.length-1);
-
 
         while(true)
         {
@@ -35,7 +30,7 @@ class Naive extends Base
                // console.log(counter, arr);
 
            // if (arr[arr.length - 1] > index)
-            {
+
 
                 //let temp_dist = this.calculateDistance(arr);
                 let temp_dist= this.calculateDistanceFromFile(arr);
@@ -46,8 +41,8 @@ class Naive extends Base
                     this.final_path = this.getFinalPath(arr);
                     //console.log("elo",this.final_path);
                 }
-            }
-                //console.log(arr,temp_dist,this.distance,this.final_path);
+
+                console.log(arr,temp_dist,this.distance,this.final_path);
 
                 // STEP 1 of the algorithm
                 let largestI = -1;
@@ -132,20 +127,43 @@ class Naive extends Base
     {
             let start_name = this.entry + "->" + this.order[arr[0]];
             let end_name =   this.order[arr[arr.length-1]] + "->" +  this.entry ;
+
+            let reverse_start_name = this.order[arr[0]]+ "->"+ this.entry;
+            let reverse_end_name =   this.entry+"->" +this.order[arr[arr.length-1]] ;
+
+            console.log(start_name,end_name)
+            if(!(start_name in this.path_matrix))
+            {
+                start_name = reverse_start_name;
+
+            }
+
+             if(!(end_name in this.path_matrix))
+             {
+                 end_name = reverse_end_name;
+             }
+            console.log(start_name);
+
+
             let start = this.path_matrix[start_name];
             let end = this.path_matrix[end_name];
 
             let tepm_dist = start + end;
+
             for(let i=0;i<arr.length-1;i++)
             {
 
                 let name = this.order[arr[i]] + "->" + this.order[arr[i+1]];
+                let reverse_name = this.order[arr[i+1]] + "->" + this.order[arr[i]];
+
+                if(!(this.path_matrix.hasOwnProperty(name)))
+                    name=reverse_name;
 
                 tepm_dist+= this.path_matrix[name];
 
             }
 
-            //console.log(tepm_dist,arr);
+            console.log(tepm_dist,arr);
             return tepm_dist;
     }
 

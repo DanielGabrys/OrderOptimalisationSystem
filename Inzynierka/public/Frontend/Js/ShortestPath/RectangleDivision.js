@@ -44,7 +44,6 @@ class RectangleDivision extends Naive {
         //this.calculateNewCentralPoints();
 
         this.detailedKeyPathArray = this.createDetailedMatrix();
-        this.getSelectedPathMatrix();
         this.calculateDistanceFromRegionCenter();
         //console.log(this.rectangles);
 
@@ -258,53 +257,10 @@ class RectangleDivision extends Naive {
         return arr;
     }
 
-    swip()
-    {
-        //console.log(this.checking_indexes,this.final_path);
-
-        let temp_path = this.final_path;
-        let distance = this.distance;
-
-        for(let i=0;i<this.checking_indexes.length;i++)
-        {
-           // console.log(this.final_path);
-
-            let min=this.dijkstra(this.graph,this.final_path[this.checking_indexes[i]],this.final_path[this.checking_indexes[i]+1]);
-            let min2=this.dijkstra(this.graph,this.final_path[this.checking_indexes[i]],this.final_path[this.checking_indexes[i]+2]);
-
-                //console.log(this.steps,min,this.final_path[this.checking_indexes[i]],this.final_path[this.checking_indexes[i]+j]);
-                if(min2<min)
-                {
-                    let temp = this.final_path[this.checking_indexes[i]+1];
-                    this.final_path[this.checking_indexes[i]+1] = this.final_path[this.checking_indexes[i]+2]
-                    this.final_path[this.checking_indexes[i]+2] = temp;
-
-                    console.log(this.steps,min,min2, this.final_path);
-                    distance = this.distance;
-
-                    min= this.steps;
-                }
-
-
-
-        }
-
-
-    }
-
     getPathMatrix(path)
     {
         this.path_matrix=path;
        // console.log(this.path_matrix);
-    }
-
-    getSelectedPathMatrix()
-    {
-        for (let i=0; i<this.detailedKeyPathArray.length;i++)
-        {
-
-        }
-
     }
 
     createDetailedMatrix()
@@ -328,155 +284,12 @@ class RectangleDivision extends Naive {
 
     }
 
-    nextOrder(start,size)
-    {
-
-        let counter =1;
-        let arr =[];
-        let point_array =[];
-
-        for(let i=0;i<size;i++)
-        {
-            arr[i]=i;
-        }
-
-        for(let i=0;i<size;i++)
-        {
-            point_array[i]=this.final_path[start+i];
-        }
-
-        let part_path=[];
-        this.distance=Infinity;
-
-        while(true)
-        {
-
-
-            let index = arr[0];
-            //console.log(index,arr.length);
-            if (index === arr.length - 1 || arr.length<2)
-            {
-                console.log('finished');
-                break;
-            }
-
-             console.log(arr);
-
-
-            //this.percentage(counter);
-            counter++;
-
-
-            //console.log(counter, arr);
-
-             {
-                     //let temp_dist = this.calculateDistance(arr);
-                     let temp_dist = this.calculateDistanceFromFile(start, arr, point_array);
-                     //console.log("distance", temp_dist, this.distance, );
-
-                     if (temp_dist < this.distance)
-                     {
-                         //console.log("distance", temp_dist, this.distance, arr);
-                         this.distance = temp_dist;
-                         part_path = this.getNaivePath(start, arr, point_array);
-                     }
-            }
-            //console.log(arr,temp_dist,this.distance,this.final_path);
-
-            // STEP 1 of the algorithm
-            let largestI = -1;
-            for (let i = 0; i < arr.length - 1; i++)
-            {
-                if (arr[i] < arr[i + 1]) {
-                    largestI = i;
-                }
-            }
-
-            // STEP 2
-            let largestJ = -1;
-            for (let j = 0; j < arr.length; j++)
-            {
-                if (arr[largestI] < arr[j]) {
-                    largestJ = j;
-                }
-            }
-
-            // STEP 3
-
-            this.swap(arr, largestI, largestJ);
-
-
-            // STEP 4: reverse from largestI + 1 to the end
-
-            let endArray = arr.splice(largestI + 1);
-            endArray.reverse();
-            arr = arr.concat(endArray);
-
-
-        }
-
-        //this.getDetailedNaivePath();
-        //this.create_result_table();
-
-        console.log(part_path,this.final_path);
-
-    }
-
-    calculateDistanceFromFile(start_point,arr,point_arr)
-    {
-
-        let start = this.final_path[start_point-1] + "->" +  point_arr[arr[0]];
-        let tepm_dist = this.path_matrix[start];
-
-
-        if(point_arr[arr[arr.length-1]] === this.entry)
-        {
-            let end = point_arr[arr[arr.length-1]] + "->" +  this.final_path[this.final_path.length-1];
-            tepm_dist += this.path_matrix[end];
-        }
-        //console.log("tm",start,tepm_dist,this.final_path,start_point);
-
-        for(let i=0;i<arr.length-1;i++)
-        {
-
-            let name = point_arr[arr[i]] + "->" + point_arr[arr[i+1]];
-
-            tepm_dist+= this.path_matrix[name];
-
-        }
-
-       // console.log(tepm_dist,arr,point_arr,start_name);
-        return tepm_dist;
-    }
-
-    getNaivePath(start,arr,point_array)
-    {
-        let path = [];
-
-        for(let i=0;i<arr.length;i++)
-        {
-
-            path[i]=point_array[arr[i]];
-        }
-
-        for(let i=start;i<start+arr.length;i++)
-        {
-            this.final_path[i] = path[i-start];
-        }
-
-        //console.log("start",start,"path: ",path,"final",this.final_path);
-       return path;
-
-    }
-
     getFinalDistance()
     {
         let dist =0;
         for(let i=0;i<this.final_path.length-1;i++)
         {
-
-            let name = this.final_path[i] + "->" +  this.final_path[i+1];
-            dist+= this.path_matrix[name];
+          dist+= this.getNodesDistance(this.final_path[i],this.final_path[i+1]);
         }
 
         this.distance=dist;

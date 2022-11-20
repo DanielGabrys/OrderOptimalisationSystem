@@ -453,9 +453,17 @@ class GridController extends Controller
         $name = "matrix_".$grid->id.'.json';
         $path = "nodesPaths/";
 
-       // Storage::disk('public')->put($path.$name,$request->file('file'));
+        //phpinfo();
+
+       /* Storage::disk('local')->putFileAs(
+            $path,
+            $request->file('file'),
+            $name);
+       */
         $request->file->storeAs($path, $name,'public');
-        return Redirect()->back()->with('success','Pomyślnie');
+
+
+       return Redirect()->back()->with('success','Pomyślnie');
 
     }
 
@@ -468,6 +476,8 @@ class GridController extends Controller
 
         $name = "permutation_".$number.'.json';
         $path = "naive_combinations/";
+
+
 
         Storage::disk('public')->put($path.$name, $matrix);
         return Redirect()->back()->with('success','Pomyślnie');

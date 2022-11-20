@@ -139,6 +139,7 @@
         base.addButtonlisteners(base.products_positions);
         naive.getEntry({{$grid->entry}});
         naive.getPathMatrix({!! $path_matrix !!});
+        console.log("path",naive.path_matrix);
         naive.naive();
 
 

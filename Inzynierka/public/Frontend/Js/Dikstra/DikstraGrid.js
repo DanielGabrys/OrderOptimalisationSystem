@@ -2,6 +2,7 @@ class DikstraGrid extends ProductsGrid
 {
 
     graph = {};
+    BFSGraph ={};
     graphToExport =[];
     neighborhood_map = {};
 
@@ -60,6 +61,7 @@ class DikstraGrid extends ProductsGrid
             }
                 this.graph = graph;
         }
+            this.initialiseBFSEdges();
             //console.log(shelves,this.graph);
     }
 
@@ -214,13 +216,13 @@ class DikstraGrid extends ProductsGrid
         return this.end;
     }
 
-    setStartEnd(s, e) {
+    setStartEnd(s, e)
+    {
         this.start = s;
         this.end = e;
 
-
         this.clearColorize();
-        this.dijkstra(this.graph, s, e);
+        this.getBFSShortestPath(this.BFSGraph,parseInt(s),parseInt(e))
         this.setTableData();
         this.colorizePath();
     }
@@ -234,8 +236,8 @@ class DikstraGrid extends ProductsGrid
 
     colorizePath()
     {
-        for(let i=0; i<this.path_array.length;i++)
-            setTimeout(this.change, 200*i,i,this.path_array);
+        for(let i=0; i<this.path.length;i++)
+            setTimeout(this.change, 200*i,i,this.path);
     }
 
     change(i,p)
@@ -253,6 +255,124 @@ class DikstraGrid extends ProductsGrid
         this.path_array = {};
     }
 
+
+    //// BFS search
+
+
+    addEdge(u, v,neighbors)
+        {
+            if (neighbors[u] === undefined) {  // Add the edge u -> v.
+                neighbors[u] = [];
+            }
+            neighbors[u].push(v);
+            if (neighbors[v] === undefined)
+            {  // Also add the edge v -> u in order
+                neighbors[v] = [];               // to implement an undirected graph.
+            }                                  // For a directed graph, delete
+            neighbors[v].push(u);              // these four lines.
+        };
+
+
+    initialiseBFSEdges()
+    {
+        let graph = {};
+        let neighbors = this.neighbors = {};
+
+        for(let i=0;i<this.graphToExport.length;i++)
+        {
+            let key = this.graphToExport[i]["id"];
+            let next = this.graphToExport[i]["neighbours"];
+
+            for (let j = 0; j < next.length; j++)
+            {
+                this.addEdge(key, next[j],neighbors);
+             }
+        }
+        graph.neighbors = neighbors;
+        this.BFSGraph = graph;
+        console.log("bts",graph);
+
+    };
+
+    getBFSShortestPath(graph,start,end)
+    {
+        this.steps= this.bfs(graph, start,end);
+        this.path=this.shortestPath(graph, start, end);
+    }
+
+    bfs(graph, source,end)
+    {
+            let queue = [ { vertex: source, count: 0 } ], visited = { source: true }, tail = 0;
+
+            while (tail < queue.length)
+            {
+                let u = queue[tail].vertex, count = queue[tail++].count;  // Pop a vertex off the queue.
+                console.log('distance from ' + source + ' to ' + u + ': ' + count);
+
+                if(u==end)
+                    return count;
+
+                graph.neighbors[u].forEach(function (v)
+                {
+                    if (!visited[v])
+                    {
+                        visited[v] = true;
+                        queue.push({ vertex: v, count: count + 1 });
+                    }
+            });
+
+
+
+        }
+
+    }
+
+    shortestPath(graph, source, target)
+    {
+        if (source == target)
+        {   // Delete these four lines if
+            // you want to look for a cycle
+            return;                 // when the source is equal to
+        }                         // the target.
+        var queue = [ source ],
+            visited = { source: true },
+            predecessor = {},
+            tail = 0;
+        while (tail < queue.length)
+        {
+            var u = queue[tail++],  // Pop a vertex off the queue.
+                neighbors = graph.neighbors[u];
+            for (var i = 0; i < neighbors.length; ++i)
+            {
+                var v = neighbors[i];
+                if (visited[v]) {
+                    continue;
+                }
+                visited[v] = true;
+                if (v === target)
+                {   // Check if the path is complete.
+                    var path = [ v ];   // If so, backtrack through the path.
+                    while (u !== source)
+                    {
+                        path.push(u);
+                        u = predecessor[u];
+                    }
+                    path.push(u);
+                    path.reverse();
+                    console.log(path);
+                    return path;
+                }
+                predecessor[v] = u;
+                queue.push(v);
+            }
+        }
+        console.log('there is no path from ' + source + ' to ' + target);
+        return 0;
+    }
+
+
 }
 
 dikstra = new DikstraGrid();
+
+

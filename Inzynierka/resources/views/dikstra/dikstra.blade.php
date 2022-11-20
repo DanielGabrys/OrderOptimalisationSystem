@@ -48,7 +48,7 @@
                 <input type="number" class="form-control" id="end" >
             </div>
 
-            <button type="button" class="btn btn-primary mb-2" onclick="dikstra.setStartEnd(document.getElementById('start').value,document.getElementById('end').value);">CALCULATE</button>
+            <button type="button" id="nodes_path" class="btn btn-primary mb-2" >CALCULATE</button>
 
             <input type="hidden" class="form-control" name="json_matrix" id="json_matrix" >
 
@@ -121,6 +121,12 @@
             }
             $('.custom-file-label').html(fileName);
         });
+
+
+        document.getElementById("nodes_path").addEventListener("click", function ()
+        {
+            dikstra.setStartEnd(document.getElementById('start').value,document.getElementById('end').value);
+        })
 
         function download(file, text)
         {
