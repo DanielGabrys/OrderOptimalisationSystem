@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Grid;
 use App\Models\Grid_Product;
 use App\Models\GridProducts;
+use App\Models\OrderOptimisationResults;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -523,9 +524,36 @@ class GridController extends Controller
 
     public function orderOptResultsSubmit(Request $request)
     {
-        $result = $request->results;
-        //$result = $request->results;
-        return view('OrderOptimalisation.OrderOptResults',["orderOptResults"=>$result]);
+        $result2 = json_decode( $request->results,true);
+
+        OrderOptimisationResults::query()->delete();
+
+        foreach($result2 as $i => $collection)
+        {
+            $orderOpt = new OrderOptimisationResults();
+            if($i=="dist")
+                break;
+
+            $orderOpt -> id = $i+1;
+            $orderOpt -> orders = json_encode($result2[$i]["order"]);
+            $orderOpt -> products_id = json_encode($result2[$i]["products_id_map"]);
+            $orderOpt -> distance = $result2[$i]["distance"];
+            $orderOpt -> path = json_encode($result2[$i]["path"]);
+            $orderOpt -> detailed_path = json_encode($result2[$i]["detailed_path"]);
+
+            $orderOpt->save();
+        }
+
+        return Redirect()->route('orderOptResult')->with('success','Dodano pomyślnie produkt do pola siatki');
+    }
+
+
+    public function orderOptResults()
+    {
+        $result = OrderOptimisationResults::paginate(5);
+        $result2 =json_encode($result);
+
+        return view('OrderOptimalisation.OrderOptResults',["products"=>$result, "result"=>$result2]);
     }
 
 

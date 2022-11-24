@@ -6,7 +6,7 @@ class GeneticAlgo extends RectangleDivision
     fitness =[];
     bestDistance = Infinity;
     bestPath =[];
-    iteration =100;
+    iteration =50;
     currentIteration=0;
 
     createPopulation()
@@ -111,7 +111,7 @@ class GeneticAlgo extends RectangleDivision
             this.nextGeneration();
             this.currentIteration++;
 
-            console.log(i, this.bestDistance,this.bestPath);
+            //console.log(i, this.bestDistance,this.bestPath);
            // console.log(i,this.population);
         }
 

@@ -307,7 +307,7 @@ class DikstraGrid extends ProductsGrid
             while (tail < queue.length)
             {
                 let u = queue[tail].vertex, count = queue[tail++].count;  // Pop a vertex off the queue.
-                console.log('distance from ' + source + ' to ' + u + ': ' + count);
+               // console.log('distance from ' + source + ' to ' + u + ': ' + count);
 
                 if(u==end)
                     return count;

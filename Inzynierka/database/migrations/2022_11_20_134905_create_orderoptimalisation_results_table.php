@@ -13,15 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('grid', function (Blueprint $table) {
+        Schema::create('Order_Optimisation_results', function (Blueprint $table)
+        {
             $table->id();
-            $table->timestamps();
-            $table->string('name');
-            $table->integer('width') ;
-            $table->integer('height') ;
-            $table->integer('entry');
-            $table->LongText('shelfs');
+            $table->String("orders");
+            $table->String("products_id");
+            $table->integer('distance')->unsigned();
+            $table->Text("path");
+            $table->LongText("detailed_path");
 
+            $table->timestamps();
         });
     }
 
@@ -32,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('grids');
+        Schema::dropIfExists('Order_Optimisation_results');
     }
 };

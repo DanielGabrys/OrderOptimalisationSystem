@@ -241,7 +241,7 @@ class RectangleDivision extends Naive {
 
                 for (const key2 in found)
                 {
-                        arr.push(found[key2]);
+                        arr.push(parseInt(found[key2]));
                         this.indexes_counter++;
 
                 }

@@ -107,6 +107,8 @@ Route::get('/', function ()
     Route::post('/grid/orderOptResultsSubmit',[GridController::class, 'orderOptResultsSubmit'])->name('orderOptResults');
     //Route::get('/grid/orderOptResults',[GridController::class, 'orderOptResults'])->name('orderOptimalisationResults');
 
+    Route::get('/grid/orderOptResults',[GridController::class, 'orderOptResults'])->name('orderOptResult');
+
 
 
 

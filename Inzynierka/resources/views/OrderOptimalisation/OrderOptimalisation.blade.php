@@ -160,7 +160,7 @@
     </div>
 
     <div class="container-fluid mt-2 d-flex justify-content-center" >
-        <form class="form-inline" action="{{route('orderOptResults')}}" method="POST">
+        <form class="form-inline" action="{{route('orderOptResults')}}" target="_blank" method="POST">
             @csrf
                 <input type="hidden" class="form-control" id="results" name="results"  value=15 style="width: 80px;">
 
@@ -193,7 +193,7 @@
             genetic.getEntry({{$grid->entry}});
             genetic.getPathMatrix({!! $path_matrix !!});
             genetic.setGeneticData(population, iteration);
-            genetic.orderList = genetic.createRandomOrders(orders_num, size);
+            genetic.orderList = genetic.createRandomOrders2(orders_num, size);
             genetic.createPopulation();
             genetic.createOrderPopulation(divider);
 
@@ -252,6 +252,7 @@
             console.timeEnd('start');
 
             showDivElements();
+            genetic.getProductsIdIntoResult();
             console.log(genetic.bestCombination);
 
             genetic.getOrderFinalResult();
@@ -275,6 +276,13 @@
             let result = JSON.stringify(genetic.bestCombination);
             document.getElementById("results").value=result;
         }
+
+
+        element2.addEventListener("click", function()
+        {
+        });
+
+
 
 
 
