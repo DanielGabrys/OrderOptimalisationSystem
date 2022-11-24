@@ -1,12 +1,12 @@
 
 class GeneticAlgo extends RectangleDivision
 {
-    populationSize=2000;
+    populationSize=3000;
     population =[];
     fitness =[];
     bestDistance = Infinity;
     bestPath =[];
-    iteration =50;
+    iteration =150;
     currentIteration=0;
 
     createPopulation()

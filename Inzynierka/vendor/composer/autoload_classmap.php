@@ -26,6 +26,7 @@ return array(
     'App\\Models\\Grid' => $baseDir . '/app/Models/Grid.php',
     'App\\Models\\Grid_Product' => $baseDir . '/app/Models/Grid_Product.php',
     'App\\Models\\Order' => $baseDir . '/app/Models/Order.php',
+    'App\\Models\\OrderOptimisationResults' => $baseDir . '/app/Models/OrderOptimisationResults.php',
     'App\\Models\\OrderProducts' => $baseDir . '/app/Models/OrderProducts.php',
     'App\\Models\\Product' => $baseDir . '/app/Models/Product.php',
     'App\\Models\\User' => $baseDir . '/app/Models/User.php',

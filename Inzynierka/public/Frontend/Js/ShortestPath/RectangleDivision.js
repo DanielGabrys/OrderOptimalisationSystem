@@ -129,8 +129,8 @@ class RectangleDivision extends Naive {
                 }
                 else
                 {
-                    let name = this.rectangles[key]["min"] + "->" + key2
-                    this.rectangles[key]["position"][key2] = this.path_matrix[name];
+                    //let name = this.rectangles[key]["min"] + "->" + key2
+                    this.rectangles[key]["position"][key2] = this.getNodesDistance(this.rectangles[key]["min"],key2);
 
                 }
 
@@ -305,7 +305,7 @@ class RectangleDivision extends Naive {
             let name = arr[i] + "->" + arr[i+1];
 
             if(arr[i] !== arr[i+1])
-                 dist+= this.path_matrix[name];
+                 dist+= this.getNodesDistance(arr[i],arr[i+1]);
             //console.log(name,this.path_matrix[name]);
         }
         return dist;
