@@ -564,7 +564,7 @@ class GridController extends Controller
         $products = $grid->products()->orderByRaw('position ASC')->get();
 
         $name = "matrix_".$grid->id.'.json';
-        $path = storage_path() . "/app/public/";
+        $path = storage_path() . "/app/public/nodesPaths";
         $array=json_encode($products);
         $path_matrix = file_get_contents($path ."/".$name);
 
