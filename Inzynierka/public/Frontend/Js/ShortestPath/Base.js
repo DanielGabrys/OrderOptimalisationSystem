@@ -108,45 +108,6 @@ class Base extends DikstraGrid
 
     }
 
-    setDikstraGraph()
-    {
-
-        let naive_array=[];
-        for(let i=0;i<this.order.length;i++)
-        {
-            let arr2 = new Array(this.order.length);
-            arr2.fill(0);
-
-            for(let j=i;j<this.order.length;j++)
-            {
-                if(i!==j)
-                {
-                    this.dijkstra(this.graph,this.order[i],this.order[j]);
-                    arr2[j]= this.steps;
-                }
-                else
-                {
-                    arr2[j] = 0; //diagonal
-                }
-
-            }
-
-            naive_array[i]=arr2;
-        }
-
-        for(let i=0;i<this.order.length;i++)
-        {
-            for (let j = i; j < this.order.length; j++)
-            {
-                naive_array[j][i]=naive_array[i][j];
-            }
-        }
-
-        this.node_graph=naive_array
-        console.log(this.node_graph);
-
-    }
-
     colorize_selected(id)
     {
         document.getElementById(id).className="colorized_naive_cell";
@@ -161,23 +122,7 @@ class Base extends DikstraGrid
     {
         this.entry = parseInt(entry);
     }
-
-    calculateDistance(arr)
-    {
-
-        let start = this.dijkstra(this.graph,this.entry,this.order[arr[0]]);
-        let end = this.dijkstra(this.graph,this.order[arr[arr.length-1]],this.entry);
-
-        let tepm_dist = start + end;
-        for(let i=0;i<arr.length-1;i++)
-        {
-            tepm_dist+= this.node_graph[arr[i]][arr[i+1]];
-            // console.log(this.node_graph[i][i+1])
-        }
-
-        return tepm_dist;
-    }
-
+    
     getFinalPath(arr)
     {
         let start = [this.entry];

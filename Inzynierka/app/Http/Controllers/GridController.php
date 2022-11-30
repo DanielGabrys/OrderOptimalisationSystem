@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Grid;
 use App\Models\Grid_Product;
 use App\Models\GridProducts;
+use App\Models\Order;
 use App\Models\OrderOptimisationResults;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -560,6 +561,9 @@ class GridController extends Controller
     public function getGridDataForPath($view)
     {
 
+
+        $orders=Order::with('products')->get();
+
         $grid=Grid::all()->where('isActive','=',1)->first();
         $products = $grid->products()->orderByRaw('position ASC')->get();
 
@@ -573,6 +577,7 @@ class GridController extends Controller
                 'grid'=>$grid,
                 'products_array'=>$array,
                 'path_matrix'=>$path_matrix,
+                'orders' =>$orders
             ]
         );
 

@@ -29,6 +29,7 @@ class OrderOptimalisation extends GeneticAlgo
         let orders=[];
         this.divisionNr = Math.ceil(this.orders_number/divider);
 
+        console.log("number",this.orders_number);
         for(let i=0;i<this.orders_number;i++)
         {
             orders[i]=i;
@@ -62,67 +63,6 @@ class OrderOptimalisation extends GeneticAlgo
             }
         }
     }
-
-    randomProductsInOrder(orders_number,product_limit)
-    {
-
-            this.orders_number = orders_number;
-            let orders = {};
-
-            let products_count = Object.keys(this.products_positions).length;
-
-            for(let k=0;k<orders_number;k++)
-            {
-                orders[k] = {};
-                orders[k]['positions'] = [];
-                orders[k]['real_positions'] = [];
-                orders[k]['primary'] = [];
-                orders[k]['products'] = new Map();
-
-                let products_map = new Map();
-                let array = [];
-                let product_array =[];
-                let randomized = [];
-                let order = [];
-
-                for (let i = 0; i < Math.floor((Math.random() * product_limit+1)); i++)  //random order size
-                {
-                    let random = Math.floor((Math.random() * products_count)); //random products
-                    if(!products_map.has(random))
-                    {
-                        products_map.set(this.products_positions[random]["id"],this.products_positions[random]["pivot"]["desired_position"]);
-                    }
-                }
-
-
-                // console.log(array);
-                console.log("rand",randomized);
-
-                for (let i = 0; i < randomized.length; i++) {
-
-                    const found = this.products_positions.filter(e => e.pivot.position == randomized[i]);
-
-                    for (const key in found) {
-                        // console.log(arr[i], found);
-                        let pos = found[key]['pivot']['desired_position'];
-                        if (!order.includes(pos))
-                        {
-                            order.push(pos);
-                        }
-
-                    }
-
-                }
-                orders[k]['positions']=randomized;
-                orders[k]['real_positions']=order;
-
-                this.randomOrderColor();
-
-            }
-
-            return orders
-    }
-
 
     createRandomOrders(orders_number,product_limit)
         {
@@ -253,7 +193,7 @@ class OrderOptimalisation extends GeneticAlgo
             orders[k]['real_positions']=order;
             this.OrderProducts_Id_Map.set(k,randomized);
 
-            console.log(this.OrderProducts_Id_Map);
+           // console.log(this.OrderProducts_Id_Map);
 
             this.randomOrderColor();
 
@@ -263,6 +203,51 @@ class OrderOptimalisation extends GeneticAlgo
         return orders
     }
 
+    loadDatabase(obj)
+    {
+        this.orders_number = obj.length;
+        let orders = {};
+        for( let key =0; key<obj.length; key++)
+        {
+            orders[key] = {};
+            orders[key]['positions'] = [];
+            orders[key]['real_positions'] = [];
+            orders[key]['products_id'] = [];
+            orders[key]['primary'] = [];
+
+            let order = [];
+            let positions = [];
+            let products_id = [];
+
+            console.log(obj[key])
+            for(let key2 = 0 ; key2< obj[key]["products"].length; key2++)
+            {
+                const found = this.products_positions.filter(e => e.id == obj[key].products[key2].id);
+                console.log(found[0]);
+                let pos = found[0]['pivot']['desired_position'];
+                let real_pos = found[0]['pivot']['position'];
+                if (!order.includes(pos))
+                {
+                    order.push(pos);
+                }
+                positions.push(real_pos)
+                products_id.push(obj[key].products[key2].id)
+            }
+
+            orders[key]['positions']=positions;
+            orders[key]['real_positions']=order;
+            this.OrderProducts_Id_Map.set(key,products_id);
+
+             console.log(this.OrderProducts_Id_Map);
+
+            this.randomOrderColor();
+
+        }
+
+        console.log(orders)
+
+        return orders;
+    }
 
     orderFitness(sequence)
     {
@@ -437,7 +422,7 @@ class OrderOptimalisation extends GeneticAlgo
            // console.log("shuffle",order_arr,this.shuffle(temp_arr));
             sec_pop[i]['arrayToRandom']= this.shuffle(temp_arr);
             //console.log("shuffle",order_arr,sec_pop[i]['arrayToRandom']);
-            console.log("shuffle",order_arr,sec_pop[i]['arrayToRandom']);
+            //console.log("shuffle",order_arr,sec_pop[i]['arrayToRandom']);
 
 
 

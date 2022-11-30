@@ -43,9 +43,9 @@ class RectangleDivision extends Naive {
         console.log(this.rectangles);
         //this.calculateNewCentralPoints();
 
-        this.detailedKeyPathArray = this.createDetailedMatrix();
+       // this.detailedKeyPathArray = this.createDetailedMatrix();
         this.calculateDistanceFromRegionCenter();
-        //console.log(this.rectangles);
+       // console.log(this.rectangles);
 
         this.sort();
         //console.log(this.rectangles);
@@ -137,7 +137,6 @@ class RectangleDivision extends Naive {
 
             }
         }
-
     }
 
     calculatePointsDistance(node, c_x, c_y) {

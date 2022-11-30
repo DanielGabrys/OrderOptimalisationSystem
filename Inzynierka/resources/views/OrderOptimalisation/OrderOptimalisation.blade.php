@@ -121,6 +121,12 @@
 
         </form>
 
+        <form class="form-inline">
+
+            <button type="button" id="load_database" class="btn btn-success btn-sm" >FROM DATABASE</button>
+
+        </form>
+
 
     </div>
     <div class="container-fluid d-flex justify-content-center">
@@ -177,23 +183,46 @@
     <script>
 
 
+        let obj = {!! $orders !!};
+        console.log(obj);
+
         hideDivElements();
 
         let element2 = document.getElementById("load_random");
         element2.addEventListener("click", function()
         {
-
-            document.getElementById("loader").hidden = false;
             let size = document.getElementById("join_size").value;
             let orders_num = document.getElementById("orders_number").value;
-            let divider = document.getElementById("division").value;
+
+            setStartData();
+            genetic.orderList = genetic.createRandomOrders2(orders_num, size);
+            solver();
+
+        });
+
+        document.getElementById("load_database").addEventListener("click", function()
+        {
+            setStartData();
+            genetic.orderList = genetic.loadDatabase(obj)
+            solver();
+        });
+
+
+        function setStartData()
+        {
+            document.getElementById("loader").hidden = false;
             let population = document.getElementById("population").value;
             let iteration = document.getElementById("iteration").value;
 
             genetic.getEntry({{$grid->entry}});
             genetic.getPathMatrix({!! $path_matrix !!});
             genetic.setGeneticData(population, iteration);
-            genetic.orderList = genetic.createRandomOrders2(orders_num, size);
+        }
+
+        function solver()
+        {
+            let divider = document.getElementById("division").value;
+
             genetic.createPopulation();
             genetic.createOrderPopulation(divider);
 
@@ -212,14 +241,13 @@
                 setTimeout(FinalizeIteration,0);
             }
             setTimeout(FinalResults,0);
-
-
-        });
+        }
 
         function SingleIteration(key,iter)
         {
             document.getElementById("progress").innerHTML=iter+"/"+genetic.orderIteration+" "+(parseInt(key)+1)+"/"+genetic.orderPopulationSize;
 
+            console.log("elo",genetic.orderPopulation);
             for (const key2 in genetic.orderPopulation[key])
             {
                 genetic.orderFitness(genetic.orderPopulation[key][key2]);
@@ -277,10 +305,6 @@
             document.getElementById("results").value=result;
         }
 
-
-        element2.addEventListener("click", function()
-        {
-        });
 
 
 

@@ -1,7 +1,7 @@
 
 class GeneticAlgo extends RectangleDivision
 {
-    populationSize=6000;
+    populationSize=100;
     population =[];
     fitness =[];
     bestDistance = Infinity;
@@ -30,8 +30,6 @@ class GeneticAlgo extends RectangleDivision
 
         //console.log(this.population);
 
-
-
     }
 
     shuffle(array)
@@ -53,7 +51,7 @@ class GeneticAlgo extends RectangleDivision
 
        // console.log("swap",array);
     return array;
-}
+    }
 
     calcFitness()
     {
@@ -111,7 +109,7 @@ class GeneticAlgo extends RectangleDivision
             this.nextGeneration();
             this.currentIteration++;
 
-            //console.log(i, this.bestDistance,this.bestPath);
+             console.log(i, this.bestDistance,this.bestPath);
            // console.log(i,this.population);
         }
 
@@ -168,7 +166,7 @@ class GeneticAlgo extends RectangleDivision
     pickOne(list,prob)
     {
         let index =0;
-        let r = Math.random(1);
+        let r = Math.random();
         //console.log("r",r);
 
         while(r>0)
@@ -186,7 +184,7 @@ class GeneticAlgo extends RectangleDivision
     {
 
         let rate =Math.random();
-        if(rate>0.5)
+        if(rate>0.6)
         {
             this.mutate_dist(order);
             return order;

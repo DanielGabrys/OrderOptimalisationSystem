@@ -15,7 +15,7 @@ class OrderController extends Controller
 {
     public function showOrders()
     {
-        $orders = Order::paginate(6);
+        $orders = Order::paginate(5);
         return view('orders.addOrders',['orders'=>$orders]);
     }
 
@@ -55,6 +55,7 @@ class OrderController extends Controller
             }
         }
     }
+
 
     public function ValidateProduct(Request $request)
     {
