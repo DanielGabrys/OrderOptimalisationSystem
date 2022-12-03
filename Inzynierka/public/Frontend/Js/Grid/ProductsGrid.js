@@ -18,7 +18,7 @@ class ProductsGrid extends BasicGrid
         for (const key in found)
         {
             name = '<p>' + found[key]['name']+ '</p>';
-            text += '<h6>' + found[key]['name'] + '</h6>';
+            text += '<h6>' + found[key]['id'] + '</h6>';
 
             counter ++;
         }

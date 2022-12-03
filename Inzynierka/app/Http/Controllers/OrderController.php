@@ -7,6 +7,7 @@ use App\Imports\OrdersImport;
 use App\Imports\OrdersProductsImport;
 use App\Imports\UsersImport;
 use App\Models\Order;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
@@ -15,6 +16,7 @@ class OrderController extends Controller
 {
     public function showOrders()
     {
+
         $orders = Order::paginate(5);
         return view('orders.addOrders',['orders'=>$orders]);
     }
@@ -41,6 +43,7 @@ class OrderController extends Controller
             try
             {
 
+                Order::query()->delete();
                 Excel::import(new OrdersImport(), $request->file('file')->store('temp'));
                 Excel::import(new OrdersProductsImport(), $request->file('file2')->store('temp'));
 
@@ -49,7 +52,7 @@ class OrderController extends Controller
             }
             catch (\Exception $e)
             {
-               // var_dump($e);
+                var_dump($e);
                 DB::rollBack();
                 return Redirect()->back()->with('failure', 'Upps coś poszło nie tak');
             }

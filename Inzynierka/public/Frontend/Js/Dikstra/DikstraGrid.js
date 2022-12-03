@@ -68,7 +68,7 @@ class DikstraGrid extends ProductsGrid
     shelvesToNeighborhoodMap()
     {
         let counter =0;
-        console.log(this.graph);
+        //console.log(this.graph);
         for (const key in this.graph)
         {
             for (const key2 in this.graph)
@@ -290,7 +290,7 @@ class DikstraGrid extends ProductsGrid
         }
         graph.neighbors = neighbors;
         this.BFSGraph = graph;
-        console.log("bts",graph);
+       // console.log("bts",graph);
 
     };
 
@@ -359,7 +359,7 @@ class DikstraGrid extends ProductsGrid
                     }
                     path.push(u);
                     path.reverse();
-                    console.log(path);
+                    //console.log(path);
                     return path;
                 }
                 predecessor[v] = u;

@@ -146,6 +146,37 @@
                 <input type="number" class="form-control" id="iteration" name="iteration" value=3 style="width: 80px;">
             </div>
 
+            <div class="input-group mb-2 mr-sm-2">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">MAX TIME</div>
+                </div>
+                <input type="number" class="form-control" id="max_time" name="max_time" value=10 style="width: 80px;">
+            </div>
+
+
+
+        </form>
+
+    </div>
+
+    <div class="container-fluid d-flex justify-content-center">
+        <form class="form-inline">
+
+            <div class="input-group mb-2 mr-sm-2">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">BASE POPULATION</div>
+                </div>
+                <input type="number" class="form-control" id="Basepopulation" name="Basepopulation"  value=200 style="width: 80px;">
+            </div>
+
+            <div class="input-group mb-2 mr-sm-2">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">BASE ITERATION</div>
+                </div>
+                <input type="number" class="form-control" id="Baseiteration" name="Baseiteration" value=50 style="width: 80px;">
+            </div>
+
+
 
         </form>
 
@@ -163,6 +194,11 @@
     </div>
 
     <div class="container-fluid mt-3 d-flex justify-content-center" id="finalCombination">
+    </div>
+
+    <div class="container-fluid mt-3 d-flex justify-content-center">
+        <h3> <span class="badge bg-danger" id="time_label">Time:</span></h3>
+        <h3> <span class="badge ml-1" id="time" name="time" style="color: #1a1e21"></span></h3>
     </div>
 
     <div class="container-fluid mt-2 d-flex justify-content-center" >
@@ -184,6 +220,7 @@
 
 
         let obj = {!! $orders !!};
+        let start;
         console.log(obj);
 
         hideDivElements();
@@ -214,6 +251,10 @@
             let population = document.getElementById("population").value;
             let iteration = document.getElementById("iteration").value;
 
+            let base_population = document.getElementById("Basepopulation").value;
+            let base_iteration = document.getElementById("Baseiteration").value;
+
+            genetic.setPopulationData(base_population,base_iteration);
             genetic.getEntry({{$grid->entry}});
             genetic.getPathMatrix({!! $path_matrix !!});
             genetic.setGeneticData(population, iteration);
@@ -222,6 +263,7 @@
         function solver()
         {
             let divider = document.getElementById("division").value;
+            let max_time = document.getElementById("max_time").value;
 
             genetic.createPopulation();
             genetic.createOrderPopulation(divider);
@@ -231,32 +273,42 @@
 
             console.log("orderList",genetic.orderList);
             console.log("colors",genetic.orderColors);
-            console.time('start')
+
+            start = window.performance.now();
+
             for(let i=0;i<genetic.orderIteration;i++)
             {
                 for (let key=0;key<genetic.orderPopulationSize;key++)
                 {
-                    setTimeout(SingleIteration,0,key,i);
+                    setTimeout(SingleIteration,0,key,i,max_time);
                 }
                 setTimeout(FinalizeIteration,0);
             }
             setTimeout(FinalResults,0);
         }
 
-        function SingleIteration(key,iter)
+        function SingleIteration(key,iter,max_time)
         {
             document.getElementById("progress").innerHTML=iter+"/"+genetic.orderIteration+" "+(parseInt(key)+1)+"/"+genetic.orderPopulationSize;
 
-            console.log("elo",genetic.orderPopulation);
-            for (const key2 in genetic.orderPopulation[key])
+            let end = window.performance.now();
+            let time = parseInt(end - start -max_time*1000);
+            if(time<0)
             {
-                genetic.orderFitness(genetic.orderPopulation[key][key2]);
-                genetic.startGenetic();
-                genetic.setOrderNodeShortestPathData(genetic.orderPopulation[key][key2]);
+
+                for (const key2 in genetic.orderPopulation[key]) {
+                    genetic.orderFitness(genetic.orderPopulation[key][key2]);
+                    genetic.startGenetic();
+                    genetic.setOrderNodeShortestPathData(genetic.orderPopulation[key][key2]);
+                }
+                genetic.orderNormaliseFitness(genetic.orderPopulation[key], genetic.orderPopulationSummary[key]);
+                genetic.setPopulationNodeShortestPathData(genetic.orderPopulation[key], genetic.orderPopulationSummary[key], iter, key);
+                //genetic.newOrderGeneration(genetic.orderPopulation[key],genetic.orderPopulationSummary[key]);
             }
-            genetic.orderNormaliseFitness(genetic.orderPopulation[key],genetic.orderPopulationSummary[key]);
-            genetic.setPopulationNodeShortestPathData(genetic.orderPopulation[key],genetic.orderPopulationSummary[key],iter,key);
-            //genetic.newOrderGeneration(genetic.orderPopulation[key],genetic.orderPopulationSummary[key]);
+
+
+
+
 
         }
 
@@ -264,9 +316,8 @@
         {
             //console.log("result",genetic.orderPopulation,genetic.orderPopulationSummary,genetic.bestOrderVariationDistance);
             genetic.newOrderGeneration(genetic.orderPopulation,genetic.orderPopulationSummary);
-            console.log("summary",genetic.orderPopulationSummary);
-
-            console.log("new pop",genetic.orderPopulation);
+            //console.log("summary",genetic.orderPopulationSummary)
+           // console.log("new pop",genetic.orderPopulation);
 
 
             console.log("finish",genetic.bestOrderVariationDistance,genetic.bestCombination);
@@ -277,7 +328,15 @@
         {
             document.getElementById("loader").hidden = true;
             document.getElementById("progress").innerHTML=""
-            console.timeEnd('start');
+
+
+            let end = window.performance.now();
+            let time = end - start;
+
+            document.getElementById("time").innerHTML=parseInt(time)/1000;
+            document.getElementById("time").innerHTML+="s";
+
+            console.log(time);
 
             showDivElements();
             genetic.getProductsIdIntoResult();
@@ -292,11 +351,13 @@
         {
             document.getElementById("loader").hidden = true;
             document.getElementById("show_results").hidden = true;
+            document.getElementById("time_label").hidden = true;
         }
 
         function showDivElements()
         {
             document.getElementById("show_results").hidden = false;
+            document.getElementById("time_label").hidden = false;
         }
 
         function resultToJSON()
@@ -304,12 +365,6 @@
             let result = JSON.stringify(genetic.bestCombination);
             document.getElementById("results").value=result;
         }
-
-
-
-
-
-
 
     </script>
 

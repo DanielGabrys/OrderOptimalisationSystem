@@ -29,7 +29,7 @@ class OrderOptimalisation extends GeneticAlgo
         let orders=[];
         this.divisionNr = Math.ceil(this.orders_number/divider);
 
-        console.log("number",this.orders_number);
+       // console.log("number",this.orders_number);
         for(let i=0;i<this.orders_number;i++)
         {
             orders[i]=i;
@@ -80,7 +80,7 @@ class OrderOptimalisation extends GeneticAlgo
                     let array = [];
                     let randomized = [];
                     let order = [];
-                    console.log("products",this.products_positions);
+                   // console.log("products",this.products_positions);
                     for (const key in this.products_positions) {
                         let pos = this.products_positions[key]['pivot']['position'];
 
@@ -102,7 +102,7 @@ class OrderOptimalisation extends GeneticAlgo
 
 
                     // console.log(array);
-                     console.log("rand",randomized);
+                    // console.log("rand",randomized);
 
                     for (let i = 0; i < randomized.length; i++) {
 
@@ -150,7 +150,7 @@ class OrderOptimalisation extends GeneticAlgo
             let positions = [];
 
             // get all possible randoms products
-            console.log("products",this.products_positions);
+           // console.log("products",this.products_positions);
             for (const key in this.products_positions) {
                 let prod_key = this.products_positions[key]["id"];
 
@@ -179,7 +179,7 @@ class OrderOptimalisation extends GeneticAlgo
 
                 const found = this.products_positions.filter(e => e.id == randomized[i]);
 
-                console.log("found",found);
+               // console.log("found",found);
                     let pos = found[0]['pivot']['desired_position'];
                     let real_pos = found[0]['pivot']['position'];
                     if (!order.includes(pos))
@@ -199,7 +199,7 @@ class OrderOptimalisation extends GeneticAlgo
 
         }
 
-        console.log("orders",orders);
+       // console.log("orders",orders);
         return orders
     }
 
@@ -219,32 +219,33 @@ class OrderOptimalisation extends GeneticAlgo
             let positions = [];
             let products_id = [];
 
-            console.log(obj[key])
+
             for(let key2 = 0 ; key2< obj[key]["products"].length; key2++)
             {
                 const found = this.products_positions.filter(e => e.id == obj[key].products[key2].id);
-                console.log(found[0]);
-                let pos = found[0]['pivot']['desired_position'];
-                let real_pos = found[0]['pivot']['position'];
-                if (!order.includes(pos))
+                if((found.hasOwnProperty(0)))
                 {
-                    order.push(pos);
+                    let pos = found[0]['pivot']['desired_position'];
+                    let real_pos = found[0]['pivot']['position'];
+                    if (!order.includes(pos)) {
+                        order.push(pos);
+                    }
+                    positions.push(real_pos)
+                    products_id.push(obj[key].products[key2].id)
                 }
-                positions.push(real_pos)
-                products_id.push(obj[key].products[key2].id)
             }
 
             orders[key]['positions']=positions;
             orders[key]['real_positions']=order;
             this.OrderProducts_Id_Map.set(key,products_id);
 
-             console.log(this.OrderProducts_Id_Map);
+            // console.log(this.OrderProducts_Id_Map);
 
             this.randomOrderColor();
 
         }
 
-        console.log(orders)
+       // console.log(orders)
 
         return orders;
     }
@@ -305,7 +306,7 @@ class OrderOptimalisation extends GeneticAlgo
             }
 
         }
-        console.log("nodes",nodes);
+        //console.log("nodes",nodes);
 
         for (const key in nodes)
         {
@@ -322,7 +323,7 @@ class OrderOptimalisation extends GeneticAlgo
             }
             colorMix+=')';
             document.getElementById(key).style.background = colorMix;
-            console.log("colorMix",colorMix)
+            //console.log("colorMix",colorMix)
         }
 
     }
