@@ -19,6 +19,7 @@ class OrdersProductsImport implements ToModel,WithHeadingRow
         return new OrderProducts([
             'order_id' => $row['order_id'],
             'product_id' => $row['product_id'],
+            'amount' => $row['amount'],
         ]);
     }
 }

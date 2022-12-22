@@ -16,30 +16,47 @@ class OrderOptimalisation extends GeneticAlgo
     bestCombination = {};
     orderColors = [];
     OrderProducts_Id_Map = new Map();
+    order_ids = [];
+    order_colors ={};
 
     setGeneticData(pop,iter)
     {
         this.orderPopulationSize=pop;
         this.orderIteration =iter;
+
+        for(let i=0;i<this.orderPopulationSize;i++)
+        {
+            this.orderPopulationSummary[i]={};
+        }
     }
 
     createOrderPopulation(divider)
     {
+
         this.division=divider;
         let orders=[];
         this.divisionNr = Math.ceil(this.orders_number/divider);
 
        // console.log("number",this.orders_number);
+
         for(let i=0;i<this.orders_number;i++)
         {
             orders[i]=i;
         }
 
+        for(let i=0;i<this.order_ids.length;i++)
+        {
+
+            orders[i]=this.order_ids[i];
+        }
+
+        console.log("o",this.order_ids);
+
         for(let i=0;i<this.orderPopulationSize;i++)
         {
             let size =Math.ceil(this.orders_number/divider);
             this.orderPopulation[i] = {};
-            this.orderPopulationSummary[i] = {};
+            //this.orderPopulationSummary[i] = {};
 
             let temp_orders= orders.slice();
             let counter =0;
@@ -56,12 +73,14 @@ class OrderOptimalisation extends GeneticAlgo
                     let elem = temp_orders[index];
                     temp_orders.splice(index,1);
                     this.orderPopulation[i][j]["order"][k]=elem;
+                    this.orderPopulation[i][j]["containers"] ={};
                     //console.log(elem,this.orderPopulation[i][j][k]);
 
                     counter++;
                 }
             }
         }
+
     }
 
     createRandomOrders(orders_number,product_limit)
@@ -209,11 +228,14 @@ class OrderOptimalisation extends GeneticAlgo
         let orders = {};
         for( let key =0; key<obj.length; key++)
         {
-            orders[key] = {};
-            orders[key]['positions'] = [];
-            orders[key]['real_positions'] = [];
-            orders[key]['products_id'] = [];
-            orders[key]['primary'] = [];
+
+            this.order_ids.push(obj[key]['id']);
+            let id =obj[key]["id"];
+            orders[id] = {};
+            orders[id]['positions'] = [];
+            orders[id]['real_positions'] = [];
+            orders[id]['products_id'] = [];
+            orders[id]['primary'] = [];
 
             let order = [];
             let positions = [];
@@ -235,9 +257,9 @@ class OrderOptimalisation extends GeneticAlgo
                 }
             }
 
-            orders[key]['positions']=positions;
-            orders[key]['real_positions']=order;
-            this.OrderProducts_Id_Map.set(key,products_id);
+            orders[id]['positions']=positions;
+            orders[id]['real_positions']=order;
+            this.OrderProducts_Id_Map.set(id,products_id);
 
             // console.log(this.OrderProducts_Id_Map);
 
@@ -253,11 +275,13 @@ class OrderOptimalisation extends GeneticAlgo
     orderFitness(sequence)
     {
 
+
         let arr =[];
         let duplicats=0;
         for (let i=0;i<sequence["order"].length;i++)
         {
 
+                console.log(this.orderList,sequence)
                 for (let j=0;j<this.orderList[sequence["order"][i]]['real_positions'].length;j++)
                 {
                     if(arr.includes(this.orderList[sequence["order"][i]]['real_positions'][j]))
@@ -357,6 +381,7 @@ class OrderOptimalisation extends GeneticAlgo
         sec_pop["TotalDistance"] = dist;
         if(dist<this.bestOrderVariationDistance)
         {
+            console.log("main",main_pop,"sec",sec_pop)
             let copied1 = JSON.parse(JSON.stringify(main_pop));
             let copied2 = JSON.parse(JSON.stringify(sec_pop));
             copied1["dist"]=dist;
@@ -371,6 +396,7 @@ class OrderOptimalisation extends GeneticAlgo
 
     orderNormaliseFitness(main_pop,sec_pop)
     {
+         console.log("sec",sec_pop)
         let fitness = 0;
         for (const key in main_pop)
         {
@@ -393,6 +419,7 @@ class OrderOptimalisation extends GeneticAlgo
         }
 
         sec_pop["FitnessArr"]=arr;
+       // console.log("sec",sec_pop)
 
     }
 
@@ -517,11 +544,16 @@ class OrderOptimalisation extends GeneticAlgo
     {
         let block = document.getElementById("legend");
 
-        for(let i=0;i<this.orderColors.length;i++)
+        let counter =0;
+
+        for(const i in this.orderList)
         {
+
             let order = "Order  "+i;
-            block.innerHTML+= '<div class="badge text-wrap" style="width: 4rem; color: #1a1e21; background:' + this.orderColors[i] + '">' +order + ' </div>';
+            this.order_colors[i] = this.orderColors[counter];
+            block.innerHTML+= '<div class="badge text-wrap" style="width: 4rem; color: #1a1e21; background:' + this.orderColors[counter] + '">' +order + ' </div>';
             block.innerHTML+= '<div class="badge bg" style="width: 1rem;"> <div>';
+            counter ++;
         }
 
     }
@@ -536,7 +568,7 @@ class OrderOptimalisation extends GeneticAlgo
 
                 for (let i = 0; i < this.bestCombination[key]["order"].length; i++)
                 {
-                    let color = this.orderColors[this.bestCombination[key]["order"][i]];
+                    let color = this.order_colors[this.bestCombination[key]["order"][i]];
                     let order = "Order " + this.bestCombination[key]["order"][i];
                     block.innerHTML += '<div class="badge text-wrap" id="' + order + '" style="width: 4rem; color: #1a1e21; background:' + color + ';' + this.bestCombination[key]["order"][i] + '">' + order + ' </div>';
                 }

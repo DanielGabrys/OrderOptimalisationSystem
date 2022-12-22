@@ -8,14 +8,6 @@
                 <div class="col-md-8">
                     <div class="card">
 
-                        @if(session('success'))
-
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                <strong>{{session('success')}}</strong>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-
-                        @endif
 
                         <div class="container mt-12"> All Products </div>
 
@@ -76,6 +68,8 @@
                 <th scope="col">PRODUCT_ID</th>
                 <th scope="col">POSITION</th>
                 <th scope="col">ORDER_ID</th>
+                <th scope="col">CONTAINER</th>
+                <th scope="col">AMOUNT</th>
                 <th scope="col">DIST</th>
                 <th scope="col">PATH</th>
 
@@ -97,7 +91,9 @@
 
 
         let obj = {!! $result !!};
+        let orders ={!! $orders !!};
         console.log(obj.data);
+        console.log(orders)
 
 
 
@@ -112,16 +108,18 @@
             createTableLegend();
 
 
+
                 let path = JSON.parse(result[id]["path"]);
                 let position = JSON.parse(result[id]["products_id"]);
-                console.log(position);
+                let containers = JSON.parse(result[id]["containers"]);
                 let detailed_path = JSON.parse(result[id]["detailed_path"])
 
+                console.log(containers);
                 for(let i=1;i<path.length;i++) {
 
                     let short_detailed_path;
                     if (detailed_path[i - 1].length > 20)
-                        short_detailed_path = detailed_path[i - 1].slice(0, 20) + "...";
+                        short_detailed_path = detailed_path[i - 1].slice(0, 15) + "...";
                     else
                         short_detailed_path = detailed_path[i - 1];
 
@@ -129,38 +127,58 @@
 
                     for (const key in position[path[i]])
                     {
-                        let rows = table.rows.length;
-
-                        let row = table.insertRow(rows);
-
-
-                        let cell0 = row.insertCell(0);
-                        let cell1 = row.insertCell(1);
-                        let cell2 = row.insertCell(2);
-                        let cell3 = row.insertCell(3);
-                        let cell4 = row.insertCell(4);
-                        let cell5 = row.insertCell(5);
-
-
-                        if (i === path.length - 1)
+                        let order_id = position[path[i]][key]
+                        for(let j=0;j<order_id.length;j++)
                         {
-                            cell1.innerHTML = "END";
+
+                            let found = orders.filter(e => e.id == order_id[j]);
+                            found = found[0]["products"];
+                            let amount = found.filter(e => e.id == key);
+                            amount = amount[0]["pivot"]["amount"]
+
+                            //console.log(found,amount);
+
+                            let rows = table.rows.length;
+                            let row = table.insertRow(rows);
+
+                            let cell0 = row.insertCell(0);
+                            let cell1 = row.insertCell(1);
+                            let cell2 = row.insertCell(2);
+                            let cell3 = row.insertCell(3);
+                            let cell4 = row.insertCell(4);
+                            let cell5 = row.insertCell(5);
+                            let cell6 = row.insertCell(6);
+                            let cell7 = row.insertCell(7);
+
+
+                            if (i === path.length - 1) {
+                                cell1.innerHTML = "END";
+                            } else {
+                                cell1.innerHTML = key;
+                            }
+
+                            cell0.innerHTML = rows;
+                            cell2.innerHTML = path[i];
+
+                            cell3.innerHTML = order_id[j];
+
+                            if(containers.hasOwnProperty([order_id[j]]))
+                            {
+
+                                cell4.innerHTML = containers[order_id[j]];
+                            }
+
+                            cell5.innerHTML = amount;
+
+                            if(j===0)
+                            {
+                                cell6.innerHTML = dist;
+                                cell7.innerHTML = short_detailed_path;
+                            }
                         }
-                        else
-                        {
-                                cell1.innerHTML =key;
-                        }
-
-                        cell0.innerHTML = rows;
-                        cell2.innerHTML = path[i];
-
-
-                        cell3.innerHTML = position[path[i]][key];
-
-
-                        cell4.innerHTML = dist;
-                        cell5.innerHTML = short_detailed_path;
                     }
+
+
                 }
 
 
@@ -191,14 +209,18 @@
             let cell3 = row.insertCell(3);
             let cell4 = row.insertCell(4);
             let cell5 = row.insertCell(5);
+            let cell6 = row.insertCell(6);
+            let cell7 = row.insertCell(7);
 
 
             cell0.outerHTML = "<th>#</th>";
             cell1.outerHTML = "<th>PRODUCT_ID</th>";
             cell2.outerHTML = "<th>POSITION</th>";
             cell3.outerHTML = "<th>ORDER_ID</th>";
-            cell4.outerHTML = "<th>DISTANCE</th>";
-            cell5.outerHTML = "<th>PATH</th>";
+            cell4.outerHTML = "<th>CONTAINER</th>";
+            cell5.outerHTML = "<th>AMOUNT</th>";
+            cell6.outerHTML = "<th>DISTANCE</th>";
+            cell7.outerHTML = "<th>PATH</th>";
         }
 
     </script>

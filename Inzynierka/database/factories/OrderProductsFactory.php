@@ -27,6 +27,7 @@ class OrderProductsFactory extends Factory
 
             'order_id' => (Order::select("id")->orderBy(DB::raw('RAND()'))->first())->id,
             'product_id' => Grid_Product::where("grid_id",$grid_id)->orderBy(DB::raw('RAND()'))->first()->product_id,
+            'amount' => rand(1,10),
             'created_at' => $this->faker->dateTime(),
             'updated_at' => $this->faker->dateTime(),
         ];

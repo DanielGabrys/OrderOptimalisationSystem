@@ -9,6 +9,9 @@ class Order extends Model
 {
     use HasFactory;
 
+
+    protected $table = 'orders';
+
     protected $fillable = [
         'id',
         'primary',
@@ -17,6 +20,6 @@ class Order extends Model
 
     public function products()
     {
-        return $this->belongsToMany(Product::class);
+        return $this->belongsToMany(Product::class)->withPivot('amount');
     }
 }

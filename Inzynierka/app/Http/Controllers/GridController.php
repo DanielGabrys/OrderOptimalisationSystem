@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Containers;
 use App\Models\Grid;
 use App\Models\Grid_Product;
 use App\Models\GridProducts;
 use App\Models\Order;
 use App\Models\OrderOptimisationResults;
+use App\Models\OrderProducts;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -518,9 +521,13 @@ class GridController extends Controller
 
     public function orderOptimalisation()
     {
-
         return $this->getGridDataForPath('OrderOptimalisation.OrderOptimalisation');
 
+    }
+
+    public function orderOptimalisationContainers()
+    {
+        return $this->getGridDataForPath('OrderOptimalisation.OrderOptimalisationContainers');
     }
 
     public function orderOptResultsSubmit(Request $request)
@@ -541,6 +548,7 @@ class GridController extends Controller
             $orderOpt -> distance = $result2[$i]["distance"];
             $orderOpt -> path = json_encode($result2[$i]["path"]);
             $orderOpt -> detailed_path = json_encode($result2[$i]["detailed_path"]);
+            $orderOpt -> containers = json_encode($result2[$i]["containers"]);
 
             $orderOpt->save();
         }
@@ -553,16 +561,18 @@ class GridController extends Controller
     {
         $result = OrderOptimisationResults::paginate(5);
         $result2 =json_encode($result);
+        $orders=Order::with('products')->get();
 
-        return view('OrderOptimalisation.OrderOptResults',["products"=>$result, "result"=>$result2]);
+        return view('OrderOptimalisation.OrderOptResults',["products"=>$result, "result"=>$result2,'orders'=>$orders]);
     }
 
 
     public function getGridDataForPath($view)
     {
 
-
+        $containers = Containers::all();
         $orders=Order::with('products')->get();
+        $orders_sizes = OrderProducts::select("order_id",DB::raw("sum(amount) as capability"))->groupBy(DB::raw("order_id"))->get();
 
         $grid=Grid::all()->where('isActive','=',1)->first();
         $products = $grid->products()->orderByRaw('position ASC')->get();
@@ -577,9 +587,12 @@ class GridController extends Controller
                 'grid'=>$grid,
                 'products_array'=>$array,
                 'path_matrix'=>$path_matrix,
-                'orders' =>$orders
+                'orders' =>$orders,
+                'containers' =>$containers,
+                'order_sizes' =>$orders_sizes,
             ]
         );
 
     }
+
 }

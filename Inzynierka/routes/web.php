@@ -105,12 +105,17 @@ Route::get('/', function ()
 
     Route::post('/grid/OrderOptDatabase',[OrderController::class, 'ordersFromDatabase'])->name('OrderOptDatabase');
 
+// order optimalisation containers
+
+Route::get('/grid/orderOptimalisationContainers',[GridController::class, 'orderOptimalisationContainers'])->name('orderOptimalisationContainers');
+
 
     //results
     Route::post('/grid/orderOptResultsSubmit',[GridController::class, 'orderOptResultsSubmit'])->name('orderOptResults');
     //Route::get('/grid/orderOptResults',[GridController::class, 'orderOptResults'])->name('orderOptimalisationResults');
 
     Route::get('/grid/orderOptResults',[GridController::class, 'orderOptResults'])->name('orderOptResult');
+
 
 
 
