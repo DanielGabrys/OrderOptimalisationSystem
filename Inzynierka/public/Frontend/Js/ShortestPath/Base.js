@@ -3,7 +3,6 @@ class Base extends DikstraGrid
 
     entry;
     nodes = new Map();
-    node_graph;
 
     final_path = [];
     raw_final_path =[]
@@ -17,7 +16,8 @@ class Base extends DikstraGrid
 
     path_matrix;
     final_path_indexes=[];
-    current_colorized=-1;
+    colorizesProducts="";
+
 
     addButtonlisteners(products)
     {
@@ -111,6 +111,7 @@ class Base extends DikstraGrid
     colorize_selected(id)
     {
         document.getElementById(id).className="colorized_naive_cell";
+        this.colorizesProducts+=id+",";
     }
 
     decolorize_selected(id)
@@ -122,7 +123,7 @@ class Base extends DikstraGrid
     {
         this.entry = parseInt(entry);
     }
-    
+
     getFinalPath(arr)
     {
         let start = [this.entry];
@@ -142,7 +143,7 @@ class Base extends DikstraGrid
     {
 
         this.distance=0;
-        console.log(this.final_path);
+        //console.log(this.final_path);
         for(let i=0;i<this.final_path.length-1;i++)
         {
             let key = this.final_path[i]+"->"+this.final_path[i+1];
@@ -226,7 +227,7 @@ class Base extends DikstraGrid
 
             for (const key in found)
             {
-                //console.log(arr[i], found);
+                if(! (this.order.includes(found[key]['pivot']['desired_position'])))
                 this.order.push(found[key]['pivot']['desired_position']);
             }
 
@@ -237,6 +238,8 @@ class Base extends DikstraGrid
 
     getNodesDistance(a,b)
     {
+        if(a===b)
+            return 0;
         let key =a+"->"+b;
         let key2 =b+"->"+a;
         if(!(key in this.path_matrix))
@@ -311,7 +314,10 @@ class Base extends DikstraGrid
                 {
                     // console.log(arr[i], found);
                     let pos = found[key]['pivot']['desired_position'];
+
+                    if(! (this.order.includes(pos)))
                     this.order.push(pos);
+
                     this.node_order.set(pos,randomized[i])
                 }
 

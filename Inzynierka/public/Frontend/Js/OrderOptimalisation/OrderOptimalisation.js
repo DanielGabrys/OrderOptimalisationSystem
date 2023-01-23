@@ -14,10 +14,12 @@ class OrderOptimalisation extends GeneticAlgo
     bestOrderVariationDistance=Infinity;
     bestOrderNodes ={};
     bestCombination = {};
-    orderColors = [];
+    orderColors = {}
     OrderProducts_Id_Map = new Map();
     order_ids = [];
     order_colors ={};
+    currentlyColorised =[];
+    current_cont = {}
 
     setGeneticData(pop,iter)
     {
@@ -50,7 +52,7 @@ class OrderOptimalisation extends GeneticAlgo
             orders[i]=this.order_ids[i];
         }
 
-        console.log("o",this.order_ids);
+
 
         for(let i=0;i<this.orderPopulationSize;i++)
         {
@@ -80,6 +82,8 @@ class OrderOptimalisation extends GeneticAlgo
                 }
             }
         }
+
+
 
     }
 
@@ -141,7 +145,7 @@ class OrderOptimalisation extends GeneticAlgo
                     orders[k]['positions']=randomized;
                     orders[k]['real_positions']=order;
 
-                    this.randomOrderColor();
+                   // this.randomOrderColor(order);
 
                 }
 
@@ -214,11 +218,12 @@ class OrderOptimalisation extends GeneticAlgo
 
            // console.log(this.OrderProducts_Id_Map);
 
-            this.randomOrderColor();
 
         }
+        this.randomOrderColor();
 
        // console.log("orders",orders);
+        this.orderList = orders
         return orders
     }
 
@@ -263,9 +268,10 @@ class OrderOptimalisation extends GeneticAlgo
 
             // console.log(this.OrderProducts_Id_Map);
 
-            this.randomOrderColor();
 
         }
+
+        this.randomOrderColor();
 
        // console.log(orders)
 
@@ -275,13 +281,12 @@ class OrderOptimalisation extends GeneticAlgo
     orderFitness(sequence)
     {
 
-
         let arr =[];
         let duplicats=0;
         for (let i=0;i<sequence["order"].length;i++)
         {
 
-                console.log(this.orderList,sequence)
+                //console.log("esq",this.orderList,sequence["order"][i])
                 for (let j=0;j<this.orderList[sequence["order"][i]]['real_positions'].length;j++)
                 {
                     if(arr.includes(this.orderList[sequence["order"][i]]['real_positions'][j]))
@@ -317,6 +322,7 @@ class OrderOptimalisation extends GeneticAlgo
 
                 if(!document.getElementById(arr[i]).style.background)
                 {
+                    this.currentlyColorised.push(arr[i])
                     document.getElementById(arr[i]).style.background = this.orderColors[key];
                     nodes[arr[i]]=[];
                     nodes[arr[i]].push(this.orderColors[key]);
@@ -352,6 +358,79 @@ class OrderOptimalisation extends GeneticAlgo
 
     }
 
+    colorizeSelectedOrders(id)
+    {
+
+        if(! (this.bestCombination.hasOwnProperty(id)))
+        return 0;
+
+        let array = this.bestCombination[id]["order"]
+        this.decolorizeSelectedOrders();
+        let nodes ={}
+        let colorised=[];
+        for (const key in this.orderList)
+        {
+            let arr =[];
+
+            if(array.includes(parseInt(key)))
+            {
+                arr = this.orderList[key]["positions"];
+              //  const found = this.orderList.filter(e => e.id == products[i]);
+                //console.log(arr)
+               // console.log(key,this.orderList[key])
+                for (let i = 0; i < arr.length; i++)
+                {
+                    if (! colorised.includes(arr[i]))
+                    {
+                        this.currentlyColorised.push(arr[i])
+                        document.getElementById(arr[i]).style.background = this.orderColors[key];
+                        nodes[arr[i]] = [];
+                        nodes[arr[i]].push(this.orderColors[key]);
+                        colorised.push(arr[i])
+
+                    } else
+                    {
+                       // console.log(arr[i])
+                        nodes[arr[i]].push(this.orderColors[key]);
+
+                    }
+
+                }
+            }
+
+        }
+        //console.log(this.currentlyColorised);
+
+        for (const key in nodes)
+        {
+
+            let colorBase = 0;
+            let colorPercentage=100/nodes[key].length;
+            let colorMix = "linear-gradient(to right, ";
+            for(let i=0;i<nodes[key].length;i++)
+            {
+                colorBase = i*colorPercentage +"% ";
+                colorMix+=nodes[key][i]+" "+colorBase + colorPercentage+"%";
+                if(i!==nodes[key].length-1)
+                    colorMix+=', ';
+            }
+            colorMix+=')';
+            document.getElementById(key).style.background = colorMix;
+            //console.log("colorMix",colorMix)
+        }
+
+
+
+    }
+
+    decolorizeSelectedOrders()
+    {
+        for(let i=0;i<this.currentlyColorised.length;i++)
+        {
+            document.getElementById(this.currentlyColorised[i]).style.background="#FFA07A";
+        }
+    }
+
     setOrderNodeShortestPathData(population)
     {
         population["distance"]=this.bestDistance;
@@ -381,7 +460,7 @@ class OrderOptimalisation extends GeneticAlgo
         sec_pop["TotalDistance"] = dist;
         if(dist<this.bestOrderVariationDistance)
         {
-            console.log("main",main_pop,"sec",sec_pop)
+           // console.log("main",main_pop,"sec",sec_pop)
             let copied1 = JSON.parse(JSON.stringify(main_pop));
             let copied2 = JSON.parse(JSON.stringify(sec_pop));
             copied1["dist"]=dist;
@@ -396,7 +475,7 @@ class OrderOptimalisation extends GeneticAlgo
 
     orderNormaliseFitness(main_pop,sec_pop)
     {
-         console.log("sec",sec_pop)
+       //  console.log("sec",sec_pop)
         let fitness = 0;
         for (const key in main_pop)
         {
@@ -532,11 +611,13 @@ class OrderOptimalisation extends GeneticAlgo
 
     randomOrderColor()
     {
-        let randomColor;
-        //while(!this.orderColors.includes(randomColor))
+        for(const key in this.orderList)
         {
-            randomColor = Math.floor(Math.random() * 16777215).toString(16);
-            this.orderColors.push("#" + randomColor);
+            let randomColor;
+            {
+                randomColor = Math.floor(Math.random() * 16777215).toString(16);
+                this.orderColors[key]="#" + randomColor;
+            }
         }
     }
 
@@ -550,8 +631,8 @@ class OrderOptimalisation extends GeneticAlgo
         {
 
             let order = "Order  "+i;
-            this.order_colors[i] = this.orderColors[counter];
-            block.innerHTML+= '<div class="badge text-wrap" style="width: 4rem; color: #1a1e21; background:' + this.orderColors[counter] + '">' +order + ' </div>';
+            this.order_colors[i] = this.orderColors[i];
+            block.innerHTML+= '<div class="badge text-wrap" style="width: 4rem; color: #1a1e21; background:' + this.orderColors[i] + '">' +order + ' </div>';
             block.innerHTML+= '<div class="badge bg" style="width: 1rem;"> <div>';
             counter ++;
         }
@@ -565,22 +646,21 @@ class OrderOptimalisation extends GeneticAlgo
         {
             if(key !=="dist")
             {
+                let cont = ' <div class="row" style="cursor: pointer"> <div class="col-xl-12 d-flex align-items-center justify-content-center id="joined'+key+'" "> '
+                let inside ='';
 
                 for (let i = 0; i < this.bestCombination[key]["order"].length; i++)
                 {
+
                     let color = this.order_colors[this.bestCombination[key]["order"][i]];
                     let order = "Order " + this.bestCombination[key]["order"][i];
-                    block.innerHTML += '<div class="badge text-wrap" id="' + order + '" style="width: 4rem; color: #1a1e21; background:' + color + ';' + this.bestCombination[key]["order"][i] + '">' + order + ' </div>';
+                    inside += '<div class="badge text-wrap" id="' + order + '" style="width: 4rem; color: #1a1e21; background:' + color + ';' + this.bestCombination[key]["order"][i] + '">' + order + ' </div>';
                 }
-                block.innerHTML += '<div class="badge bg" style="width: 1rem;"> <div>';
-            }
-            else
-            {
-                let dist = this.bestCombination[key];
-                block.innerHTML += '<div class="badge bg" style="width: 2rem;"> <div>';
-                block.innerHTML += '<div class="badge text-wrap" style="width: 5rem; color: #1a1e21; background: gold;">' + dist + ' </div>';
+                    inside += '<div class="badge bg" style="width: 5rem;"> </div> </div> </div>';
 
+                block.innerHTML+= cont+inside
             }
+
         }
     }
 

@@ -3,107 +3,157 @@
 @section('main')
 
 
-    <div id="display"></div>
 
-    <script>
 
-        function Graph() {
-            var neighbors = this.neighbors = {}; // Key = vertex, value = array of neighbors.
+<div class="container-fluid mt-2 d-flex justify-content-center">
 
-            this.addEdge = function (u, v)
+        <div class="row">
+
+
+                <form class="form-inline">
+
+                    <button class="btn">Reset</button>
+                    <input type="color" value="#00eeff" class="color">
+                    <input type="number" id="sizeX" value="15" class="size">
+                    <input type="number" id="sizeY" value="15" class="size">
+
+                </form>
+
+        <div class="container0">
+            <!-- Here we will add divs representing our pixels -->
+        </div>
+        </div>
+
+
+    </form>
+
+
+</div>
+
+
+
+
+
+
+<script>
+
+    const container = document.querySelector('.container0')
+    const sizeEl = document.getElementById('sizeX')
+    const sizeEl2 = document.getElementById('sizeY')
+    const color = document.querySelector('.color')
+    const resetBtn = document.querySelector('.btn')
+
+    let sizeX = sizeEl.value
+    let sizeY = sizeEl2.value
+    let draw = false
+
+    function populate(sizeX,sizeY) {
+
+        let size =sizeY
+        if(sizeX>sizeY)
+            size=sizeX
+        container.style.setProperty('--size', size)
+
+        let counter=0;
+        for (let i = 0; i < sizeX; i++)
+        {
+            for (let i = 0; i < sizeY; i++)
             {
-                if (neighbors[u] === undefined) {  // Add the edge u -> v.
-                    neighbors[u] = [];
-                }
-                neighbors[u].push(v);
-                if (neighbors[v] === undefined) {  // Also add the edge v -> u in order
-                    neighbors[v] = [];               // to implement an undirected graph.
-                }                                  // For a directed graph, delete
-                neighbors[v].push(u);              // these four lines.
-            };
 
-            return this;
-        }
+                counter++
+                const div = document.createElement('div')
+                div.setAttribute("id", counter);
+                div.classList.add('pixel')
 
-        function bfs(graph, source) {
-            var queue = [ { vertex: source, count: 0 } ],
-                visited = { source: true },
-                tail = 0;
-            while (tail < queue.length) {
-                var u = queue[tail].vertex,
-                    count = queue[tail++].count;  // Pop a vertex off the queue.
-                print('distance from ' + source + ' to ' + u + ': ' + count);
-                graph.neighbors[u].forEach(function (v) {
-                    if (!visited[v]) {
-                        visited[v] = true;
-                        queue.push({ vertex: v, count: count + 1 });
-                    }
-                });
+                div.addEventListener('mouseover', function () {
+                    if (!draw) return
+                    div.style.backgroundColor = color.value
+                })
+                div.addEventListener('mousdown', function () {
+                    div.style.backgroundColor = color.value
+                })
+
+                container.appendChild(div)
             }
         }
+    }
 
-        function shortestPath(graph, source, target) {
-            if (source == target) {   // Delete these four lines if
-                print(source);          // you want to look for a cycle
-                return;                 // when the source is equal to
-            }                         // the target.
-            var queue = [ source ],
-                visited = { source: true },
-                predecessor = {},
-                tail = 0;
-            while (tail < queue.length) {
-                var u = queue[tail++],  // Pop a vertex off the queue.
-                    neighbors = graph.neighbors[u];
-                for (var i = 0; i < neighbors.length; ++i) {
-                    var v = neighbors[i];
-                    if (visited[v]) {
-                        continue;
-                    }
-                    visited[v] = true;
-                    if (v === target) {   // Check if the path is complete.
-                        var path = [ v ];   // If so, backtrack through the path.
-                        while (u !== source) {
-                            path.push(u);
-                            u = predecessor[u];
-                        }
-                        path.push(u);
-                        path.reverse();
-                        print(path.join(' &rarr; '));
-                        return;
-                    }
-                    predecessor[v] = u;
-                    queue.push(v);
-                }
-            }
-            print('there is no path from ' + source + ' to ' + target);
-        }
+    window.addEventListener("mousedown", function(){
+        draw = true
+    })
+    window.addEventListener("mouseup", function(){
+        draw = false
+    })
 
-        function print(s) {  // A quick and dirty way to display output.
-            s = s || '';
-            document.getElementById('display').innerHTML += s + '<br>';
-        }
+    function reset(){
+        container.innerHTML = ''
+        populate(sizeX,sizeY)
+    }
 
-        window.onload = function () {
-            var graph = new Graph();
-            graph.addEdge('A', 'B');
-            graph.addEdge('B', 'C');
-            graph.addEdge('B', 'E');
-            graph.addEdge('C', 'D');
-            graph.addEdge('C', 'E');
-            graph.addEdge('C', 'G');
-            graph.addEdge('D', 'E');
-            graph.addEdge('E', 'F');
+    resetBtn.addEventListener('click', reset)
 
-            console.log(graph);
-            bfs(graph, 'A');
-            print();
-            shortestPath(graph, 'B', 'G');
-            print();
-            shortestPath(graph, 'G', 'A');
-        };
+    sizeEl.addEventListener('keyup', function(){
+        sizeX = sizeEl.value
+        reset()
+    })
+
+    sizeEl2.addEventListener('keyup', function(){
+        sizeY = sizeEl2.value
+        reset()
+    })
+
+    populate(sizeX,sizeY)
+
+</script>
 
 
-    </script>
+
+
+
+
+<style>
+
+
+
+
+
+    .navbar0, .container0{
+
+        width: 1000px;
+        border-radius: 3px;
+    }
+    .navbar0{
+
+        padding: 1em;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+     input{
+        height: 35px;
+        padding: 0 1em;
+    }
+    .color{
+        padding: 0 .25em;
+        width: 100px;
+        margin: 0 1em;
+    }
+
+    .container0{
+        --size: 5;
+        height: 400px;
+        display: grid;
+        grid-template-columns: repeat(var(--size), 1fr);
+        grid-template-rows: repeat(var(--size), 1fr);
+        gap: 1px;
+
+    }
+    .pixel{
+        background-color: rgb(61, 61, 61);
+        border-radius: 2px;
+    }
+</style>
+
 
 @endsection
 

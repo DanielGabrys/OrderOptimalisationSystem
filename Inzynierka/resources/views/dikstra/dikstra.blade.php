@@ -56,31 +56,25 @@
     </div>
 
     <div class="container-fluid d-flex justify-content-center">
-        <form class="form-inline">
 
-            <button type="button" id ="graph_to_file" class="btn btn-warning mb-2"> DOWNLOAD NODES </button>
+        <form class="form-inline" name="form" id="form" action="{{route('uploadNodesPaths',$grid->id)}}" method="POST">
+            @csrf
+            <input type="hidden" id ="paths_to_save" name="paths_to_save" value="{}" >
+
+            <input type="hidden" id ="chunks" name="chunks" value="1" >
+            <button type="button" id ="graph_to_file" class="btn btn-warning mb-2"> CALCULATE ALL </button>
+            <button type="sumbit" id ="load_paths" name="load_paths" hidden="true" class="btn btn-success mb-2"> DOWNLOAD NODES </button>
+
         </form>
     </div>
-
 
     <div class="container-fluid d-flex justify-content-center">
-        <form action="{{route('uploadNodesPaths',$grid->id)}}" method="POST" enctype="multipart/form-data">
-            @csrf
-            <div class="input-group">
-                <div class="input-group-prepend">
-                    <span class="input-group-text" id="inputGroupFileAddon01">UPLOAD NODES</span>
-                </div>
-                <div class="custom-file">
-                    <input type="file" id=file" name="file" class="custom-file-input" id="inputGroupFile01"
-                           aria-describedby="inputGroupFileAddon01">
-                    <label class="custom-file-label text-truncate" for="inputGroupFile01" >Select json file</label>
-                    <input type="submit" id ="submit_nodes" class="btn btn-success"> </input>
-                </div>
+        <div class="progress">
+            <div class="progress-bar" name="loading_bar" id="loading_bar" role="progressbar" style="width: 25px;" aria-valuenow="0" aria-valuemin="40" aria-valuemax="100">0%</div>
+        </div>
 
-
-            </div>
-        </form>
     </div>
+
 
 
 
@@ -111,6 +105,13 @@
 
 
     <script>
+
+        let result_BFS = new Map()
+        let graph = dikstra.BFSGraph
+        let max_counter =  Object.keys(dikstra.BFSGraph.neighbors).length
+        let interval_counter =0
+        let arr = []
+        let interval
 
 
         $("#inputGroupFile01").change(function(e){
@@ -148,16 +149,91 @@
         // Start file download.
         document.getElementById("graph_to_file").addEventListener("click", function()
         {
-                // Generate download of hello.txt
-                // file with some content
-             console.log(dikstra.graphToExport);
-                const text = JSON.stringify(dikstra.graphToExport);
-                var filename = "graph.json";
+            graphToArray(arr)
+           // createChunks()
+           // dikstra.setShortestPathsNodes()
+            interval = setInterval(setShortestPathsNodesInterval,10,arr[interval_counter],graph)
 
-                download(filename, text);
-        }, false);
+        });
+
+        function setShortestPathsNodesInterval(key2,graph)
+        {
+
+            let bar =  document.getElementById("loading_bar")
+            let percentage= (interval_counter / max_counter*100)
+            bar.innerHTML =parseInt(percentage.toString())+"%"
+            bar.style.width =parseInt(percentage/100*400).toString()+"px"
+
+            let temp = new Map()
+            let key =arr[interval_counter]
+            for(let i=interval_counter;i<arr.length;i++)
+            {
 
 
+                if(key===arr[i]) continue
+
+               // console.log(key,arr[i])
+                let name = key+"->"+arr[i];
+                let reverse = arr[i]+"->"+key
+                if(result_BFS.has(name) || result_BFS.has(reverse)) continue
+
+                let steps =bfs(graph,key,arr[i]);
+                result_BFS.set(name,steps)
+                temp.set(name,steps)
+
+            }
+
+            //console.log(document.getElementById("chunk"+interval_counter),temp)
+
+
+            if(interval_counter>=max_counter) {
+                clearInterval(interval)
+                document.getElementById("load_paths").hidden = false;
+                document.getElementById("paths_to_save").value=JSON.stringify(Object.fromEntries(result_BFS))
+                document.getElementById("chunks").value=max_counter
+
+            }
+
+            if(interval_counter<max_counter)
+                //document.getElementById("chunk"+(interval_counter)).value=JSON.stringify(Object.fromEntries(temp))
+
+            interval_counter++
+
+
+
+
+
+        }
+
+        function graphToArray(arr)
+        {
+            for(const key in graph.neighbors)
+            {
+
+                arr.push(parseInt(key))
+
+            }
+            console.log(arr)
+        }
+
+        function createChunks()
+        {
+            let parent = document.getElementById("form");
+            for(let i=0;i<max_counter;i++)
+            {
+                let input = document.createElement("input");
+                input.type = "hidden";
+                input.id = "chunk"+i;
+                input.name = "chunk"+i;
+
+                parent.appendChild(input);
+            }
+
+        }
+
+
+
+        console.log(dikstra.BFSGraph.neighbours)
 
     </script>
 

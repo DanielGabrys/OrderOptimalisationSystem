@@ -12,6 +12,7 @@ class DikstraGrid extends ProductsGrid
     end = 0;
     path = 0;
     steps = 0;
+    interval_counter
 
     shelvesToGraph() {
 
@@ -38,8 +39,9 @@ class DikstraGrid extends ProductsGrid
                         //graphToExport["neighbours"].push(counter - Y);
                     }
 
+                        //console.log(i,j,X,Y,counter,shelves[i][j] )
                         //down connected node
-                        if (i !== Y - 1 && shelves[i + 1][j] !== -1) {
+                        if (i !== X - 1 && shelves[i + 1][j] !== -1) {
                             graph[counter][counter + Y] = 1;
                             graphToExport["neighbours"].push(counter + Y);
                         }
@@ -63,6 +65,8 @@ class DikstraGrid extends ProductsGrid
         }
             this.initialiseBFSEdges();
             //console.log(shelves,this.graph);
+            //console.log(this.graphToExport)
+
     }
 
     shelvesToNeighborhoodMap()
@@ -366,13 +370,40 @@ class DikstraGrid extends ProductsGrid
                 queue.push(v);
             }
         }
-        console.log('there is no path from ' + source + ' to ' + target);
+        //console.log('there is no path from ' + source + ' to ' + target);
         return 0;
     }
 
 
 }
 
+function bfs(graph, source,end)
+{
+    let queue = [ { vertex: source, count: 0 } ], visited = { source: true }, tail = 0;
+
+    while (tail < queue.length)
+    {
+        let u = queue[tail].vertex, count = queue[tail++].count;  // Pop a vertex off the queue.
+        // console.log('distance from ' + source + ' to ' + u + ': ' + count);
+
+        if(u==end)
+            return count;
+
+        graph.neighbors[u].forEach(function (v)
+        {
+            if (!visited[v])
+            {
+                visited[v] = true;
+                queue.push({ vertex: v, count: count + 1 });
+            }
+        });
+
+
+
+    }
+
+}
+
+
 dikstra = new DikstraGrid();
-
-
+dikstra.interval_counter=0

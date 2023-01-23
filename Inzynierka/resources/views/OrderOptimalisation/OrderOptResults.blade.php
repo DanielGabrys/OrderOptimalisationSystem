@@ -2,61 +2,72 @@
 
 @section('main')
 
-    <div class="py-12">
-        <div class="container">
+
+
+
+        <div class="container -fluid d-flex justify-content-center">
+
             <div class="row">
-                <div class="col-md-8">
-                    <div class="card">
 
 
-                        <div class="container mt-12"> All Products </div>
-
-                        <table class="table table-sm" id="result_table" >
-                            <thead>
+                <div class="col-sm">
+                    <div class="col-md-8">
 
 
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">ID</th>
-                                <th scope="col">Orders</th>
-                                <th scope="col">Distance</th>
-                                <th scope="col">Path</th>
+                            <div class="container mt-12"> All Products </div>
 
-                                <th scope="col">Action</th>
-                                <th scope="col"></th>
+                            <table class="table table-sm" id="result_table" >
+                                <thead>
 
-                            </tr>
 
-                            </thead>
-                            <tbody>
-                                @foreach($products as $order)
-                                    <tr>
-                                        <th scope="row">{{$loop->index+1}}</th>
-                                        <td >{{$order->id }}</td>
-                                        <td >{{$order->orders}}</td>
-                                        <td >{{$order->distance}}</td>
-                                        <td >{{$order->path}}</td>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Orders</th>
+                                    <th scope="col">Distance</th>
+                                    <th scope="col">Path</th>
 
-                                        <td id=btr{{$loop->index+1}}> <button type="button" class="btn btn-warning btn-sm" >Show Results</button></td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                    <th scope="col">Action</th>
+                                    <th scope="col"></th>
 
-                        <div class="d-flex justify-content-center col-md-12">
-                            {!! $products->links('pagination::bootstrap-4') !!}
-                        </div>
+                                </tr>
+
+                                </thead>
+                                <tbody>
+                                    @foreach($products as $order)
+                                        <tr>
+                                            <th scope="row">{{$loop->index+1}}</th>
+                                            <td >{{$order->id }}</td>
+                                            <td >{{$order->orders}}</td>
+                                            <td >{{$order->distance}}</td>
+                                            <td >{{$order->path}}</td>
+
+                                            <td id=btr{{$loop->index+1}}> <button type="button" class="btn btn-warning btn-sm" >Show Results</button></td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+
+                            <div class="d-flex justify-content-center col-md-12">
+                                {!! $products->links('pagination::bootstrap-4') !!}
+                            </div>
+
 
                     </div>
+
                 </div>
 
-            </div>
+                <div class="col justify-content-center" >
 
+                    <canvas id="myCanvas" width="600" height="80" style="border:1px solid #d3d3d3;"> </canvas>
+
+                </div>
+            </div>
         </div>
 
 
 
-    </div>
+
 
     <div class="container-fluid d-flex justify-content-center" id="legend">
 
@@ -112,10 +123,20 @@
                 let path = JSON.parse(result[id]["path"]);
                 let position = JSON.parse(result[id]["products_id"]);
                 let containers = JSON.parse(result[id]["containers"]);
+
+                let color ={}
+                for(const key in containers)
+                {
+                    randomColor = Math.floor(Math.random()*16777215).toString(16);
+                    color[key] =  "#"+randomColor
+                }
+                //console.log("colors",color)
                 let detailed_path = JSON.parse(result[id]["detailed_path"])
 
-                console.log(containers);
-                for(let i=1;i<path.length;i++) {
+                drawContainers(containers,color)
+                //console.log("cont",containers);
+                for(let i=1;i<path.length;i++)
+                {
 
                     let short_detailed_path;
                     if (detailed_path[i - 1].length > 20)
@@ -125,6 +146,7 @@
 
                     let dist = detailed_path[i - 1].length - 1;
 
+                    //console.log(position)
                     for (const key in position[path[i]])
                     {
                         let order_id = position[path[i]][key]
@@ -165,7 +187,8 @@
                             if(containers.hasOwnProperty([order_id[j]]))
                             {
 
-                                cell4.innerHTML = containers[order_id[j]];
+                                row.style.background= color[order_id[j]]
+                                cell4.innerHTML = containers[order_id[j]]+"";
                             }
 
                             cell5.innerHTML = amount;
@@ -224,6 +247,62 @@
         }
 
     </script>
+
+
+    <script>
+
+        var c = document.getElementById("myCanvas");
+        var ctx = c.getContext("2d");
+
+
+
+
+
+
+        function drawContainers(cont,colors)
+        {
+            ctx.clearRect(0, 0, c.width, c.height);
+            //let count = Object.keys(colors).length
+            let count=0;
+
+            for(const key in cont)
+            {
+                for(let i=0;i<cont[key].length;i++)
+                {
+                    count++
+                }
+            }
+
+            let portion = c.width/count
+            console.log(cont)
+            let x=0;
+            let text_font = 0.3*portion <50 ? 0.3*portion: 30
+            ctx.font = text_font+"px serif";
+            ctx.color='black'
+
+            for(const key in cont)
+            {
+                for(let i=0;i<cont[key].length;i++)
+                {
+                    let c = cont[key][i] ? cont[key][i] : "no such big container/s";
+                    ctx.beginPath();
+                    ctx.rect(x, 0, portion, portion);
+                    ctx.fillStyle = colors[key];
+                    ctx.fill()
+                    ctx.fillStyle = "white";
+                    ctx.fillText(c, x, 50, portion);
+                    ctx.closePath();
+                    ctx.stroke();
+                    x += portion
+                }
+            }
+
+
+        }
+
+
+    </script>
+
 
 
 

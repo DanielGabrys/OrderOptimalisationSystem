@@ -35,12 +35,15 @@ class RectangleDivision extends Naive {
 
     divideGrid()
     {
+       // console.log(this.order)
+
+
         this.center_x = this.width / 2 + 1;
         this.center_y = -this.height / 2;
 
         this.calculatePoints("position",this.center_x,this.center_y);
         this.minimumNode();
-        console.log(this.rectangles);
+        //console.log(this.rectangles);
         //this.calculateNewCentralPoints();
 
        // this.detailedKeyPathArray = this.createDetailedMatrix();
@@ -58,7 +61,7 @@ class RectangleDivision extends Naive {
             result[3] = this.result.concat(this.getFinalResult("four"));
             result[3].push(this.entry);
 
-         console.log(result);
+        // console.log(result);
 
          for(let i=0;i<4;i++)
          {
@@ -66,7 +69,10 @@ class RectangleDivision extends Naive {
          }
 
          this.getFinalDistance();
-         console.log("best",this.distance);
+         this.doTwoOpt();
+        // console.log("bestie",this.distance,this.final_path);
+
+
 
     }
 
@@ -77,7 +83,7 @@ class RectangleDivision extends Naive {
         this.getDetailedNaivePath();
         this.create_result_table();
 
-        console.log("final",this.final_path);
+        //console.log("final",this.final_path);
         //this.finalPathToString(this.final_path);
         //this.finalPathByNodesToString(this.final_path)
     }
@@ -319,6 +325,60 @@ class RectangleDivision extends Naive {
         }
         this.raw_final_path= temp.splice(1,temp.length-2);
     }
+
+    doTwoOpt()
+    {
+
+      let improve=0;
+      let is_improved =1
+      while ( is_improved !==0 )
+      {
+          is_improved =0
+          for (let i = 1; i < this.final_path.length - 1; i++)
+          {
+              for (let j = i + 1; j < this.final_path.length-1; j++) {
+                  let new_route = this.TwoOptSwap(i, j)
+                  let new_distance = this.calculateFullDistance(new_route)
+                  if (new_distance < this.distance)
+                  {
+                      this.final_path = new_route
+                      this.distance = new_distance
+                      is_improved=1;
+                  }
+              }
+          }
+         // console.log("improved",this.final_path,this.distance)
+      }
+    }
+
+
+    TwoOptSwap(i,k)
+    {
+        let new_tour =[]
+        let size = this.final_path.length;
+
+        // 1. take route[0] to route[i-1] and add them in order to new_route
+        for ( let c = 0; c <= i - 1; c++ )
+            {
+                new_tour.push(this.final_path[c])
+            }
+
+        // 2. take route[i] to route[k] and add them in reverse order to new_route
+        for ( let c = k; c >=i; c-- )
+        {
+            new_tour.push(this.final_path[c])
+        }
+
+
+
+        // 3. take route[k+1] to end and add them in order to new_route
+        for ( let c = k + 1; c < size; ++c )
+        {
+            new_tour.push(this.final_path[c])
+        }
+        return new_tour
+    }
+
 }
 
 rectangleDiv = new RectangleDivision();

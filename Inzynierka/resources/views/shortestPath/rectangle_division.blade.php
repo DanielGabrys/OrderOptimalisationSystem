@@ -146,8 +146,12 @@
         let element = document.getElementById("load_example");
         element.addEventListener("click", function(){
             rectangleDiv.loadExample(base.products_positions);
-            rectangleDiv.divideGrid();
-            rectangleDiv.createResults();
+           // rectangleDiv.divideGrid();
+           // rectangleDiv.createResults();
+
+            an = new FarthestNeighbor();
+            an.farthestInsertion(rectangleDiv.path_matrix,rectangleDiv.order);
+            //an.doTwoOpt()
         });
 
 
@@ -162,7 +166,6 @@
 
             }
         );
-
 
 
     </script>

@@ -25,11 +25,14 @@
     <script src="{{asset('Frontend/Js/ShortestPath/Base.js')}}"></script>
     <script src="{{asset('Frontend/Js/ShortestPath/Naive.js')}}"></script>
     <script src="{{asset('Frontend/Js/ShortestPath/RectangleDivision.js')}}"></script>
+    <script src="{{asset('Frontend/Js/ShortestPath/FarthestNeighbor.js')}}"></script>
     <script src="{{asset('Frontend/Js/ShortestPath/Combinations.js')}}"></script>
     <script src="{{asset('Frontend/Js/ShortestPath/GeneticAlgo/GeneticAlgo.js')}}"></script>
 
+
     <script src="{{asset('Frontend/Js/OrderOptimalisation/OrderOptimalisation.js')}}"></script>
     <script src="{{asset('Frontend/Js/OrderOptimalisation/ContainersOpt.js')}}"></script>
+    <script src="{{asset('Frontend/Js/ShortestPath/SimulatedAnnealing.js')}}"></script>
 
 
 

@@ -1,12 +1,11 @@
-
-class GeneticAlgo extends RectangleDivision
+class GeneticAlgo extends FarthestNeighbor
 {
-    populationSize=200;
+    populationSize=50;
     population =[];
     fitness =[];
     bestDistance = Infinity;
     bestPath =[];
-    iteration =50;
+    iteration =20;
     currentIteration=0;
 
     setPopulationData(population,iteration)
@@ -34,7 +33,8 @@ class GeneticAlgo extends RectangleDivision
         //mixing basic population
         for(let i=1;i<this.populationSize;i++)
         {
-            //this.population[i] = this.shuffle(this.population[i]);
+
+           // this.population[i] = this.shuffle(this.population[i]);
             this.population[i] = this.population[0];
         }
 
@@ -94,22 +94,30 @@ class GeneticAlgo extends RectangleDivision
                 dist += this.getNodesDistance(this.order[arr[i]],this.order[arr[i + 1]])
             }
 
+
         }
         return dist;
     }
 
+
     startGenetic()
     {
 
+       // console.log("start")
 
         this.divideGrid();
+        //this.farthestInsertion(this.path_matrix,this.final_path)
+
         this.rebaseOrder();
+
         this.bestDistance=this.distance;
+
 
         this.createPopulation();
         this.bestPath = this.population[0];
 
-       // console.log(this.final_path,this.bestDistance,this.order);
+        //console.log(this.final_path,this.bestDistance,this.order);
+
 
 
         for(let i=0;i<this.iteration;i++)
@@ -119,9 +127,11 @@ class GeneticAlgo extends RectangleDivision
             this.nextGeneration();
             this.currentIteration++;
 
-            // console.log(i, this.bestDistance,this.bestPath);
+             //console.log(i, this.bestDistance,this.bestPath);
            // console.log(i,this.population);
         }
+
+
 
 
 
@@ -194,16 +204,22 @@ class GeneticAlgo extends RectangleDivision
     {
 
         let rate =Math.random();
-        if(rate>0.6)
+        let range = Math.floor(Math.random()*order.length/5);
+        if(rate>0.4)
         {
             this.mutate_dist(order);
             return order;
         }
+        if(rate>0.5)
+        {
+            this.mutate_dist_Random(order);
+        }
         else
         {
-            let arr = this.crossOver(order,4,1);
+            let arr = this.crossOver(order,range,1);
             return arr;
         }
+        this.doTwoOpt();
 
     }
 
@@ -280,6 +296,12 @@ class GeneticAlgo extends RectangleDivision
         }
     }
 
+    mutate_dist_Random(order)
+    {
+       let i = Math.floor(Math.random()*order.length);
+       let j = Math.floor(Math.random()*order.length);
+       this.swap(order,i,j);
+    }
 
     showFinalPath()
     {
@@ -324,7 +346,6 @@ class GeneticAlgo extends RectangleDivision
         }
 
         return  orderA;
-
 
     }
 

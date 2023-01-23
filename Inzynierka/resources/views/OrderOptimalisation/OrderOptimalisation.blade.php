@@ -271,17 +271,18 @@
 
             genetic.createPopulation();
             genetic.createOrderPopulation(divider);
-            console.log(genetic.orderPopulation)
 
+            genetic.randomOrderColor()
             genetic.colorizeOrders();
             genetic.createLegend();
 
             console.log(genetic.orderList)
-            //return 0
+
 
             console.log("orderList",genetic.orderList);
             console.log("orderList",genetic.orderList);
             console.log("colors",genetic.orderColors);
+
 
             start = window.performance.now();
 
@@ -290,8 +291,11 @@
                 for (let key=0;key<genetic.orderPopulationSize;key++)
                 {
                     setTimeout(SingleIteration,0,key,i,max_time);
+
                 }
+
                 setTimeout(FinalizeIteration,0);
+
             }
             setTimeout(FinalResults,0);
         }
@@ -305,9 +309,16 @@
             if(time<0)
             {
 
-                for (const key2 in genetic.orderPopulation[key]) {
+                for (const key2 in genetic.orderPopulation[key])
+                {
+
+
                     genetic.orderFitness(genetic.orderPopulation[key][key2]);
+                    console.log("order",genetic.order);
+                    console.log(genetic.orderPopulation)
+                    console.log("////////////////////////////")
                     genetic.startGenetic();
+                    //return 0
                     genetic.setOrderNodeShortestPathData(genetic.orderPopulation[key][key2]);
                 }
                 //genetic.orderPopulationSummary[key] = {};

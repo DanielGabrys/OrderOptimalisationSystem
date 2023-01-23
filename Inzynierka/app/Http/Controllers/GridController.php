@@ -454,20 +454,28 @@ class GridController extends Controller
     public function uploadNodesPaths(Request $request,$id)
     {
 
-        $grid=grid::find($id);
-        $name = "matrix_".$grid->id.'.json';
-        $path = "nodesPaths/";
 
-        //phpinfo();
+        $grid= Grid::find($id);
+        $chunk = $grid->value('nodes_shortest_paths');
+        $grid->update(['nodes_shortest_paths'=>$request->paths_to_save]);
 
-       /* Storage::disk('local')->putFileAs(
-            $path,
-            $request->file('file'),
-            $name);
-       */
-        $request->file->storeAs($path, $name,'public');
+        /*
+        for($i=0;$i< intval($request->chunks);$i++)
+        {
+            $ch = "chunk".$i;
+            $new_chunk = $request->$ch;
+            $trimmed = substr($new_chunk, 1, -1);
+            $chunk=$chunk.$trimmed;
+            $chunk=$chunk.",";
 
-
+            //($chunk);
+        }
+        $chunk = substr($chunk,0,-2);
+        $chunk="{".$chunk."}";
+       // dd($chunk);
+        $grid->update(['nodes_shortest_paths'=>$chunk]);
+        //dd($chunk);
+        */
        return Redirect()->back()->with('success','Pomyślnie');
 
     }
@@ -572,15 +580,13 @@ class GridController extends Controller
 
         $containers = Containers::all();
         $orders=Order::with('products')->get();
-        $orders_sizes = OrderProducts::select("order_id",DB::raw("sum(amount) as capability"))->groupBy(DB::raw("order_id"))->get();
+        $orders_sizes = OrderProducts::select("order_id",DB::raw("sum(amount) as capability"))->groupBy(DB::raw("order_id"))->orderBy('capability')->get();
 
         $grid=Grid::all()->where('isActive','=',1)->first();
         $products = $grid->products()->orderByRaw('position ASC')->get();
 
-        $name = "matrix_".$grid->id.'.json';
-        $path = storage_path() . "/app/public/nodesPaths";
         $array=json_encode($products);
-        $path_matrix = file_get_contents($path ."/".$name);
+        $path_matrix = $grid->nodes_shortest_paths;
 
         return view($view,[
                 'gridProducts'=> $products,

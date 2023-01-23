@@ -8,10 +8,9 @@
     <div id="reload">
 
         <script>
-            genetic = new OrderOptimalisation();
-            genetic.setSize({{$grid->height}},{{$grid->width}},700)
-            genetic.getProductsData({!! $products_array !!},{{$grid->shelfs}});
-            genetic.shelvesToGraph();
+            cont.setSize({{$grid->height}},{{$grid->width}},700)
+            cont.getProductsData({!! $products_array !!},{{$grid->shelfs}});
+            cont.shelvesToGraph();
         </script>
 
 
@@ -20,9 +19,9 @@
             <a id="{{"a".$y}}" >
                 <div id ="{{"b".$y}}" class="cell" >
                     <script>
-                        genetic.generateGridCells({{$grid->height}},{{$grid->width}},{{$y}})
-                        genetic.getHints({{$y}})
-                        genetic.colorizeProductsOnGrid({{$y}})
+                        cont.generateGridCells({{$grid->height}},{{$grid->width}},{{$y}})
+                        cont.getHints({{$y}})
+                        cont.colorizeProductsOnGrid({{$y}})
                     </script>
                 </div>
             </a>
@@ -30,96 +29,8 @@
         @endforeach
     </div>
 
-    <div class="row">
-        <div class="col">
-
-
-            <div class="collapse multi-collapse" id="multiCollapseExample1">
-
-                <div class="container-fluid d-flex justify-content-center" id="data_block">
-                    <div class="overflow-auto p-3 mb-3 mb-md-4 mr-md-4 bg-light" style="max-height: 200px; cursor: pointer">
-
-                        <table class="table table-active table-striped" id="products_table">
-
-                            <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Product</th>
-                                <th scope="col">Schelf</th>
-                                <th scope="col">Desired Position</th>
-                                <th scope="col">Add</th>
-                            </tr>
-                            </thead>
-
-                            <tbody>
-                            @foreach($gridProducts as $product)
-
-                                <tr id="{{"tr".$loop->iteration}}" >
-                                    <th scope="row">{{$loop->iteration}}</th>
-                                    <td>{{$product->name}}</td>
-                                    <td>{{$product->pivot->position}}</td>
-                                    <td>{{$product->pivot->desired_position}}</td>
-                                    <td>
-                                        <button type="button" id="{{"bt".$loop->index}}" class="btn btn-primary mb-2" >ADD</button>
-                                    </td>
-                                </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
-
-                    </div>
-                    <div class="overflow-auto p-3 mb-3 mb-md-4 mr-md-4 bg-light" style="max-height: 200px; cursor: pointer">
-
-                        <table class="table table-primary table-striped" id="selection_table">
-
-                            <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Product</th>
-                                <th scope="col">Schelf</th>
-                                <th scope="col">Desired Position</th>
-                                <th scope="col">DELETE</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
-
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
 
     <div class="container-fluid mt-2 d-flex justify-content-center">
-        <form class="form-inline">
-
-            <div class="input-group mb-2 mr-sm-2">
-                <div class="input-group-prepend">
-                    <div class="input-group-text">MAX ORDER SIZE</div>
-                </div>
-                <input type="number" class="form-control" id="join_size" name="join_size"  value=15 style="width: 80px;">
-            </div>
-
-
-            <div class="input-group mb-2 mr-sm-2">
-                <div class="input-group-prepend">
-                    <div class="input-group-text">ORDERS</div>
-                </div>
-                <input type="number" class="form-control" id="orders_number" name="orders_number" value=5 style="width: 80px;">
-            </div>
-
-            <div class="input-group mb-2 mr-sm-2">
-                <div class="input-group-prepend">
-                    <div class="input-group-text">DIVISION</div>
-                </div>
-                <input type="number" class="form-control" id="division" name="division"  value=2 style="width: 80px;">
-            </div>
-
-            <button type="button" id="load_random" class="btn btn-warning btn-sm" >RANDOM</button>
-
-        </form>
 
         <form class="form-inline">
 
@@ -166,15 +77,16 @@
                 <div class="input-group-prepend">
                     <div class="input-group-text">BASE POPULATION</div>
                 </div>
-                <input type="number" class="form-control" id="Basepopulation" name="Basepopulation"  value=200 style="width: 80px;">
+                <input type="number" class="form-control" id="Basepopulation" name="Basepopulation"  value=1 style="width: 80px;">
             </div>
 
             <div class="input-group mb-2 mr-sm-2">
                 <div class="input-group-prepend">
                     <div class="input-group-text">BASE ITERATION</div>
                 </div>
-                <input type="number" class="form-control" id="Baseiteration" name="Baseiteration" value=50 style="width: 80px;">
+                <input type="number" class="form-control" id="Baseiteration" name="Baseiteration" value=1 style="width: 80px;">
             </div>
+
 
 
 
@@ -182,22 +94,60 @@
 
     </div>
 
+    <div class="container-fluid d-flex justify-content-center" id="partial">
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="split" value="" id="split">
+            <label class="form-check-label" for="flexCheckDefault">
+                Allow split single order into multiple containers
+            </label>
+        </div>
+    </div>
+
+    <div class="container-fluid d-flex justify-content-center">
+    </div>
+
     <div class="container-fluid d-flex justify-content-center" id="legend">
+    </div>
+
+    <div class="container-fluid mt-3 d-flex justify-content-center">
+        <h3> <span class="badge bg-danger" id="time_label">Time:</span></h3>
+        <h3> <span class="badge ml-1" id="time" name="time" style="color: #1a1e21"></span></h3>
+        <h3> <span class="badge bg-success" id="dist_label">Dist:</span></h3>
+        <h3> <span class="badge ml-1" id="dist" name="dist" style="color: #1a1e21"></span></h3>
+
+
+            <input type="number" class="form-control" id="path_etape" name="path_etape" value="0" style="width: 70px;">
+            <a class="btn btn-primary " id="path_right" > SHOW COMBINATION </a>
+
+
+            <form class="form-inline" action="{{route('orderOptResults')}}" target="_blank" method="POST">
+                @csrf
+                <input type="hidden" class="form-control" id="results" name="results"  value=15 style="width: 80px;">
+
+                <button type="submit" id="show_results" class="btn btn-warning " >Show Results</button>
+            </form>
+
+
+
+
     </div>
 
 
     <div class="container-fluid mt-1 d-flex justify-content-center">
         <div class="loader" name="loader" id="loader"></div>
+        <button type="button" id="stop" name="stop" class="btn bg-secondary " >Stop</button>
     </div>
 
     <div class="container-fluid mt-1 d-flex justify-content-center" name="progress" id="progress">
     </div>
 
-    <div class="container-fluid mt-3 d-flex justify-content-center" id="finalCombination">
+    <div class="container-fluid  justify-content-center" id="finalCombination">
     </div>
 
-    <div class="container-fluid mt-3 d-flex justify-content-center" id="finalCombination">
+    <div class="container-fluid mt-3 d-flex justify-content-center">
         <form class="form-inline">
+
+           <!-- <td > <input type="number" id="max_cap" class="form-control" name="max_cap" style="width: 180px;" placeholder="max capability" value="40" ></td> -->
             <table class="table table-sm" id="order_containers" >
                 <thead>
 
@@ -218,7 +168,6 @@
                         <td > <input type="number" class="form-control" id="capability{{$loop->iteration}}" name="capability{{$loop->iteration}}" style="width: 80px;" value={{$container->capability }}></td>
                         <td > <input type="number" id="amount{{$loop->iteration}}" class="form-control" id="amount" name="capability" style="width: 80px;"  value={{$container->amount }}></td>
                         <td> <button type="button" class="btn" id="delete{{$loop->iteration}}" >x</button> </td>
-
                     </tr>
                 @endforeach
                 </tbody>
@@ -227,31 +176,22 @@
         </form>
     </div>
 
-    <div class="container-fluid mt-3 d-flex justify-content-center">
-        <h3> <span class="badge bg-danger" id="time_label">Time:</span></h3>
-        <h3> <span class="badge ml-1" id="time" name="time" style="color: #1a1e21"></span></h3>
-    </div>
 
-    <div class="container-fluid mt-2 d-flex justify-content-center" >
-        <form class="form-inline" action="{{route('orderOptResults')}}" target="_blank" method="POST">
-            @csrf
-            <input type="hidden" class="form-control" id="results" name="results"  value=15 style="width: 80px;">
-
-            <button type="submit" id="show_results" class="btn btn-warning btn-sm" >Show Results</button>
-        </form>
-
-    </div>
 
 
 
 
     <script>
 
-
         let obj = {!! $orders !!};
         let obj2 ={!! $order_sizes !!};
         let start;
         let containers =[];
+        let flag = true;
+        let interval =null;
+        let iteration =0;
+        let max_iteration =0;
+
 
         let distinct_containers =[];
 
@@ -261,24 +201,15 @@
         hideDivElements();
         deleteContainerEvents()
 
-        let element2 = document.getElementById("load_random");
-        element2.addEventListener("click", function()
-        {
-            let size = document.getElementById("join_size").value;
-            let orders_num = document.getElementById("orders_number").value;
-
-            setStartData();
-            genetic.orderList = genetic.createRandomOrders2(orders_num, size);
-            solver();
-
-        });
 
         document.getElementById("load_database").addEventListener("click", function()
         {
             loadContainersData();
             setStartData();
-            genetic.orderList = genetic.loadDatabase(obj)
-            solver();
+            cont.loadDatabase(obj)
+            solverGA();
+           // solverSA()
+
         });
 
         document.getElementById("add_container").addEventListener("click", function()
@@ -311,6 +242,7 @@
             let table = document.getElementById("order_containers")
             let rows = table.rows.length;
 
+
             for(let i=1;i<rows;i++)
             {
                 let capability = parseInt(document.getElementById("capability"+i).value);
@@ -324,11 +256,7 @@
 
             }
             containers.sort(compareNumbers);
-            console.log(containers);
-
-            con = new ContainersOpt(obj2,containers,distinct_containers);
-            con.createContainerPopulation(10);
-
+            //console.log(containers,max_cap);
 
         }
 
@@ -351,143 +279,189 @@
             }
         }
 
-        function setStartData()
-        {
+        function setStartData() {
             document.getElementById("loader").hidden = false;
             let population = document.getElementById("population").value;
             let iteration = document.getElementById("iteration").value;
+            max_iteration = parseInt(iteration)
 
             let base_population = document.getElementById("Basepopulation").value;
             let base_iteration = document.getElementById("Baseiteration").value;
 
-            genetic.setPopulationData(base_population,base_iteration);
-            genetic.getEntry({{$grid->entry}});
-            genetic.getPathMatrix({!! $path_matrix !!});
-            genetic.setGeneticData(population, iteration);
+            cont.setPopulationData(base_population, base_iteration);
+            cont.getEntry({{$grid->entry}});
+            cont.getPathMatrix({!! $path_matrix !!});
+            cont.setGeneticData(population, iteration);
+            cont.orderList=cont.loadDatabase(obj)
         }
 
-        function solver()
+        function solverGA()
         {
-            let divider = document.getElementById("division").value;
+                let max_time = document.getElementById("max_time").value;
+                let max_cap =0// document.getElementById("max_cap").value
+
+               // cont.createPopulation();
+                cont.setStartVariables(obj2, containers, distinct_containers,document.getElementById('split').checked);
+                cont.createContainerPopulation(cont.orderPopulationSize);
+
+                cont.randomOrderColor()
+                cont.colorizeOrders();
+                cont.createLegend();
+
+                start = window.performance.now();
+
+                interval = setInterval(SingleIteration, 10, iteration, max_time);
+
+            }
+
+        function solverSA()
+        {
+
             let max_time = document.getElementById("max_time").value;
+            an = new SimulatedAnnealing();
+            sa = an.init(cont)
+            sa.setStartVariables(obj2, containers, distinct_containers,document.getElementById('split').checked);
+            sa.createContainerPopulation(1);
+            sa.newTempResults()
+            console.log(sa.orderPopulation)
 
-            genetic.createPopulation();
-            //genetic.createOrderPopulation(divider);
 
-
-            cont2 = new ContainersOpt(obj2,containers,distinct_containers);
-            console.log("size",genetic.orderPopulationSize);
-            let pop = cont2.createContainerPopulation(genetic.orderPopulationSize);
-            genetic.orderPopulation=pop;
-
-            console.log("pop",genetic.orderPopulation)
-            console.log("pop",JSON.parse(JSON.stringify(pop)))
-
-            //return 0;
-
-            genetic.colorizeOrders();
-            genetic.createLegend();
-
-            console.log("orderList",genetic.orderList);
-            console.log("colors",genetic.orderColors);
-
+            sa.randomOrderColor()
+            sa.colorizeOrders();
+            sa.createLegend();
             start = window.performance.now();
 
-            for(let i=0;i<genetic.orderIteration;i++)
+            interval = setInterval(SAInterval, 10, iteration,max_time);
+
+
+        }
+
+        function SAInterval(iter,max_time)
+        {
+
+            document.getElementById("progress").innerHTML = iteration + "/" + cont.orderIteration ;
+            document.getElementById("dist").innerHTML = cont.bestOrderVariationDistance.toString();
+            let end = window.performance.now();
+            let time = parseInt(end - start - max_time * 1000);
+
+            an.SA()
+            an.setPopulationNodeShortestPathData(cont.orderPopulation[0], cont.orderPopulationSummary[0], iter, 0);
+            iteration++;
+            if(max_iteration<=iteration || time >0)
             {
-                for (let key=0;key<genetic.orderPopulationSize;key++)
+                clearInterval(interval)
+                FinalResults(an);
+
+
+            }
+
+
+        }
+
+
+       function SingleIteration(iter, max_time)
+            {
+                for (let key = 0; key < cont.orderPopulationSize; key++)
                 {
-                    setTimeout(SingleIteration,0,key,i,max_time);
+
+                    document.getElementById("progress").innerHTML = iteration + "/" + cont.orderIteration ;
+                    document.getElementById("dist").innerHTML = cont.bestOrderVariationDistance.toString();
+
+                    let end = window.performance.now();
+                    let time = parseInt(end - start - max_time * 1000);
+                    if(max_iteration===iteration || time >0)
+                    {
+                        clearInterval(interval)
+                        FinalResults(cont);
+                        break;
+                    }
+
+
+                    for (const key2 in cont.orderPopulation[key])
+                    {
+
+                            cont.orderFitness(cont.orderPopulation[key][key2]);
+                            cont.startGenetic();
+                            cont.setOrderNodeShortestPathData(cont.orderPopulation[key][key2]);
+
+                            cont.orderContFitness(cont.orderPopulation[key]);
+                            cont.getPopNodeMaxDistances(cont.orderPopulation[key]);
+
+                    }
+
+                        cont.setPopulationNodeShortestPathData(cont.orderPopulation[key], cont.orderPopulationSummary[key], iter, key);
+                        cont.nextContGeneration()
+
 
                 }
+                iteration++
 
-                setTimeout(FinalizeIteration,0);
-            }
-            setTimeout(FinalResults,0);
-        }
 
-        function SingleIteration(key,iter,max_time)
-        {
-            document.getElementById("progress").innerHTML=iter+"/"+genetic.orderIteration+" "+(parseInt(key)+1)+"/"+genetic.orderPopulationSize;
 
-            let end = window.performance.now();
-            let time = parseInt(end - start -max_time*1000);
-            if(time<0)
-            {
-
-                for (const key2 in genetic.orderPopulation[key]) {
-                    console.log("noo",genetic.orderPopulation)
-                    genetic.orderFitness(genetic.orderPopulation[key][key2]);
-                    genetic.startGenetic();
-                    genetic.setOrderNodeShortestPathData(genetic.orderPopulation[key][key2]);
-                }
-
-                genetic.orderPopulationSummary[key] = {};
-                console.log("noo",genetic.orderPopulation,key)
-                genetic.orderNormaliseFitness(genetic.orderPopulation[key], genetic.orderPopulationSummary[key]);
-                genetic.setPopulationNodeShortestPathData(genetic.orderPopulation[key], genetic.orderPopulationSummary[key], iter, key);
-                //genetic.newOrderGeneration(genetic.orderPopulation[key],genetic.orderPopulationSummary[key]);
+;
             }
 
+       function FinalResults(solver) {
+
+                document.getElementById("loader").hidden = true;
+                document.getElementById("progress").innerHTML = ""
 
 
+                let end = window.performance.now();
+                let time = end - start;
+
+                document.getElementById("time").innerHTML = parseInt(time) / 1000;
+                document.getElementById("time").innerHTML += "s";
+
+                console.log(time);
+
+                showDivElements();
+               console.log(solver);
+                solver.getProductsIdIntoResult();
 
 
-        }
+                solver.getOrderFinalResult();
+                resultToJSON(solver);
 
-        function FinalizeIteration ()
+            }
+
+            function hideDivElements() {
+                document.getElementById("loader").hidden = true;
+                document.getElementById("show_results").hidden = true;
+                document.getElementById("time_label").hidden = true;
+                document.getElementById("path_right").hidden = true;
+                document.getElementById("path_etape").hidden = true;
+            }
+
+            function showDivElements() {
+                document.getElementById("show_results").hidden = false;
+                document.getElementById("time_label").hidden = false;
+                document.getElementById("path_right").hidden = false;
+                document.getElementById("path_etape").hidden = false;
+            }
+
+            function resultToJSON(solver) {
+               console.log(solver.bestCombination)
+                let result = JSON.stringify(solver.bestCombination);
+                document.getElementById("results").value = result;
+            }
+
+        let right_path = document.getElementById("path_right");
+        right_path.addEventListener("click", function()
         {
-            //console.log("result",genetic.orderPopulation,genetic.orderPopulationSummary,genetic.bestOrderVariationDistance);
-            //genetic.newOrderGeneration(genetic.orderPopulation,genetic.orderPopulationSummary);
-            //console.log("summary",genetic.orderPopulationSummary)
-            // console.log("new pop",genetic.orderPopulation);
+            //cont.colorizeSelectedOrders(document.getElementById("path_etape").value);
+            an.colorizeSelectedOrders(document.getElementById("path_etape").value);
+        });
 
 
-            console.log("finish",genetic.bestOrderVariationDistance,genetic.bestCombination);
-            //genetic.clearPopulationData();
-        }
-
-        function FinalResults ()
+        document.getElementById("stop").addEventListener("click", function()
         {
-            document.getElementById("loader").hidden = true;
-            document.getElementById("progress").innerHTML=""
+            flag=false;
+            clearInterval(interval)
+            FinalResults(an);
+        });
 
 
-            let end = window.performance.now();
-            let time = end - start;
-
-            document.getElementById("time").innerHTML=parseInt(time)/1000;
-            document.getElementById("time").innerHTML+="s";
-
-            console.log(time);
-
-            showDivElements();
-            genetic.getProductsIdIntoResult();
-            console.log(genetic.bestCombination);
-
-            genetic.getOrderFinalResult();
-            resultToJSON();
-
-        }
-
-        function hideDivElements()
-        {
-            document.getElementById("loader").hidden = true;
-            document.getElementById("show_results").hidden = true;
-            document.getElementById("time_label").hidden = true;
-        }
-
-        function showDivElements()
-        {
-            document.getElementById("show_results").hidden = false;
-            document.getElementById("time_label").hidden = false;
-        }
-
-        function resultToJSON()
-        {
-            let result = JSON.stringify(genetic.bestCombination);
-            document.getElementById("results").value=result;
-        }
 
 
 

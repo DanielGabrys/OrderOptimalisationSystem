@@ -109,22 +109,25 @@ class CreateGrid extends BasicGrid
 
         console.log("elo");
 
-        document.getElementById("reload").innerHTML='';
+        let main=document.getElementById("reload").innerHTML='';
+        let block =''
         let counter = 1
 
         for (let rows = 0; rows < x; rows++)
         {
             for (let columns = 0; columns < y; columns++)
             {
-                document.getElementById("reload").innerHTML +=
+                block +=
                     '<div id=' + counter + ' class="unselected_cell" onmousedown="createGrid.mouseDown('+counter+')" onmouseover="createGrid.mouseOVER('+counter+')" onmouseup="createGrid.mouseUp('+counter+')">'+counter+'</div>';
                 counter++;
+
 
 
             };
 
         };
 
+       document.getElementById("reload").innerHTML=block;
         let counter2 =1;
         for (let rows = 0; rows < x; rows++)
         {

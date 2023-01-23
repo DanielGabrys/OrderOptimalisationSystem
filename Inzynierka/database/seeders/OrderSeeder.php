@@ -17,6 +17,6 @@ class OrderSeeder extends Seeder
     public function run()
     {
         Order::query()->delete();
-        Order::factory(20)->create();
+        Order::factory(30)->create();
     }
 }
