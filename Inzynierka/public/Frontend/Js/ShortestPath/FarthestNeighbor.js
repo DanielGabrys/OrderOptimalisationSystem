@@ -11,27 +11,25 @@ class FarthestNeighbor extends RectangleDivision
         return dist;
     }
 
-    farthestInsertion(path_matrix,final_path)
+    farthestInsertion(path_matrix,final_path,entry)
     {
+
         this.path_matrix = JSON.parse(JSON.stringify(path_matrix))
-        //this.divideGrid();
-        //this.createResults()
 
-
-        this.route=final_path
+        this.route= [entry].concat(final_path,[entry])
         console.log(this.route)
         let base = [this.route[0],this.route[0]];
         let left = this.route.slice(1, this.route.length - 1)
 
-        //console.log(base,left)
+       // console.log(base,left,path_matrix)
 
         for (let i = 0; i < this.route.length - 2; i++)
         {
+            //console.log(base,left)
             let node = this.findFarthest(base, left)
             this.putFarthest(base, node)
         }
         this.final_path=base
-        this.doTwoOpt()
 
         this.getFarhestFinalDistanceArr(base)
         return base;

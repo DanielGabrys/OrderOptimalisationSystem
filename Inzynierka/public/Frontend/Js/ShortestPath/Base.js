@@ -143,7 +143,7 @@ class Base extends DikstraGrid
     {
 
         this.distance=0;
-        //console.log(this.final_path);
+        console.log(this.final_path);
         for(let i=0;i<this.final_path.length-1;i++)
         {
             let key = this.final_path[i]+"->"+this.final_path[i+1];
@@ -234,6 +234,30 @@ class Base extends DikstraGrid
         }
 
         console.log("order",this.order);
+        console.log("distring",this.order);
+    }
+
+    loadExample2(products)
+    {
+        let dictstring = JSON.stringify(document.getElementById("nodes").value);
+
+        dictstring= dictstring.substring(1);
+        dictstring= dictstring.substring(0,dictstring.length-1);
+        let arr = dictstring.split(',');
+
+
+        console.log(arr);
+
+        for (let i=0;i<arr.length;i++)
+        {
+
+            this.colorize_selected(parseInt(arr[i]));
+            this.order.push(parseInt(arr[i]))
+
+        }
+
+        console.log("order",this.order);
+        console.log("distring",this.order);
     }
 
     getNodesDistance(a,b)

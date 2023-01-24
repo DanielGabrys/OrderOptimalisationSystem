@@ -154,7 +154,7 @@
 
         let element = document.getElementById("load_example");
         element.addEventListener("click", function()
-        { genetic.loadExample(genetic.products_positions);
+        { genetic.loadExample2(genetic.products_positions);
           genetic.startGenetic();
           genetic.createResults();
             genetic.pathTracker();
