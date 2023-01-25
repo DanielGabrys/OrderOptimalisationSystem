@@ -13,20 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('grid_product', function (Blueprint $table)
-        {
-            $table->id();
+        Schema::table('orders', function (Blueprint $table) {
 
             $table->Biginteger('grid_id')->unsigned();
-            $table->Biginteger('product_id')->unsigned();
-            $table->integer('position');
-
             $table->foreign('grid_id')->references('id')->on('grids')->onDelete('cascade');
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
 
-            $table->timestamps();
         });
-
     }
 
     /**
@@ -36,6 +28,10 @@ return new class extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('orders', function (Blueprint $table) {
+            $table->Biginteger('grid_id')->unsigned();
+            $table->foreign('grid_id')->references('id')->on('grids')->onDelete('cascade');
+
+        });
     }
 };

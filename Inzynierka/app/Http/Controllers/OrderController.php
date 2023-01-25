@@ -6,6 +6,7 @@ use App\Imports\Orders;
 use App\Imports\OrdersImport;
 use App\Imports\OrdersProductsImport;
 use App\Imports\UsersImport;
+use App\Models\Grid;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -17,8 +18,9 @@ class OrderController extends Controller
     public function showOrders()
     {
 
-        $orders = Order::paginate(5);
-        return view('orders.addOrders',['orders'=>$orders]);
+        $grid = Grid::where('isActive',1)->first();
+        $orders = $grid->orders()->paginate(5);
+        return view('orders.addOrders',['orders'=>$orders,'grid'=>$grid->value("id")]);
     }
 
     public function addOrder(Request $request)
@@ -43,7 +45,10 @@ class OrderController extends Controller
             try
             {
 
-                Order::query()->delete();
+
+                $grid = Grid::where('isActive',1)->first();
+                $grid->orders()->whereIn('grid_id', $grid)->delete();
+
                 Excel::import(new OrdersImport(), $request->file('file')->store('temp'));
                 Excel::import(new OrdersProductsImport(), $request->file('file2')->store('temp'));
 
@@ -52,7 +57,7 @@ class OrderController extends Controller
             }
             catch (\Exception $e)
             {
-                var_dump($e);
+                //dd($e);
                 DB::rollBack();
                 return Redirect()->back()->with('failure', 'Upps coś poszło nie tak');
             }

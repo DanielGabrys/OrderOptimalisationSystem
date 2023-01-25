@@ -95,6 +95,22 @@
                             <span class="text-danger">{{$message}}</span>
                             @enderror
 
+                            <table class="table table-dark">
+                                <thead>
+                                <tr>
+                                    <th scope="col">Bieżący schemat</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>{{$grid}}</td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+
+
+
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary">ADD</button>
                             </div>

@@ -579,10 +579,33 @@ class GridController extends Controller
     {
 
         $containers = Containers::all();
-        $orders=Order::with('products')->get();
-        $orders_sizes = OrderProducts::select("order_id",DB::raw("sum(amount) as capability"))->groupBy(DB::raw("order_id"))->orderBy('capability')->get();
 
         $grid=Grid::all()->where('isActive','=',1)->first();
+        $active = $grid->id;
+        $orders=Order::with('products')->where('grid_id',$grid->id)->get();
+
+        /*
+        //$orders_sizes = OrderProducts::select("order_id",DB::raw("sum(amount) as capability"))->groupBy(DB::raw("order_id"))->orderBy('capability')->get();
+        $orders_sizes = Order::where('grid_id',$grid->id)->with(["orderProducts" => function ($query)
+            {
+                $query->select('order_id',DB::raw("sum(amount) as capability"));
+                $query->groupBy('order_id');
+            }])->get();
+
+       */
+
+        $orders_sizes = DB::table('order_product')
+            ->select('order_product.order_id', DB::raw('sum(order_product.amount) as capability'))
+            ->join('orders', 'orders.id', '=', 'order_product.order_id')
+            ->where('grid_id',$grid->id)
+            ->groupBy('order_product.order_id')->get();
+
+        //dd($orders_sizes);
+        /*
+         * SELECT order_product.order_id, sum(order_product.amount) as SUM from orders inner join order_product on order_product.order_id = orders.id where orders.grid_id =22 group by order_product.order_id;
+         */
+
+
         $products = $grid->products()->orderByRaw('position ASC')->get();
 
         $array=json_encode($products);

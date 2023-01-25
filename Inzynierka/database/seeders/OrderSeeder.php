@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Grid;
 use App\Models\Order;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -16,7 +17,9 @@ class OrderSeeder extends Seeder
      */
     public function run()
     {
-        Order::query()->delete();
-        Order::factory(30)->create();
+        $grid = Grid::where('isActive',1)->value("id");
+        Order::where('grid_id',$grid)->delete();
+
+        Order::factory(2)->create();
     }
 }

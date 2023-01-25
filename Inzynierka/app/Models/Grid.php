@@ -16,4 +16,9 @@ class Grid extends Model
         return $this->belongsToMany(Product::class)->withPivot('position','id','desired_position');
     }
 
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
 }

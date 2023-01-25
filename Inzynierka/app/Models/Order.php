@@ -15,6 +15,7 @@ class Order extends Model
     protected $fillable = [
         'id',
         'primary',
+        'grid_id'
 
     ];
 
@@ -22,4 +23,14 @@ class Order extends Model
     {
         return $this->belongsToMany(Product::class)->withPivot('amount');
     }
+
+    public function orderProducts()
+    {
+        return $this->hasMany(OrderProducts::class);
+    }
+
+
+
+
+
 }
