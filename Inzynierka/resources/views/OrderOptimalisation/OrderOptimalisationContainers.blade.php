@@ -208,9 +208,9 @@
             loadContainersData();
             setStartData();
             cont.loadDatabase(obj)
-            solverGA();
+            //solverGA();
            //solverSA()
-         //  solver2OPT()
+           solver2OPT()
 
         });
 
@@ -335,7 +335,7 @@
              {
 
                  cont.orderFitness(cont.orderPopulation[0][key2]);
-                 cont.startGenetic();
+                 cont.startSolve();
                  cont.setOrderNodeShortestPathData(cont.orderPopulation[0][key2]);
 
                  cont.orderContFitness(cont.orderPopulation[0]);
@@ -422,11 +422,12 @@
 
                     }
 
-                       // console.log(cont.orderPopulation)
+                        console.log(cont.orderPopulation)
                         cont.setPopulationNodeShortestPathData(cont.orderPopulation[key], cont.orderPopulationSummary[key], iter);
                 }
                 cont.orderContFitness(cont.orderPopulation);
                 cont.nextContGeneration()
+
 
                 iteration++
                 // cont.orderContFitness(cont.orderPopulation[key]);

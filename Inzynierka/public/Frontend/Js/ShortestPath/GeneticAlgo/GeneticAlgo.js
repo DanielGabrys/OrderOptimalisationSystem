@@ -1,6 +1,6 @@
 class GeneticAlgo extends FarthestNeighbor
 {
-    populationSize=5;
+    populationSize=1;
     population =[];
     fitness =[];
     bestDistance = Infinity;
@@ -99,6 +99,18 @@ class GeneticAlgo extends FarthestNeighbor
         return dist;
     }
 
+    calculateDistanceWithEntry(arr)
+    {
+
+        let dist = 0
+        for(let i=0;i<arr.length-1;i++)
+        {
+                dist += this.getNodesDistance(arr[i],arr[i+1])
+        }
+        return dist;
+    }
+
+
     FI()
     {
         let farthest = new FarthestNeighbor()
@@ -113,16 +125,19 @@ class GeneticAlgo extends FarthestNeighbor
         this.final_path=nearest.final_path
     }
 
-    startGenetic()
+    startSolve()
     {
-
-       this.FI();
-      // this.NN();
-      // this.divideGrid();
+        this.FI();
+        // this.NN();
+        // this.divideGrid();
 
         this.doTwoOpt()
 
+        this.bestDistance = this.calculateDistanceWithEntry(this.final_path)
+    }
 
+    startGenetic()
+    {
 
 
         //console.log("start")
@@ -132,9 +147,12 @@ class GeneticAlgo extends FarthestNeighbor
 
 
 
-        this.rebaseOrder();
+
+
+        //this.rebaseOrder();
         this.createPopulation();
         this.bestPath = this.population[0];
+
 
 
 
@@ -148,11 +166,6 @@ class GeneticAlgo extends FarthestNeighbor
             //   console.log(i, this.bestDistance,this.bestPath);
            // console.log(i,this.population);
         }
-
-
-
-
-
 
 
 

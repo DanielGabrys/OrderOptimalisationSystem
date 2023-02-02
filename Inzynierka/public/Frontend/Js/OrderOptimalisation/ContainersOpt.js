@@ -544,18 +544,22 @@ class ContainersOpt extends OrderOptimalisation
 
     nextContGeneration()
     {
+
+
         let newPopulation=[];
         for(let i=0;i<this.orderPopulation.length;i++)
         {
-           let rate =Math.random();
 
+           let rate =Math.random();
            let nodeA = this.pickOne(this.orderPopulation,this.containerFitness)
            let nodeB = this.pickOne(this.orderPopulation,this.containerFitness)
            let result = this.crossOverCont(nodeA,nodeB)
-           let index = Math.floor(Math.random() * (2));
+           //let result2 = this.crossOverCont(nodeB,nodeA)
 
 
-                newPopulation[i] = result[index]
+               newPopulation[i]=result
+               // this.deleteWorstFromPopulation(result)
+                //this.deleteWorstFromPopulation(result2)
 
             if(rate<0.05)
             {
@@ -566,6 +570,28 @@ class ContainersOpt extends OrderOptimalisation
         //console.log("newpop",newPopulation)
         this.orderPopulation = newPopulation
 
+    }
+
+    deleteWorstFromPopulation(result)
+    {
+        let worst = this.getWorstFitness()
+        this.orderContFitness(this.orderPopulation)
+        this.orderPopulation[worst] = result
+    }
+
+    getWorstFitness()
+    {
+        let min =Infinity;
+        let index =-1;
+        for(let i=0;i<this.containerFitness.length;i++)
+        {
+            if(this.containerFitness[i]<min)
+            {
+                min = this.containerFitness[i]
+                index=i;
+            }
+        }
+        return index;
     }
 
     crossOverCont(batchA, batchB)
@@ -596,120 +622,91 @@ class ContainersOpt extends OrderOptimalisation
         console.log("oldA",arr1)
         console.log("oldB",arr2)
 
-        let orders_id =this.order_ids_base
-
-        let orders_inA = this.crossOverTransport(t1,t2,batchA)
-        let orders_inB = this.crossOverTransport(t1,t2,batchB)
+      //  let orders_inB = this.crossOverTransport(t1,t2,batchB)
         let A_unchatching =[]
         let B_unchatching =[]
 
 
-        //swapping batchB to A
+        let childA = []
+        let childAarr =[]
+
+        //moving from  A
         for(let i=t1;i<=t2;i++)
         {
-            batchA[i].order=[]
-            for(let j=0;j<batchB[i].order.length;j++)
+            let arr =[]
+            for(let j=0;j<batchA[i].order.length;j++)
             {
-                if(!orders_inA.includes(batchB[i].order[j]))
-                {
-
-                    batchA[i].order[j] = batchB[i].order[j]
-                    orders_inA.push(batchB[i].order[j])
-                }
-                else
-                {
-                    A_unchatching.push(batchB[i].order[j])
-                }
+                arr.push(batchA[i].order[j])
+                childAarr.push(batchA[i].order[j])
             }
+            if(arr.length>0)
+             childA.push(arr)
         }
 
-        //swapping batchA to B
-        for(let i=t1;i<=t2;i++)
-        {
-            batchB_temp[i].order=[]
-            for(let j=0;j<batchA_temp[i].order.length;j++)
-            {
-                if(!orders_inB.includes(batchA_temp[i].order[j]))
-                {
-
-                    batchB_temp[i].order[j] = batchA_temp[i].order[j]
-                    orders_inB.push(batchA_temp[i].order[j])
-                }
-                else
-                {
-                    B_unchatching.push(batchA_temp[i].order[j])
-                }
-            }
-        }
-1
-        let batchA_array = this.batchtoArray(batchA)
-        let batchB_array = this.batchtoArray(batchB_temp)
-
-        A_unchatching = this.batchFillRest(batchA_array)
-        B_unchatching = this.batchFillRest(batchB_array)
-
-
-        console.log(batchA_array)
-        console.log(batchB_array)
-
-       // console.log(A_unchatching)
-       // console.log(B_unchatching)
-
-        let objA = this.batchTo2dArray(batchA_array)
-        let objB = this.batchTo2dArray(batchB_array)
-        objA.unmatch = A_unchatching
-        objB.unmatch = B_unchatching
-
-        console.log(objA,objB)
-
-
-        let new_A = this.batchFillAll(objA)
-        let new_B = this.batchFillAll(objB)
-
-        let cross = [new_A,new_B]
+        this.crossOverTransport(t1,t2,batchB,childA,childAarr)
+        let left = this.batchPushleft(arr1,childAarr)
+        console.log(childA,left)
+        let cross = this.batchFillAll(childA,left)
+        console.log(childA,left)
+        console.log(A_unchatching)
 
         return cross
     }
 
-    batchFillAll(obj)
+    batchPushleft(base,childarr)
+    {
+        let arr=[]
+        {
+            for(let j=0;j<base.length;j++)
+            {
+                if(!childarr.includes(base[j]) && base[j]!=="-")
+                {
+                    arr.push(base[j])
+                }
+
+            }
+        }
+
+        return arr
+
+    }
+
+    batchFillAll(child,left)
     {
 
         let final ={}
 
-        let part = obj.part.slice()
-        let orders = obj.unmatch.slice()
-        let succed =1;
-        let left =[]
-        while(orders.length>0)
+        let part = child.slice()
+        let orders = left.slice()
+        let succed =1
+        let counter =0
+        while(orders.length>0 && counter<1000)
         {
-
             succed=0
-            let index = Math.floor(Math.random() * (orders.length));
-            let elem = orders[index]
-
-          //  console.log(elem,orders)
+            let elem = orders[0]
+          //  console.log(orders)
             for (let i = 0; i < part.length; i++)
             {
                 let result = this.singleReplace(part[i], elem)
-                //console.log((result))
-                if (result !== 0) {
+               // console.log((result),i)
+                if (result !== 0)
+                {
                     final[i] = result
                     part[i] = result.orders
                    // console.log(part, orders)
-                    orders.splice(index, 1)
+                    orders.splice(0, 1)
                     succed = 1
                     break;
                 }
             }
-
-            if(succed===0)
-            {
-                orders.splice(index, 1)
+            if(succed===0) {
+                console.log("errr")
+                orders.splice(0, 1)
                 part.push([elem])
             }
+                counter++
         }
-        //part.push(left)
-        part = part.concat(obj.part_max)
+
         return this.batchgetContainers(part);
 
     }
@@ -763,76 +760,46 @@ class ContainersOpt extends OrderOptimalisation
         return arr
     }
 
-    crossOverTransport(t1,t2,batchA)
+    crossOverTransport(t1,t2,batch,child,childarr)
     {
 
-        let l= Object.keys(batchA).length
-        let arr=[]
+        let l= Object.keys(batch).length
         for(let i=0;i<t1;i++)
         {
-            for(let j=0;j<batchA[i]["order"].length;j++)
+            let arr=[]
+            for(let j=0;j<batch[i]["order"].length;j++)
             {
-                arr.push(batchA[i]["order"][j])
+                let el = batch[i]["order"][j]
+                if(!childarr.includes(el))
+                {
+                    arr.push(batch[i]["order"][j])
+                    childarr.push(batch[i]["order"][j])
+                }
+
             }
+            child.push(arr)
         }
 
 
         for(let i=t2+1;i<l;i++)
         {
-
-            for(let j=0;j<batchA[i]["order"].length;j++)
+            let arr=[]
+            for(let j=0;j<batch[i]["order"].length;j++)
             {
-                arr.push(batchA[i]["order"][j])
+                let el = batch[i]["order"][j]
+                if(!childarr.includes(el))
+                {
+                    arr.push(batch[i]["order"][j])
+                    childarr.push(batch[i]["order"][j])
+                }
+
             }
+            child.push(arr)
         }
 
-        return arr
+        return child
     }
 
-    batchTo2dArray(base)
-    {
-        let arr = [];
-        let arr2 =[];
-        let max = 0;
-        let counter =0;
-        for(let i=0;i<base.length;i++)
-        {
-            if(base[i]!=="-" && base[i])
-            {
-                counter++;
-                arr2.push((base[i]))
-            }
-            else if (base[i]==="-" && arr2.length>0)
-            {
-                if(counter>max) max =counter
-                counter =0
-                arr.push(arr2)
-                arr2 =[];
-            }
-        }
-
-        let new_arr =[]
-        let new_arr2 =[]
-
-        for(let i=0;i<arr.length;i++)
-        {
-            if (arr[i].length < max)
-                new_arr.push(arr[i])
-            else
-            {
-                new_arr2.push(arr[i])
-            }
-        }
-
-
-        let obj ={}
-        obj.full = arr
-        obj.part = new_arr
-        obj.part_max = new_arr2
-        return obj
-
-
-    }
 
     OrderBatching2OPT()
     {
@@ -1086,7 +1053,7 @@ class ContainersOpt extends OrderOptimalisation
 
 
         this.order =this.orderFitness2opt(orders);
-        this.startGenetic()
+        this.startSolve()
 
 
         let population ={}

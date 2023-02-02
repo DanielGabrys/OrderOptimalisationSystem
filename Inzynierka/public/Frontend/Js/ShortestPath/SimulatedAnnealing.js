@@ -46,7 +46,7 @@ class SimulatedAnnealing extends ContainersOpt {
 
 
         let multiple = this.getRandomGens(this.orderPopulation[0])
-        this.doubleReplace(0, multiple)
+        this.doubleReplace(0, 1)
         for (const key2 in this.orderPopulation[0])
         {
             this.orderFitness(this.orderPopulation[0][key2]);
@@ -58,6 +58,98 @@ class SimulatedAnnealing extends ContainersOpt {
 
         return JSON.parse(JSON.stringify(this.orderPopulation[0]))
     }
+
+    Replace2opt(key,key2)
+    {
+
+        let A = this.orderPopulation[0][key]
+        let B = this.orderPopulation[0][key2]
+
+        //console.log(A.distance,B.distance,JSON.parse(JSON.stringify(this.orderPopulation[0])))
+        let temp_A = A["order"].slice();
+        let temp_B = B["order"].slice();
+
+
+        // console.log(this.orderPopulation[0][key],this.orderPopulation[0][key2])
+
+        // console.log(key,key2,temp_A,temp_B)
+        let dist_curr=A["distance"] + B["distance"]
+
+
+        for (let j = 0; j < temp_A.length; j++)
+        {
+            for (let k = 0; k < temp_B.length; k++)
+            {
+                let tmp = temp_A[j]
+                temp_A[j] = temp_B[k]
+                temp_B[k] = tmp;
+
+
+                let real_contA = this.checkMatchingContainers(this.getContainers(temp_A), this.containers);
+                let real_contB = this.checkMatchingContainers(this.getContainers(temp_B), this.containers)
+                let real_capA = this.getsumArr(real_contA);
+                let real_capB = this.getsumArr(real_contB);
+
+                if (real_capA <= this.max_capability && real_capB <= this.max_capability && real_contA.length > 0 && real_contB.length > 0)
+                {
+
+
+                    // console.log(JSON.parse(JSON.stringify(this.orderPopulation[i])))
+                    let current_contA = this.getContainersByOne(temp_A)
+                    let current_contB = this.getContainersByOne(temp_B)
+
+                    // console.log(JSON.parse(JSON.stringify(this.orderPopulation[0][key])))
+                    //console.log(temp_A,temp_B)
+
+                    let temp_A1 =this.resetdata2opt(temp_A)
+                    let temp_B1 =this.resetdata2opt(temp_B)
+
+                    let dist_new = temp_A1.distance+temp_B1.distance
+
+
+                    if(dist_new <dist_curr)
+                    {
+
+                        //    console.log("tttt",temp_A,temp_B,A["order"],B["order"])
+                        let pop = (JSON.parse(JSON.stringify(this.orderPopulation[0])))
+                        let obj = {}
+                        obj["order"] = temp_B.slice()
+                        obj["containers"] = current_contB
+                        obj["path"]  = temp_B1.path
+                        obj["distance"] = temp_B1.distance
+                        obj["detailed_path"] = temp_A1.detailed_path
+                        obj["products_id"] = []
+                        obj['products_id_map'] ={}
+
+                        //  console.log("obj",obj)
+
+                        this.orderPopulation[0][key]["order"] = temp_A.slice()
+                        this.orderPopulation[0][key]["path"] = temp_A1.path
+                        this.orderPopulation[0][key]["distance"] = temp_A1.distance
+                        this.orderPopulation[0][key]["detailed_path"] = temp_A1.detailed_path
+                        this.orderPopulation[0][key]["containers"] = current_contA
+
+                        pop[key]=this.orderPopulation[0][key]
+                        pop[key2]=obj
+
+                        // console.log(JSON.parse(JSON.stringify(pop)),key,key2)
+
+
+                        // console.log("elo",temp_A,temp_B,dist_curr,dist_curr,JSON.parse(JSON.stringify(this.orderPopulation[0])))
+                        return JSON.parse(JSON.stringify(pop))
+
+                    }
+                    else
+                }
+
+
+            }
+
+        }
+        return 0;
+
+    }
+
 
     SA()
     {
@@ -111,16 +203,9 @@ class SimulatedAnnealing extends ContainersOpt {
                 result = neighbor;
                 this.no_change=0
             }
-            else
-                (
-                    this.no_change++
-                )
-            if(this.current_epos>this.epos)
-            {
+
                 this.temperature *= this.COOLING_RATE;
-                this.current_epos=0;
-            }
-            this.current_epos++;
+
         }
 
         return result
