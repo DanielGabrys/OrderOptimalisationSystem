@@ -1,14 +1,16 @@
 class SimulatedAnnealing extends ContainersOpt {
 // initialization
-    temperature = 250;
+    temperature = 200;
     T0=this.temperature
-    COOLING_RATE = 0.998;
+    COOLING_RATE = 0.97;
     ABSOLUTE_ZERO= 0;      // final temperature
 
     current = [];
     best_cost = Infinity;
     no_change =0
-    restart_t=0.2
+    restart_t=0.01
+    epos =0
+    current_epos =0;
 
     getDistanceAnn(pop)
     {
@@ -21,10 +23,9 @@ class SimulatedAnnealing extends ContainersOpt {
         return dist
     }
 
-    init(cont)
+    init(cont,an)
     {
 
-        an = new SimulatedAnnealing()
         for(const key in cont)
         {
             an[key]=cont[key]
@@ -51,7 +52,7 @@ class SimulatedAnnealing extends ContainersOpt {
             this.orderFitness(this.orderPopulation[0][key2]);
             this.startGenetic();
             this.setOrderNodeShortestPathData(this.orderPopulation[0][key2]);
-            this.orderContFitness(this.orderPopulation[0]);
+           // this.orderContFitness(this.orderPopulation[0]);
             this.getPopNodeMaxDistances(this.orderPopulation[0]);
         }
 
@@ -68,6 +69,7 @@ class SimulatedAnnealing extends ContainersOpt {
        // delete this.orderPopulation[0].dist
     }
 
+
     solveAnnealing(cur,next)
     {
 
@@ -78,9 +80,9 @@ class SimulatedAnnealing extends ContainersOpt {
 
         if(this.restart_t>this.temperature)
         {
-            this.temperature=this.T0
+           // this.temperature=this.T0
 
-           // this.orderPopulation[0]=JSON.parse(JSON.stringify(cur))
+          //  this.orderPopulation[0]=JSON.parse(JSON.stringify(this.bestCombination))
 
         }
 
@@ -92,7 +94,7 @@ class SimulatedAnnealing extends ContainersOpt {
 
 
             let prob = this.acceptanceProbability(current_cost, neighbor_cost)
-            console.log("neb",current_cost,neighbor_cost,this.best_cost,this.temperature);
+            console.log("neb",current_cost,neighbor_cost,this.best_cost,this.temperature,this.current_epos);
             if(Math.random() < prob && this.temperature>1)
             {
                 this.current = JSON.parse(JSON.stringify(neighbor))
@@ -113,8 +115,12 @@ class SimulatedAnnealing extends ContainersOpt {
                 (
                     this.no_change++
                 )
-            this.temperature *= this.COOLING_RATE;
-           // console.log("sa",this.best_cost,current_cost,prob,this.temperature);
+            if(this.current_epos>this.epos)
+            {
+                this.temperature *= this.COOLING_RATE;
+                this.current_epos=0;
+            }
+            this.current_epos++;
         }
 
         return result
@@ -128,7 +134,6 @@ class SimulatedAnnealing extends ContainersOpt {
     }
 }
 
-an = new SimulatedAnnealing();
 
 
 

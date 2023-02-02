@@ -344,6 +344,7 @@ class RectangleDivision extends Naive {
                       this.final_path = new_route
                       this.distance = new_distance
                       is_improved=1;
+                     // break;
                   }
               }
           }

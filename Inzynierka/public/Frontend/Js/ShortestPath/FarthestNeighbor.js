@@ -7,7 +7,7 @@ class FarthestNeighbor extends RectangleDivision
         for (let i = 0; i < r.length - 1; i++) {
             dist += this.getNodesDistance(r[i], r[i + 1]);
         }
-        console.log(dist)
+       // console.log(dist)
         return dist;
     }
 
@@ -17,7 +17,7 @@ class FarthestNeighbor extends RectangleDivision
         this.path_matrix = JSON.parse(JSON.stringify(path_matrix))
 
         this.route= [entry].concat(final_path,[entry])
-        console.log(this.route)
+       // console.log(this.route)
         let base = [this.route[0],this.route[0]];
         let left = this.route.slice(1, this.route.length - 1)
 

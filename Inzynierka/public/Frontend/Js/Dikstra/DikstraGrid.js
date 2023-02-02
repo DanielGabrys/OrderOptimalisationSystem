@@ -306,13 +306,16 @@ class DikstraGrid extends ProductsGrid
 
     bfs(graph, source,end)
     {
-            let queue = [ { vertex: source, count: 0 } ], visited = { source: true }, tail = 0;
+            let queue = [ { vertex: source, count: 0 } ]
+            let visited = { source: true }
+            let tail = 0;
 
             while (tail < queue.length)
             {
                 let u = queue[tail].vertex, count = queue[tail++].count;  // Pop a vertex off the queue.
                // console.log('distance from ' + source + ' to ' + u + ': ' + count);
-
+              //  console.log(queue)
+               // console.log(u,count)
                 if(u==end)
                     return count;
 
@@ -333,23 +336,22 @@ class DikstraGrid extends ProductsGrid
 
     shortestPath(graph, source, target)
     {
-        if (source == target)
-        {   // Delete these four lines if
-            // you want to look for a cycle
-            return;                 // when the source is equal to
-        }                         // the target.
-        var queue = [ source ],
-            visited = { source: true },
-            predecessor = {},
-            tail = 0;
+        let queue = [ source ]
+        let visited = { source: true }
+        let predecessor = {}
+        let tail = 0
+
         while (tail < queue.length)
         {
-            var u = queue[tail++],  // Pop a vertex off the queue.
-                neighbors = graph.neighbors[u];
+            let u = queue[tail++]  // Pop a vertex off the queue.
+            let neighbors = graph.neighbors[u];
+           // console.log(queue,visited,tail)
+
             for (var i = 0; i < neighbors.length; ++i)
             {
-                var v = neighbors[i];
-                if (visited[v]) {
+                let v = neighbors[i];
+                if (visited[v])
+                {
                     continue;
                 }
                 visited[v] = true;
@@ -359,11 +361,11 @@ class DikstraGrid extends ProductsGrid
                     while (u !== source)
                     {
                         path.push(u);
+                     //   console.log(path,predecessor);
                         u = predecessor[u];
                     }
                     path.push(u);
                     path.reverse();
-                    //console.log(path);
                     return path;
                 }
                 predecessor[v] = u;

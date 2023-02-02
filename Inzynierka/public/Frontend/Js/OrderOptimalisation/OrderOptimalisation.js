@@ -281,6 +281,7 @@ class OrderOptimalisation extends GeneticAlgo
     orderFitness(sequence)
     {
 
+       // console.log(sequence)
         let arr =[];
         let duplicats=0;
         for (let i=0;i<sequence["order"].length;i++)
@@ -305,6 +306,36 @@ class OrderOptimalisation extends GeneticAlgo
         sequence["products_id"]=[];
         sequence["products_id_map"]={};
         //console.log(this.order,arr,duplicats,fitness);
+
+        return this.order
+    }
+
+    orderFitness2opt(sequence)
+    {
+
+        let arr =[];
+        let duplicats=0;
+        for (let i=0;i<sequence.length;i++)
+        {
+
+            //console.log("esq",this.orderList,sequence["order"][i])
+            for (let j=0;j<this.orderList[sequence[i]]['real_positions'].length;j++)
+            {
+                if(arr.includes(this.orderList[sequence[i]]['real_positions'][j]))
+                {
+                    duplicats++;
+                }
+                else
+                {
+                    arr.push(this.orderList[sequence[i]]['real_positions'][j])
+                }
+            }
+        }
+        this.order = arr.splice(0,arr.length);
+
+        //console.log(this.order,arr,duplicats,fitness);
+
+        return this.order
     }
 
     colorizeOrders()
@@ -446,6 +477,7 @@ class OrderOptimalisation extends GeneticAlgo
        this.resetRectangle();
     }
 
+
     setPopulationNodeShortestPathData(main_pop,sec_pop,iter)
     {
         let dist = 0;
@@ -456,7 +488,7 @@ class OrderOptimalisation extends GeneticAlgo
            //console.log(main_pop[key]["distance"]);
         }
 
-        //console.log("oh",this.bestOrderVariationDistance,dist,iter,main_pop);
+       // console.log("oh",this.bestOrderVariationDistance,dist,iter,main_pop);
         sec_pop["TotalDistance"] = dist;
         if(dist<this.bestOrderVariationDistance)
         {

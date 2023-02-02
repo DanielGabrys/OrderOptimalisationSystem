@@ -47,7 +47,7 @@
                 <div class="input-group-prepend">
                     <div class="input-group-text">POPULATION</div>
                 </div>
-                <input type="number" class="form-control" id="population" name="population"  value=200 style="width: 80px;">
+                <input type="number" class="form-control" id="population" name="population"  value=1 style="width: 80px;">
             </div>
 
             <div class="input-group mb-2 mr-sm-2">
@@ -191,6 +191,7 @@
         let interval =null;
         let iteration =0;
         let max_iteration =0;
+        sa = new SimulatedAnnealing();
 
 
         let distinct_containers =[];
@@ -208,7 +209,8 @@
             setStartData();
             cont.loadDatabase(obj)
             solverGA();
-           // solverSA()
+           //solverSA()
+         //  solver2OPT()
 
         });
 
@@ -314,12 +316,42 @@
 
             }
 
+         function solver2OPT()
+         {
+             let max_time = document.getElementById("max_time").value;
+             let max_cap =0// document.getElementById("max_cap").value
+
+             // cont.createPopulation();
+             cont.setStartVariables(obj2, containers, distinct_containers,document.getElementById('split').checked);
+             cont.createContainerPopulation(cont.orderPopulationSize);
+
+             cont.randomOrderColor()
+             cont.colorizeOrders();
+             cont.createLegend();
+
+             start = window.performance.now();
+
+             for (const key2 in cont.orderPopulation[0])
+             {
+
+                 cont.orderFitness(cont.orderPopulation[0][key2]);
+                 cont.startGenetic();
+                 cont.setOrderNodeShortestPathData(cont.orderPopulation[0][key2]);
+
+                 cont.orderContFitness(cont.orderPopulation[0]);
+                 cont.getPopNodeMaxDistances(cont.orderPopulation[0]);
+             }
+            // cont.setPopulationNodeShortestPathData(cont.orderPopulation[0], cont.orderPopulationSummary[0], 0);
+             console.log(JSON.parse(JSON.stringify(cont.orderPopulation[0])))
+             cont.OrderBatching2OPT()
+             FinalResults(cont)
+         }
+
         function solverSA()
         {
 
             let max_time = document.getElementById("max_time").value;
-            an = new SimulatedAnnealing();
-            sa = an.init(cont)
+            sa = sa.init(cont,sa)
             sa.setStartVariables(obj2, containers, distinct_containers,document.getElementById('split').checked);
             sa.createContainerPopulation(1);
             sa.newTempResults()
@@ -330,6 +362,7 @@
             sa.colorizeOrders();
             sa.createLegend();
             start = window.performance.now();
+
 
             interval = setInterval(SAInterval, 10, iteration,max_time);
 
@@ -344,13 +377,13 @@
             let end = window.performance.now();
             let time = parseInt(end - start - max_time * 1000);
 
-            an.SA()
-            an.setPopulationNodeShortestPathData(cont.orderPopulation[0], cont.orderPopulationSummary[0], iter, 0);
+            sa.SA()
+            sa.setPopulationNodeShortestPathData(cont.orderPopulation[0], cont.orderPopulationSummary[0], iter, 0);
             iteration++;
             if(max_iteration<=iteration || time >0)
             {
                 clearInterval(interval)
-                FinalResults(an);
+                FinalResults(sa);
 
 
             }
@@ -361,14 +394,16 @@
 
        function SingleIteration(iter, max_time)
             {
+                let end = window.performance.now();
+                let time = parseInt(end - start - max_time * 1000);
+
+              //  console.log("newpop",cont.orderPopulation)
                 for (let key = 0; key < cont.orderPopulationSize; key++)
                 {
 
                     document.getElementById("progress").innerHTML = iteration + "/" + cont.orderIteration ;
                     document.getElementById("dist").innerHTML = cont.bestOrderVariationDistance.toString();
 
-                    let end = window.performance.now();
-                    let time = parseInt(end - start - max_time * 1000);
                     if(max_iteration===iteration || time >0)
                     {
                         clearInterval(interval)
@@ -383,18 +418,21 @@
                             cont.orderFitness(cont.orderPopulation[key][key2]);
                             cont.startGenetic();
                             cont.setOrderNodeShortestPathData(cont.orderPopulation[key][key2]);
-
-                            cont.orderContFitness(cont.orderPopulation[key]);
                             cont.getPopNodeMaxDistances(cont.orderPopulation[key]);
 
                     }
 
-                        cont.setPopulationNodeShortestPathData(cont.orderPopulation[key], cont.orderPopulationSummary[key], iter, key);
-                        cont.nextContGeneration()
-
-
+                       // console.log(cont.orderPopulation)
+                        cont.setPopulationNodeShortestPathData(cont.orderPopulation[key], cont.orderPopulationSummary[key], iter);
                 }
+                cont.orderContFitness(cont.orderPopulation);
+                cont.nextContGeneration()
+
                 iteration++
+                // cont.orderContFitness(cont.orderPopulation[key]);
+
+
+
 
 
 
@@ -416,7 +454,7 @@
                 console.log(time);
 
                 showDivElements();
-               console.log(solver);
+                //console.log(solver);
                 solver.getProductsIdIntoResult();
 
 
@@ -442,7 +480,7 @@
 
             function resultToJSON(solver) {
                console.log(solver.bestCombination)
-                let result = JSON.stringify(solver.bestCombination);
+                let batchAresult = JSON.stringify(solver.bestCombination);
                 document.getElementById("results").value = result;
             }
 
@@ -450,7 +488,7 @@
         right_path.addEventListener("click", function()
         {
             //cont.colorizeSelectedOrders(document.getElementById("path_etape").value);
-            an.colorizeSelectedOrders(document.getElementById("path_etape").value);
+            sa.colorizeSelectedOrders(document.getElementById("path_etape").value);
         });
 
 
@@ -458,7 +496,7 @@
         {
             flag=false;
             clearInterval(interval)
-            FinalResults(an);
+            FinalResults(sa);
         });
 
 

@@ -10,6 +10,7 @@ class ContainersOpt extends OrderOptimalisation
     order_ids =[];
     order_ids_base =[];
     partial =false;
+    containerFitness =[]
 
 
    setStartVariables(orders,containers,distinct_containers,partial)
@@ -48,9 +49,10 @@ class ContainersOpt extends OrderOptimalisation
            let temp_orders= orders.slice();
            let counter =0;
            let individual = this.individual();
-          //console.log("ind",individual);
+         // console.log("ind",individual);
            //break;
-           this.reselectFinalContainers(individual);
+         //  this.reselectFinalContainers(individual);
+          // console.log("ind",individual);
 
 
            for(let j=0;j<individual.length;j++)
@@ -457,6 +459,7 @@ class ContainersOpt extends OrderOptimalisation
 
         for(let k=0;k<object.length;k++)
         {
+            //console.log(object)
             let map = object[k]["containers_map"];
             let possible_containers = object[k]["possible_containers"].slice();
             //console.log(map,possible_containers)
@@ -491,123 +494,407 @@ class ContainersOpt extends OrderOptimalisation
     orderContFitness(sequence)
     {
 
-        let arr =[];
-        let sum_distance=0.00001;
-        for (const i in sequence)
+        let part_sum =[]
+        let fitness =[]
+        let sum_distance = 0;
+        for(let i=0;i<sequence.length; i++) //population
         {
-            sum_distance+= sequence[i]["distance"];
+
+            part_sum.push(0)
+            for (const k in sequence[i]) //batch
+            {
+                sum_distance += sequence[i][k]["distance"];
+                part_sum[i] += sequence[i][k]["distance"]
+            }
         }
 
-        //console.log("sequence",sequence,sum_distance)
-
-        for (const i in sequence)
+        for(let i=0;i<sequence.length; i++) //population
         {
-            let fitness= sequence[i]["distance"]/sum_distance;
-            sequence[i]["fitness"]=fitness;
-            sequence[i]["products_id"]=[];
-            sequence[i]["products_id_map"]={};
+            fitness[i] = (1/ part_sum[i])
 
         }
 
-        this.order = arr.splice(0,arr.length);
+
+        let sum =0
+        for(let i=0;i<fitness.length;i++)
+        {
+            sum+=fitness[i];
+        }
+        for(let i=0;i<fitness.length;i++)
+        {
+            fitness[i] = fitness[i]/sum;
+        }
+        console.log(fitness,part_sum)
+        this.containerFitness = fitness
+
+        /*
+        for (const i in sequence) {
+            let fitness = sequence[i]["distance"] / sum_distance;
+            sequence[i]["BatchFitness"] = fitness;
+            sequence[i]["products_id"] = [];
+            sequence[i]["products_id_map"] = {};
+
+        }
+
+         */
+
+       // this.order = arr.splice(0,arr.length);
 
     }
 
     nextContGeneration()
     {
+        let newPopulation=[];
         for(let i=0;i<this.orderPopulation.length;i++)
         {
-           let best = JSON.parse(JSON.stringify(this.bestCombination))
-           delete best.dist
-           this.orderPopulation[i] = best
+           let rate =Math.random();
 
-           let multiple = this.getRandomGens(this.orderPopulation[i])
+           let nodeA = this.pickOne(this.orderPopulation,this.containerFitness)
+           let nodeB = this.pickOne(this.orderPopulation,this.containerFitness)
+           let result = this.crossOverCont(nodeA,nodeB)
+           let index = Math.floor(Math.random() * (2));
 
 
-           this.singleReplace(i)
-           this.doubleReplace(i,multiple)
+                newPopulation[i] = result[index]
+
+            if(rate<0.05)
+            {
+                this.doubleReplace(i,1)
+            }
+
         }
+        //console.log("newpop",newPopulation)
+        this.orderPopulation = newPopulation
 
     }
-    nextContGenerationAnn(k)
+
+    crossOverCont(batchA, batchB)
     {
-                let base = JSON.parse(JSON.stringify(this.orderPopulation[0]))
 
-                if(an.best_cost===Infinity)
-                    an.init(base,this.iteration)
+        let batchA_temp = JSON.parse(JSON.stringify(batchA))
+        let batchB_temp = JSON.parse(JSON.stringify(batchB))
 
-                this.doubleReplace(0, 1)
-                for (const key2 in this.orderPopulation[0])
+        let t1 = parseInt(this.getRandomProperty(batchA))
+        let t2 = parseInt(this.getRandomProperty(batchA))
+
+        while(t1 === t2)
+        {
+           t1 =  this.getRandomProperty(batchB)
+        }
+
+        if(t2<t1)
+        {
+            let tmp =t1;
+            t1=t2;
+            t2=tmp
+        }
+
+        console.log("t",t1,t2)
+
+        let arr1 = this.batchtoArray(batchA)
+        let arr2 = this.batchtoArray(batchB)
+        console.log("oldA",arr1)
+        console.log("oldB",arr2)
+
+        let orders_id =this.order_ids_base
+
+        let orders_inA = this.crossOverTransport(t1,t2,batchA)
+        let orders_inB = this.crossOverTransport(t1,t2,batchB)
+        let A_unchatching =[]
+        let B_unchatching =[]
+
+
+        //swapping batchB to A
+        for(let i=t1;i<=t2;i++)
+        {
+            batchA[i].order=[]
+            for(let j=0;j<batchB[i].order.length;j++)
+            {
+                if(!orders_inA.includes(batchB[i].order[j]))
                 {
-                    //this.orderFitness(this.orderPopulation[0][key2]);
-                   // this.startGenetic();
-                    this.setOrderNodeShortestPathData(this.orderPopulation[0][key2]);
-                    this.orderContFitness(this.orderPopulation[0]);
-                    this.getPopNodeMaxDistances(this.orderPopulation[0]);
 
+                    batchA[i].order[j] = batchB[i].order[j]
+                    orders_inA.push(batchB[i].order[j])
                 }
-                //console.log(JSON.parse(JSON.stringify(this.orderPopulation[0])))
-                an.solveAnnealing(base, JSON.parse(JSON.stringify(this.orderPopulation[0])))
-                delete this.orderPopulation[0].dist
+                else
+                {
+                    A_unchatching.push(batchB[i].order[j])
+                }
+            }
+        }
+
+        //swapping batchA to B
+        for(let i=t1;i<=t2;i++)
+        {
+            batchB_temp[i].order=[]
+            for(let j=0;j<batchA_temp[i].order.length;j++)
+            {
+                if(!orders_inB.includes(batchA_temp[i].order[j]))
+                {
+
+                    batchB_temp[i].order[j] = batchA_temp[i].order[j]
+                    orders_inB.push(batchA_temp[i].order[j])
+                }
+                else
+                {
+                    B_unchatching.push(batchA_temp[i].order[j])
+                }
+            }
+        }
+1
+        let batchA_array = this.batchtoArray(batchA)
+        let batchB_array = this.batchtoArray(batchB_temp)
+
+        A_unchatching = this.batchFillRest(batchA_array)
+        B_unchatching = this.batchFillRest(batchB_array)
+
+
+        console.log(batchA_array)
+        console.log(batchB_array)
+
+       // console.log(A_unchatching)
+       // console.log(B_unchatching)
+
+        let objA = this.batchTo2dArray(batchA_array)
+        let objB = this.batchTo2dArray(batchB_array)
+        objA.unmatch = A_unchatching
+        objB.unmatch = B_unchatching
+
+        console.log(objA,objB)
+
+
+        let new_A = this.batchFillAll(objA)
+        let new_B = this.batchFillAll(objB)
+
+        let cross = [new_A,new_B]
+
+        return cross
+    }
+
+    batchFillAll(obj)
+    {
+
+        let final ={}
+
+        let part = obj.part.slice()
+        let orders = obj.unmatch.slice()
+        let succed =1;
+        let left =[]
+        while(orders.length>0)
+        {
+
+            succed=0
+            let index = Math.floor(Math.random() * (orders.length));
+            let elem = orders[index]
+
+          //  console.log(elem,orders)
+            for (let i = 0; i < part.length; i++)
+            {
+                let result = this.singleReplace(part[i], elem)
+                //console.log((result))
+                if (result !== 0) {
+                    final[i] = result
+                    part[i] = result.orders
+                   // console.log(part, orders)
+                    orders.splice(index, 1)
+                    succed = 1
+                    break;
+                }
+            }
+
+            if(succed===0)
+            {
+                orders.splice(index, 1)
+                part.push([elem])
+            }
+        }
+        //part.push(left)
+        part = part.concat(obj.part_max)
+        return this.batchgetContainers(part);
+
+    }
+
+    batchgetContainers(part)
+    {
+        let result =[]
+        for (let i = 0; i < part.length; i++)
+        {
+            result[i] ={}
+            let base = part[i].slice()
+            let cont = this.getContainers(part[i]);
+            cont = cont.sort(this.compareNumbers)
+            let real_cont = this.checkMatchingContainers(cont, this.containers);
+            result[i]["order"] = part[i]
+            result[i]["possible_containers"] = real_cont;
+        }
+        this.reselectFinalContainers(result)
+
+        return result
+
+
+    }
+
+    batchFillRest(batch)
+    {
+        let arr=[]
+        for(let j=0;j<this.order_ids_base.length;j++)
+        {
+            if(!batch.includes(this.order_ids_base[j]))
+            {
+               arr.push(this.order_ids_base[j])
+            }
+        }
+
+        return arr
+    }
+
+    batchtoArray(batch)
+    {
+       // console.log(batch)
+        let arr =[]
+        for (const key in batch)
+        {
+            for(let j=0;j<batch[key].order.length;j++)
+            {
+                arr.push(batch[key].order[j])
+            }
+            arr.push("-")
+            }
+        return arr
+    }
+
+    crossOverTransport(t1,t2,batchA)
+    {
+
+        let l= Object.keys(batchA).length
+        let arr=[]
+        for(let i=0;i<t1;i++)
+        {
+            for(let j=0;j<batchA[i]["order"].length;j++)
+            {
+                arr.push(batchA[i]["order"][j])
+            }
+        }
+
+
+        for(let i=t2+1;i<l;i++)
+        {
+
+            for(let j=0;j<batchA[i]["order"].length;j++)
+            {
+                arr.push(batchA[i]["order"][j])
+            }
+        }
+
+        return arr
+    }
+
+    batchTo2dArray(base)
+    {
+        let arr = [];
+        let arr2 =[];
+        let max = 0;
+        let counter =0;
+        for(let i=0;i<base.length;i++)
+        {
+            if(base[i]!=="-" && base[i])
+            {
+                counter++;
+                arr2.push((base[i]))
+            }
+            else if (base[i]==="-" && arr2.length>0)
+            {
+                if(counter>max) max =counter
+                counter =0
+                arr.push(arr2)
+                arr2 =[];
+            }
+        }
+
+        let new_arr =[]
+        let new_arr2 =[]
+
+        for(let i=0;i<arr.length;i++)
+        {
+            if (arr[i].length < max)
+                new_arr.push(arr[i])
+            else
+            {
+                new_arr2.push(arr[i])
+            }
+        }
+
+
+        let obj ={}
+        obj.full = arr
+        obj.part = new_arr
+        obj.part_max = new_arr2
+        return obj
+
+
+    }
+
+    OrderBatching2OPT()
+    {
+
+                //console.log(this.orderPopulation[0])
+                let improved = true
+                let counter =0;
+                let arr= Object.keys(this.orderPopulation[0])
+
+                while(improved )
+                {
+                    counter++
+                    improved=false
+                    for (let i=0;i<arr.length;i++)
+                    {
+
+                        for (let j=i+1;j<arr.length;j++)
+                        {
+                                let flag = this.doubleReplace2opt(arr[i], arr[j])
+                                console.log(i,j)
+
+                                if(flag!==0)
+                                {
+                                    improved=true;
+                                    this.orderPopulation[0]=flag
+                                   // this.setPopulationNodeShortestPathData(this.orderPopulation[0],this.orderPopulationSummary,0,)
+                                    console.log("new",JSON.parse(JSON.stringify(this.orderPopulation[0])))
+                                    //break;
+                                }
+
+                        }
+
+                    }
+                }
+                this.setPopulationNodeShortestPathData(this.orderPopulation[0],this.orderPopulationSummary,0,)
+                console.log(this.bestCombination)
 
     }
 
 
-    singleReplace(i)
+    singleReplace(arr,elem)
     {
-        let toSwitch = this.getPopNodeMaxDistances(this.orderPopulation[i])
-        let A = this.orderPopulation[i][toSwitch[0]]
-        let B = this.orderPopulation[i][toSwitch[1]]
 
-        let toselect;
-        let tobeput;
-        let switcher_id
-        let base_id
+        let result ={}
+        let base = arr.slice()
+        base.push(elem)
 
-        if(toSwitch[0]<toSwitch[1])
+        let cont = this.getContainers(base);
+        let real_cont = this.checkMatchingContainers(cont, this.containers);
+        let real_cap = this.getsumArr(real_cont);
+
+        let current_cont =this.getContainersByOne(arr)
+
+        if(real_cap<=this.max_capability && real_cont.length>0 )
         {
-            toselect =A
-            base_id=toSwitch[0]
+            // console.log("cont",cont, real_cont,real_cap,flag);
+            result["orders"] = base
+            result["containers"] = current_cont;
 
-            tobeput =B
-            switcher_id=toSwitch[1]
-
+            return result
         }
-        else
-        {
-            toselect=B
-            base_id=toSwitch[1]
-
-            tobeput =A
-            switcher_id=toSwitch[0]
-        }
-
-
-        let temp_orders = tobeput["order"].slice()
-        let temp_orders2 = toselect["order"].slice()
-
-        let random_index = Math.floor(Math.random()*toselect["order"].length)
-        let random =toselect["order"][random_index];
-        let rand_size= toselect["containers"][random]
-        temp_orders.push(random)
-
-        temp_orders2.splice(random_index,1)
-
-
-        let result = this.checkIfSwitchPossible(temp_orders,temp_orders2,base_id,switcher_id)
-
-        if(result!==0)
-        {
-
-           // console.log("control",toselect["order"],toSwitch,this.orderPopulation[i],random,rand_size,temp_orders,temp_orders2)
-            this.orderPopulation[i][ result["base_id"] ]["order"] = result["base"]
-            this.orderPopulation[i][ result["joined_id"] ]["order"] = result["joined"]
-
-            this.orderPopulation[i][ result["base_id"] ]["containers"] = result["base_containers"]
-            this.orderPopulation[i][ result["joined_id"] ]["containers"] = result["joined_containers"]
-
-          //  console.log("result",result);
-        }
+        return 0
     }
 
     getRandomProperty(obj)
@@ -634,7 +921,6 @@ class ContainersOpt extends OrderOptimalisation
             iter++
             for (let k = 0; k < j; k++)
             {
-                let toSwitch = this.getPopNodeMaxDistances(this.orderPopulation[i])
 
                 let tempPop = JSON.parse(JSON.stringify(this.orderPopulation[i]))
 
@@ -647,12 +933,10 @@ class ContainersOpt extends OrderOptimalisation
                 let A = this.orderPopulation[i][t1]
                 let B = this.orderPopulation[i][t2]
 
+
                 let contA = this.getContainers(A["order"])
                 let contB = this.getContainers(B["order"])
 
-
-                let AcontSum = this.getsumArr(contA)
-                let BcontSum = this.getsumArr(contB)
 
 
                //console.log(A.order,B.order)
@@ -705,6 +989,123 @@ class ContainersOpt extends OrderOptimalisation
 
 
         //console.log("sum",AcontSum,BcontSum)
+    }
+
+    doubleReplace2opt(key,key2)
+    {
+
+                let A = this.orderPopulation[0][key]
+                let B = this.orderPopulation[0][key2]
+
+                //console.log(A.distance,B.distance,JSON.parse(JSON.stringify(this.orderPopulation[0])))
+                let temp_A = A["order"].slice();
+                let temp_B = B["order"].slice();
+
+
+               // console.log(this.orderPopulation[0][key],this.orderPopulation[0][key2])
+
+               // console.log(key,key2,temp_A,temp_B)
+                let dist_curr=A["distance"] + B["distance"]
+
+
+                for (let j = 0; j < temp_A.length; j++)
+                {
+                    for (let k = 0; k < temp_B.length; k++)
+                    {
+                        let tmp = temp_A[j]
+                        temp_A[j] = temp_B[k]
+                        temp_B[k] = tmp;
+
+
+                        let real_contA = this.checkMatchingContainers(this.getContainers(temp_A), this.containers);
+                        let real_contB = this.checkMatchingContainers(this.getContainers(temp_B), this.containers)
+                        let real_capA = this.getsumArr(real_contA);
+                        let real_capB = this.getsumArr(real_contB);
+
+                        if (real_capA <= this.max_capability && real_capB <= this.max_capability && real_contA.length > 0 && real_contB.length > 0)
+                        {
+
+
+                            // console.log(JSON.parse(JSON.stringify(this.orderPopulation[i])))
+                            let current_contA = this.getContainersByOne(temp_A)
+                            let current_contB = this.getContainersByOne(temp_B)
+
+                           // console.log(JSON.parse(JSON.stringify(this.orderPopulation[0][key])))
+                            //console.log(temp_A,temp_B)
+
+                            let temp_A1 =this.resetdata2opt(temp_A)
+                            let temp_B1 =this.resetdata2opt(temp_B)
+
+                            let dist_new = temp_A1.distance+temp_B1.distance
+
+
+                            if(dist_new <dist_curr)
+                            {
+
+                            //    console.log("tttt",temp_A,temp_B,A["order"],B["order"])
+                                let pop = (JSON.parse(JSON.stringify(this.orderPopulation[0])))
+                                let obj = {}
+                                obj["order"] = temp_B.slice()
+                                obj["containers"] = current_contB
+                                obj["path"]  = temp_B1.path
+                                obj["distance"] = temp_B1.distance
+                                obj["detailed_path"] = temp_A1.detailed_path
+                                obj["products_id"] = []
+                                obj['products_id_map'] ={}
+
+                              //  console.log("obj",obj)
+
+                                this.orderPopulation[0][key]["order"] = temp_A.slice()
+                                this.orderPopulation[0][key]["path"] = temp_A1.path
+                                this.orderPopulation[0][key]["distance"] = temp_A1.distance
+                                this.orderPopulation[0][key]["detailed_path"] = temp_A1.detailed_path
+                                this.orderPopulation[0][key]["containers"] = current_contA
+
+                                pop[key]=this.orderPopulation[0][key]
+                                pop[key2]=obj
+
+                               // console.log(JSON.parse(JSON.stringify(pop)),key,key2)
+
+
+                               // console.log("elo",temp_A,temp_B,dist_curr,dist_curr,JSON.parse(JSON.stringify(this.orderPopulation[0])))
+                                return JSON.parse(JSON.stringify(pop))
+
+                            }
+                        }
+
+
+                    }
+
+                }
+                return 0;
+
+    }
+
+    resetdata2opt(orders)
+    {
+
+
+        this.order =this.orderFitness2opt(orders);
+        this.startGenetic()
+
+
+        let population ={}
+        population["distance"]=this.bestDistance;
+        population["path"] = this.final_path;
+        population["detailed_path"] = this.detailed_final_path_array;
+
+        this.order = [];
+        this.bestDistance=Infinity;
+        this.final_path=[];
+        this.detailed_final_path_array=[];
+        this.detailed_final_path = new Map();
+
+
+
+       // console.log("orders",population,orders)
+        return population
+
+
     }
 
     checkIfSwitchPossible(temp_orders,temp_orders2,base_id,switch_id)

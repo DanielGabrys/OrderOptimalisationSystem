@@ -19,8 +19,9 @@ class OrderController extends Controller
     {
 
         $grid = Grid::where('isActive',1)->first();
+        //dd($grid->id);
         $orders = $grid->orders()->paginate(5);
-        return view('orders.addOrders',['orders'=>$orders,'grid'=>$grid->value("id")]);
+        return view('orders.addOrders',['orders'=>$orders,'grid'=>$grid->id]);
     }
 
     public function addOrder(Request $request)
@@ -57,7 +58,7 @@ class OrderController extends Controller
             }
             catch (\Exception $e)
             {
-                //dd($e);
+                dd($e);
                 DB::rollBack();
                 return Redirect()->back()->with('failure', 'Upps coś poszło nie tak');
             }

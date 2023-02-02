@@ -143,7 +143,7 @@ class Base extends DikstraGrid
     {
 
         this.distance=0;
-        console.log(this.final_path);
+        //console.log(this.final_path);
         for(let i=0;i<this.final_path.length-1;i++)
         {
             let key = this.final_path[i]+"->"+this.final_path[i+1];
@@ -262,6 +262,8 @@ class Base extends DikstraGrid
 
     getNodesDistance(a,b)
     {
+
+       // return 1
         if(a===b)
             return 0;
         let key =a+"->"+b;
@@ -274,6 +276,7 @@ class Base extends DikstraGrid
         {
             return this.path_matrix[key];
         }
+
     }
 
     finalPathToString(array)
@@ -362,7 +365,7 @@ class Base extends DikstraGrid
 
     colorizeSinglePathNodes(id,sign)
     {
-        this.decolorizeSinglePathNodes();
+        //this.decolorizeSinglePathNodes();
 
         let index=0;
         if(sign===1)
@@ -375,10 +378,16 @@ class Base extends DikstraGrid
 
         for (let i =0; i<index; i++)
         {
-            for (let j = 0; j < this.detailed_final_path_array[i].length; j++)
+            for (let j = 1; j < this.detailed_final_path_array[i].length-1; j++)
             {
-                let way = document.getElementById(this.detailed_final_path_array[i][j]).className = "path_cell";
+                let way = document.getElementById(this.detailed_final_path_array[i][j])
+                way.className = "path_cell";
+
             }
+
+            let way = document.getElementById(this.detailed_final_path_array[i][0])
+            way.style.background="grey"
+            way.style.fontsize = "10px"
         }
     }
 
