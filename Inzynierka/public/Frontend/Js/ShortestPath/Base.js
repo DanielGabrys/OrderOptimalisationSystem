@@ -158,8 +158,32 @@ class Base extends DikstraGrid
 
             this.distance+=dist;
         }
+        return this.detailed_final_path
 
       //console.log("elo",this.detailed_final_path);
+    }
+
+    getDetailedNaivePathOrder(order)
+    {
+        this.distance=0;
+        //console.log(this.final_path);
+        for(let i=0;i<order.length-1;i++)
+        {
+            let key = order[i]+"->"+order[i+1];
+            let dist = this.getNodesDistance(order[i],order[i+1])
+            this.getBFSShortestPath(this.BFSGraph, order[i],order[i+1])
+
+            this.detailed_final_path.set(key,this.path);
+            this.detailed_final_path_array[i]=this.path;
+            this.final_path_indexes.push(key);
+
+            this.detailed_final_distances[i] = dist;
+
+            this.distance+=dist;
+        }
+        return this.detailed_final_path_array
+
+        //console.log("elo",this.detailed_final_path);
     }
 
     create_result_table()

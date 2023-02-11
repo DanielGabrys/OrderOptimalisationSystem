@@ -22,14 +22,14 @@ class OrderProductsFactory extends Factory
      */
     public function definition()
     {
-        $i=0;
+
         $grid_id=(Grid::all()->where('isActive','=',1)->first())->id;
 
-            $i++;
-            var_dump($i);
+
+
             $order_id = (Order::select("id")->orderBy(DB::raw('RAND()'))->first())->id;
             $product_id = Grid_Product::where("grid_id",$grid_id)->orderBy(DB::raw('RAND()'))->first()->product_id;
-
+            var_dump($order_id);
                 return [
 
                     'order_id' => $order_id,

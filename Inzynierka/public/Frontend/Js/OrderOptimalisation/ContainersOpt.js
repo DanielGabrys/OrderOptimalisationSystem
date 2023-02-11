@@ -11,6 +11,10 @@ class ContainersOpt extends OrderOptimalisation
     order_ids_base =[];
     partial =false;
     containerFitness =[]
+    containerFitnessVal =[]
+    timestamps = {}
+    time=0;
+    start_time =0
 
 
    setStartVariables(orders,containers,distinct_containers,partial)
@@ -361,7 +365,7 @@ class ContainersOpt extends OrderOptimalisation
         {
             object["orders"] = joined;
             object["optimal_containers"] = cont;
-            object["possible_containers"] = real_cont;
+            object["containers"] = real_cont;
             object["containers_map"] = current_cont;
             object["real_cap"] = real_cap;
             object["cap"] = cap;
@@ -385,7 +389,7 @@ class ContainersOpt extends OrderOptimalisation
 
             object["orders"] = orders.slice();
             object["optimal_containers"] = cont;
-            object["possible_containers"] = real_cont;
+            object["containers"] = real_cont;
             object["containers_map"] = current_cont;
             object["real_cap"] = real_cap;
             object["cap"] = cap;
@@ -457,11 +461,12 @@ class ContainersOpt extends OrderOptimalisation
     reselectFinalContainers(object)
     {
 
-        for(let k=0;k<object.length;k++)
+        /*
+        console.log("reselectContainers",object)
+        for(const k in object)
         {
-            //console.log(object)
             let map = object[k]["containers_map"];
-            let possible_containers = object[k]["possible_containers"].slice();
+            let possible_containers = object[k]["containers"].slice();
             //console.log(map,possible_containers)
             for (const key in map) {
                 for (let i = 0; i < map[key].length; i++) {
@@ -488,6 +493,8 @@ class ContainersOpt extends OrderOptimalisation
                 }
             }
         }
+
+         */
 
     }
 
@@ -524,8 +531,9 @@ class ContainersOpt extends OrderOptimalisation
         {
             fitness[i] = fitness[i]/sum;
         }
-        console.log(fitness,part_sum)
+       // console.log("fitnes",fitness,part_sum)
         this.containerFitness = fitness
+        this.containerFitnessVal = part_sum
 
         /*
         for (const i in sequence) {
@@ -542,41 +550,155 @@ class ContainersOpt extends OrderOptimalisation
 
     }
 
-    nextContGeneration()
+    nextContGeneration(max_time)
     {
 
+        let time = (Date.now()- this.start_time)/1000
+        if(time>=this.time)
+        {
+            this.timestamps[this.time]=this.bestCombination.dist
+            this.time+=60;
+        }
+        console.log(time)
+
+        let rate = Math.floor(Math.random() * this.orderPopulation.length)
 
         let newPopulation=[];
-        for(let i=0;i<this.orderPopulation.length;i++)
+
+        if(Math.random()<1)
         {
-
-           let rate =Math.random();
-           let nodeA = this.pickOne(this.orderPopulation,this.containerFitness)
-           let nodeB = this.pickOne(this.orderPopulation,this.containerFitness)
-           let result = this.crossOverCont(nodeA,nodeB)
-           //let result2 = this.crossOverCont(nodeB,nodeA)
+            let nodeA = this.pickOneCont(this.orderPopulation, this.containerFitness)
+            let nodeB = this.pickOneCont(this.orderPopulation, this.containerFitness)
+            let result = this.crossOverCont(nodeA, nodeB)
+            let result2 = this.crossOverCont(nodeB, nodeA)
 
 
-               newPopulation[i]=result
-               // this.deleteWorstFromPopulation(result)
-                //this.deleteWorstFromPopulation(result2)
+            this.orderPopulation.push(result)
+            this.orderPopulation.push(result2)
 
-            if(rate<0.05)
-            {
-                this.doubleReplace(i,1)
-            }
 
+            this.addNewCroosoversToPopulation(result)
+            this.addNewCroosoversToPopulation(result2)
+
+            console.log(this.orderPopulation[this.orderPopulation.length-1])
+            console.log(this.orderPopulation[this.orderPopulation.length-2])
+            this.OrderBatching2OPT(max_time,this.orderPopulation.length-1)
+            this.OrderBatching2OPT(max_time,this.orderPopulation.length-2)
+
+            this.orderContFitness(this.orderPopulation)
+
+            let the_same = this.getTheSamePopElemCounter()
+
+
+            // console.log(this.orderPopulation)
+            this.deleteWorstFromPopulation(the_same)
+            this.deleteWorstFromPopulation(the_same)
         }
-        //console.log("newpop",newPopulation)
-        this.orderPopulation = newPopulation
+
+
+        if(Math.random()<0.1)
+        {
+            this.doubleReplace(rate,1)
+        }
 
     }
 
-    deleteWorstFromPopulation(result)
+    addNewCroosoversToPopulation(result)
     {
-        let worst = this.getWorstFitness()
-        this.orderContFitness(this.orderPopulation)
-        this.orderPopulation[worst] = result
+        for (const key in result)
+        {
+
+            cont.orderFitness(result[key]);
+            cont.startGenetic();
+            cont.setOrderNodeShortestPathData(result[key]);
+            cont.getPopNodeMaxDistances(result);
+        }
+    }
+
+    nextContGenerationReplaceAll()
+    {
+       let newPopulation=[];
+       for(let i=0;i<this.orderPopulation.length;i++)
+       {
+
+
+          let rate =Math.random();
+          let nodeA = this.pickOne(this.orderPopulation,this.containerFitness)
+          let nodeB = this.pickOne(this.orderPopulation,this.containerFitness)
+          let result = this.crossOverCont(nodeA,nodeB)
+
+          newPopulation[i]=result
+
+           if(rate<0.1)
+           {
+               this.doubleReplace(i,1)
+           }
+
+       }
+       this.orderPopulation = newPopulation
+    }
+
+    pickOneCont(list,prob)
+    {
+
+        let index =0;
+        let r = Math.random();
+        //console.log("r",r);
+
+        while(r>0)
+        {
+            r = r -prob[index];
+            index++;
+        }
+
+        index --;
+        return JSON.parse(JSON.stringify(list[index]))
+    }
+
+    deleteWorstFromPopulation(counter)
+    {
+        let worst = this.resetTheSamePopulation()
+
+        this.containerFitness.splice(worst,1)
+        this.orderPopulation.splice(worst,1)
+
+
+    }
+
+    resetTheSamePopulation(counter)
+    {
+
+        let rate =Math.floor(Math.random() * 3)
+        if(rate >3 )
+        {
+
+           let node =this.modeArray(this.containerFitnessVal)
+            for (let i = 0; i < this.containerFitnessVal.length; i++)
+            {
+                if (this.containerFitnessVal[i] === node)
+                {
+                   return i
+                }
+            }
+       }
+       else
+        {
+            return this.getWorstFitness()
+        }
+    }
+
+    getTheSamePopElemCounter()
+    {
+        let counter =0;
+        for(let i=0;i<this.containerFitnessVal.length;i++)
+        {
+            if(this.containerFitnessVal[i]===this.bestCombination.dist)
+            {
+                counter++
+            }
+        }
+
+        return counter
     }
 
     getWorstFitness()
@@ -591,6 +713,23 @@ class ContainersOpt extends OrderOptimalisation
                 index=i;
             }
         }
+       // console.log(index)
+        return index;
+    }
+
+    getBestFitness()
+    {
+        let max =0;
+        let index =-1;
+        for(let i=0;i<this.containerFitness.length;i++)
+        {
+            if(this.containerFitness[i].max)
+            {
+                max = this.containerFitness[i]
+                index=i;
+            }
+        }
+        // console.log(index)
         return index;
     }
 
@@ -615,12 +754,12 @@ class ContainersOpt extends OrderOptimalisation
             t2=tmp
         }
 
-        console.log("t",t1,t2)
+       // console.log("t",t1,t2)
 
         let arr1 = this.batchtoArray(batchA)
         let arr2 = this.batchtoArray(batchB)
-        console.log("oldA",arr1)
-        console.log("oldB",arr2)
+        //console.log("oldA",arr1)
+        //console.log("oldB",arr2)
 
       //  let orders_inB = this.crossOverTransport(t1,t2,batchB)
         let A_unchatching =[]
@@ -645,11 +784,11 @@ class ContainersOpt extends OrderOptimalisation
 
         this.crossOverTransport(t1,t2,batchB,childA,childAarr)
         let left = this.batchPushleft(arr1,childAarr)
-        console.log(childA,left)
+       // console.log(childA,left)
         let cross = this.batchFillAll(childA,left)
-        console.log(childA,left)
-        console.log(A_unchatching)
 
+
+       // console.log("cross",cross)
         return cross
     }
 
@@ -700,29 +839,76 @@ class ContainersOpt extends OrderOptimalisation
                 }
             }
             if(succed===0) {
-                console.log("errr")
+               // console.log("errr")
                 orders.splice(0, 1)
-                part.push([elem])
+                if([elem])
+                 part.push([elem])
             }
                 counter++
         }
 
-        return this.batchgetContainers(part);
+        let res = this.batchgetContainers(part);
+        let result ={}
+        for(let i=0;i<res.length;i++)
+        {
+            result[i] = res[i]
+        }
+
+        return result;
 
     }
+
+    modeArray(array)
+    {
+    if (array.length === 0) return null;
+    var modeMap = {},
+        maxCount = 1,
+        modes = [];
+
+    for (var i = 0; i < array.length; i++) {
+        var el = array[i];
+
+        if (modeMap[el] == null) modeMap[el] = 1;
+        else modeMap[el]++;
+
+        if (modeMap[el] > maxCount) {
+            modes = [el];
+            maxCount = modeMap[el];
+        } else if (modeMap[el] == maxCount) {
+            modes.push(el);
+            maxCount = modeMap[el];
+        }
+    }
+    return modes;
+}
+
 
     batchgetContainers(part)
     {
         let result =[]
+        let newpart =[]
         for (let i = 0; i < part.length; i++)
         {
+            if(part[i].length>0)
+            {
+                newpart.push(part[i]);
+            }
+        }
+
+
+
+
+        for (let i = 0; i < newpart.length; i++)
+        {
             result[i] ={}
-            let base = part[i].slice()
-            let cont = this.getContainers(part[i]);
+            let base = newpart[i].slice()
+            let cont = this.getContainers(newpart[i]);
             cont = cont.sort(this.compareNumbers)
             let real_cont = this.checkMatchingContainers(cont, this.containers);
-            result[i]["order"] = part[i]
-            result[i]["possible_containers"] = real_cont;
+            result[i]["order"] = newpart[i]
+            result[i]["containers"] = real_cont;
+
+
         }
         this.reselectFinalContainers(result)
 
@@ -801,15 +987,17 @@ class ContainersOpt extends OrderOptimalisation
     }
 
 
-    OrderBatching2OPT()
+    OrderBatching2OPT(max_time,index)
     {
 
+                console.log(this.bestOrderVariationDistance)
                 //console.log(this.orderPopulation[0])
                 let improved = true
                 let counter =0;
-                let arr= Object.keys(this.orderPopulation[0])
-
-                while(improved )
+                let arr= Object.keys(this.orderPopulation[index])
+                let time0 =0
+                let startTime = Date.now();
+                while(improved)
                 {
                     counter++
                     improved=false
@@ -818,17 +1006,32 @@ class ContainersOpt extends OrderOptimalisation
 
                         for (let j=i+1;j<arr.length;j++)
                         {
-                                let flag = this.doubleReplace2opt(arr[i], arr[j])
-                                console.log(i,j)
-
+                                let flag = this.doubleReplace2opt(arr[i], arr[j],index)
+                                let time = (Date.now()- startTime)/1000
+                                if(time>=time0)
+                                {
+                                    this.timestamps[time0]=this.bestCombination.dist
+                                    time0+=60;
+                                }
+                                console.log(i,j,time)
+                                if (time >= max_time)
+                                {
+                                    this.setPopulationNodeShortestPathData(this.orderPopulation[index],this.orderPopulationSummary,0,)
+                                    return
+                                }
                                 if(flag!==0)
                                 {
                                     improved=true;
-                                    this.orderPopulation[0]=flag
+                                    this.reselectFinalContainers(flag)
+                                    this.orderPopulation[index]=flag
                                    // this.setPopulationNodeShortestPathData(this.orderPopulation[0],this.orderPopulationSummary,0,)
-                                    console.log("new",JSON.parse(JSON.stringify(this.orderPopulation[0])))
+                                    this.setPopulationNodeShortestPathData(this.orderPopulation[index],this.orderPopulationSummary,0,)
+                                    console.log("improved",index,this.bestCombination.dist)
+
                                     //break;
                                 }
+
+
 
                         }
 
@@ -836,8 +1039,10 @@ class ContainersOpt extends OrderOptimalisation
                 }
                 this.setPopulationNodeShortestPathData(this.orderPopulation[0],this.orderPopulationSummary,0,)
                 console.log(this.bestCombination)
+                console.log(this.timestamps)
 
     }
+
 
 
     singleReplace(arr,elem)
@@ -875,7 +1080,7 @@ class ContainersOpt extends OrderOptimalisation
     {
         const keys = Object.keys(obj);
 
-        return Math.floor(Math.random() * keys.length/2);
+        return Math.floor(Math.random() * keys.length);
     }
 
     doubleReplace(i,j)
@@ -958,11 +1163,11 @@ class ContainersOpt extends OrderOptimalisation
         //console.log("sum",AcontSum,BcontSum)
     }
 
-    doubleReplace2opt(key,key2)
+    doubleReplace2opt(key,key2,i)
     {
 
-                let A = this.orderPopulation[0][key]
-                let B = this.orderPopulation[0][key2]
+                let A = this.orderPopulation[i][key]
+                let B = this.orderPopulation[i][key2]
 
                 //console.log(A.distance,B.distance,JSON.parse(JSON.stringify(this.orderPopulation[0])))
                 let temp_A = A["order"].slice();
@@ -989,6 +1194,7 @@ class ContainersOpt extends OrderOptimalisation
                         let real_capA = this.getsumArr(real_contA);
                         let real_capB = this.getsumArr(real_contB);
 
+                       // console.log("max",real_capA,real_capB,this.max_capability)
                         if (real_capA <= this.max_capability && real_capB <= this.max_capability && real_contA.length > 0 && real_contB.length > 0)
                         {
 
@@ -1010,7 +1216,7 @@ class ContainersOpt extends OrderOptimalisation
                             {
 
                             //    console.log("tttt",temp_A,temp_B,A["order"],B["order"])
-                                let pop = (JSON.parse(JSON.stringify(this.orderPopulation[0])))
+                                let pop = (JSON.parse(JSON.stringify(this.orderPopulation[i])))
                                 let obj = {}
                                 obj["order"] = temp_B.slice()
                                 obj["containers"] = current_contB
@@ -1022,13 +1228,13 @@ class ContainersOpt extends OrderOptimalisation
 
                               //  console.log("obj",obj)
 
-                                this.orderPopulation[0][key]["order"] = temp_A.slice()
-                                this.orderPopulation[0][key]["path"] = temp_A1.path
-                                this.orderPopulation[0][key]["distance"] = temp_A1.distance
-                                this.orderPopulation[0][key]["detailed_path"] = temp_A1.detailed_path
-                                this.orderPopulation[0][key]["containers"] = current_contA
+                                this.orderPopulation[i][key]["order"] = temp_A.slice()
+                                this.orderPopulation[i][key]["path"] = temp_A1.path
+                                this.orderPopulation[i][key]["distance"] = temp_A1.distance
+                                this.orderPopulation[i][key]["detailed_path"] = temp_A1.detailed_path
+                                this.orderPopulation[i][key]["containers"] = current_contA
 
-                                pop[key]=this.orderPopulation[0][key]
+                                pop[key]=this.orderPopulation[i][key]
                                 pop[key2]=obj
 
                                // console.log(JSON.parse(JSON.stringify(pop)),key,key2)

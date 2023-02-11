@@ -127,11 +127,14 @@ class GeneticAlgo extends FarthestNeighbor
 
     startSolve()
     {
+        //let start = Date.now()
         this.FI();
         // this.NN();
         // this.divideGrid();
 
         this.doTwoOpt()
+        let end = Date.now()
+       // console.log(end-start)
 
         this.bestDistance = this.calculateDistanceWithEntry(this.final_path)
     }
@@ -139,6 +142,15 @@ class GeneticAlgo extends FarthestNeighbor
     startGenetic()
     {
 
+        let start = Date.now()
+        this.FI();
+        // this.NN();
+        // this.divideGrid();
+
+       // this.doTwoOpt()
+
+        let end = Date.now()
+        //console.log(end-start)
 
         //console.log("start")
 
@@ -149,7 +161,7 @@ class GeneticAlgo extends FarthestNeighbor
 
 
 
-        //this.rebaseOrder();
+        this.rebaseOrder();
         this.createPopulation();
         this.bestPath = this.population[0];
 
@@ -161,7 +173,7 @@ class GeneticAlgo extends FarthestNeighbor
         {
             this.calcFitness();
             this.normalizeFitness();
-            this.nextGeneration();
+           // this.nextGeneration();
             this.currentIteration++;
             //   console.log(i, this.bestDistance,this.bestPath);
            // console.log(i,this.population);
@@ -170,7 +182,7 @@ class GeneticAlgo extends FarthestNeighbor
 
 
 
-        this.final_path = this.getFinalPath();
+        //this.final_path = this.getFinalPath();
         this.getDetailedNaivePath();
         //this.create_result_table();
         //this.showFinalPath();
@@ -206,6 +218,7 @@ class GeneticAlgo extends FarthestNeighbor
     nextGeneration()
     {
         let newPopulation =[];
+
         for(let i=0;i<this.population.length;i++)
         {
             let order1 = this.pickOne(this.population,this.fitness);
@@ -220,6 +233,7 @@ class GeneticAlgo extends FarthestNeighbor
 
     pickOne(list,prob)
     {
+
         let index =0;
         let r = Math.random();
         //console.log("r",r);
@@ -233,6 +247,7 @@ class GeneticAlgo extends FarthestNeighbor
         index --;
         return JSON.parse(JSON.stringify(list[index]))
     }
+
 
     mutate(order)
     {

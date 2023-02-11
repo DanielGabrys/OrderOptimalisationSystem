@@ -281,7 +281,7 @@ class OrderOptimalisation extends GeneticAlgo
     orderFitness(sequence)
     {
 
-       // console.log(sequence)
+
         let arr =[];
         let duplicats=0;
         for (let i=0;i<sequence["order"].length;i++)
@@ -488,7 +488,7 @@ class OrderOptimalisation extends GeneticAlgo
            //console.log(main_pop[key]["distance"]);
         }
 
-       // console.log("oh",this.bestOrderVariationDistance,dist,iter,main_pop);
+        //console.log("oh",this.bestOrderVariationDistance,dist,iter,main_pop);
         sec_pop["TotalDistance"] = dist;
         if(dist<this.bestOrderVariationDistance)
         {
@@ -674,10 +674,13 @@ class OrderOptimalisation extends GeneticAlgo
     getOrderFinalResult()
     {
         let block = document.getElementById("finalCombination");
+        block.innerHTML=""
         for (const key in this.bestCombination)
         {
             if(key !=="dist")
             {
+                this.bestCombination[key].detailed_path = this.getDetailedNaivePathOrder(this.bestCombination[key].path)
+
                 let cont = ' <div class="row" style="cursor: pointer"> <div class="col-xl-12 d-flex align-items-center justify-content-center id="joined'+key+'" "> '
                 let inside ='';
 

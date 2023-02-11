@@ -2,74 +2,65 @@
 
 @section('main')
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.6/jspdf.plugin.autotable.min.js"></script>
 
 
-
-        <div class="container -fluid d-flex justify-content-center">
+    <div class="container -fluid d-flex justify-content-center">
 
             <div class="row">
 
-
-                <div class="col-sm">
-                    <div class="col-md-8">
+                            <div class="container mt-12" >All Products </div>
 
 
-                            <div class="container mt-12"> All Products </div>
 
-                            <table class="table table-sm" id="result_table" >
-                                <thead>
+                                  <table class="table table-sm" id="result_table" >
+                                    <thead>
 
 
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">ID</th>
-                                    <th scope="col">Orders</th>
-                                    <th scope="col">Distance</th>
-                                    <th scope="col">Path</th>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">Orders</th>
+                                        <th scope="col">Distance</th>
+                                        <th scope="col">Path</th>
 
-                                    <th scope="col">Action</th>
-                                    <th scope="col"></th>
+                                        <th scope="col">Action</th>
+                                        <th scope="col"></th>
 
-                                </tr>
+                                    </tr>
 
-                                </thead>
-                                <tbody>
-                                    @foreach($products as $order)
-                                        <tr>
-                                            <th scope="row">{{$loop->index+1}}</th>
-                                            <td >{{$order->id }}</td>
-                                            <td >{{$order->orders}}</td>
-                                            <td >{{$order->distance}}</td>
-                                            <td >{{$order->path}}</td>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($products as $order)
+                                            <tr>
+                                                <th scope="row">{{$loop->index+1}}</th>
+                                                <td >{{$order->id }}</td>
+                                                <td >{{$order->orders}}</td>
+                                                <td >{{$order->distance}}</td>
+                                                <td >{{$order->path}}</td>
+                                                <td id=btr{{$loop->index+1}}> <button type="button" class="btn btn-warning btn-sm"  > Show </button></td>
 
-                                            <td id=btr{{$loop->index+1}}> <button type="button" class="btn btn-warning btn-sm" >Show Results</button></td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
 
                             <div class="d-flex justify-content-center col-md-12">
                                 {!! $products->links('pagination::bootstrap-4') !!}
                             </div>
 
 
-                    </div>
-
-                </div>
-
-                <div class="col justify-content-center" >
-
-                    <canvas id="myCanvas" width="600" height="80" style="border:1px solid #d3d3d3;"> </canvas>
-
-                </div>
+                    <canvas id="myCanvas" width="400" height="50" style="border:1px solid #d3d3d3;"> </canvas>
             </div>
         </div>
 
 
 
 
-
     <div class="container-fluid d-flex justify-content-center" id="legend">
+
+        <div  id="result" >All Products
 
         <table class="table table-sm" id="table" >
             <thead>
@@ -91,6 +82,7 @@
 
             </tbody>
         </table>
+        </div>
 
     </div>
 
@@ -125,22 +117,39 @@
                 let containers = JSON.parse(result[id]["containers"]);
 
                 let color ={}
+
                 for(const key in containers)
                 {
+                    for(let i=0;i<containers[key].length;i++)
                     randomColor = Math.floor(Math.random()*16777215).toString(16);
                     color[key] =  "#"+randomColor
                 }
-                //console.log("colors",color)
+
+
+            let counter =0;
+
+            for(const key in containers)
+            {
+                containers[key]["id"] = [];
+                for(let i=0;i<containers[key].length;i++)
+                {
+                    counter++
+                    containers[key]["id"][i] = counter;
+                }
+
+            }
+
+                console.log("colors",containers)
                 let detailed_path = JSON.parse(result[id]["detailed_path"])
 
                 drawContainers(containers,color)
-                //console.log("cont",containers);
+                console.log("cont",containers);
                 for(let i=1;i<path.length;i++)
                 {
 
                     let short_detailed_path;
                     if (detailed_path[i - 1].length > 20)
-                        short_detailed_path = detailed_path[i - 1].slice(0, 15) + "...";
+                        short_detailed_path = detailed_path[i - 1].slice(0, 20) + "...";
                     else
                         short_detailed_path = detailed_path[i - 1];
 
@@ -188,7 +197,7 @@
                             {
 
                                 row.style.background= color[order_id[j]]
-                                cell4.innerHTML = containers[order_id[j]]+"";
+                                cell4.innerHTML = containers[order_id[j]]+"("+containers[order_id[j]].id+")";
                             }
 
                             cell5.innerHTML = amount;
@@ -217,8 +226,73 @@
             {
                 let key ="btr"+i;
                 document.getElementById(key).addEventListener("click", function () { resultToTable(obj.data,i-1)});
-            }
+                document.getElementById(key).addEventListener("click", function ()
+                {
+                    var doc = new jsPDF('p', 'pt', 'letter');
 
+
+                    var pageHeight = 0;
+                    pageHeight = doc.internal.pageSize.height;
+                    specialElementHandlers = {
+                        // element with id of "bypass" - jQuery style selector
+                        '#bypassme': function(element, renderer) {
+                            // true = "handled elsewhere, bypass text extraction"
+                            return true
+                        }
+                    };
+                    margins = {
+                        top: 150,
+                        bottom: 60,
+                        left: 40,
+                        right: 40,
+                        width: 600
+                    };
+
+
+
+                    var y = 20;
+                    doc.setLineWidth(4);
+                    doc.text(200, y = y + 30, "LISTA KOMPLETACYJNA");
+                    doc.autoTable({
+
+                        didParseCell: function(data)
+                        {
+                            //console.log(data.row.cells)
+                            if (data.row.index%2 === 1)
+                            {
+                              //  data.row.cells[0].styles.fillColor = [58,121,152]
+                            }
+                        },
+
+
+                        html: '#table',
+                        startY: 70,
+                        theme: 'grid',
+                        lineColor: 10,
+                        font: 'helvetica',
+                        columnStyles:
+                        {
+                            0: {
+                                cellWidth: 20,
+                            },
+                            1: {
+                                cellWidth: 60,
+                            },
+                            2: {
+                                cellWidth: 40,
+                            }
+                        },
+                        styles: {
+                            minCellHeight: 10,
+                            fontSize: 5,
+
+                        },
+                    })
+                    doc.save('List.pdf');
+
+            })
+
+        }
         }
 
         function createTableLegend()
@@ -256,9 +330,6 @@
 
 
 
-
-
-
         function drawContainers(cont,colors)
         {
             ctx.clearRect(0, 0, c.width, c.height);
@@ -276,7 +347,7 @@
             let portion = c.width/count
             console.log(cont)
             let x=0;
-            let text_font = 0.3*portion <50 ? 0.3*portion: 30
+            let text_font = 0.3*portion
             ctx.font = text_font+"px serif";
             ctx.color='black'
 
@@ -290,7 +361,7 @@
                     ctx.fillStyle = colors[key];
                     ctx.fill()
                     ctx.fillStyle = "white";
-                    ctx.fillText(c, x, 50, portion);
+                    ctx.fillText(c, x, 30, portion);
                     ctx.closePath();
                     ctx.stroke();
                     x += portion
@@ -300,10 +371,17 @@
 
         }
 
-
     </script>
 
 
+    <style>
+        canvas{
+            margin-right: auto;
+            margin-left: auto;
+            display: block;
+        }
+
+    </style>
 
 
 @endsection

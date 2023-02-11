@@ -17,7 +17,7 @@ class ProductsSeeder extends Seeder
     public function run()
     {
 
-        $n=1000;
+        $n=5000;
 
         $faker = Faker::create('pl_PL');
         $counter=1;

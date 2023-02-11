@@ -22,7 +22,8 @@ class OrderProductsSeeder extends Seeder
     public function run()
     {
 
-
+        OrderProducts::factory(2000)->create();
+        /*
         $n=300;
 
         $arr = array();
@@ -53,6 +54,7 @@ class OrderProductsSeeder extends Seeder
                 ]);
             }
         }
+        */
 
 
 

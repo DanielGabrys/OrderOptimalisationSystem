@@ -20,6 +20,6 @@ class OrderSeeder extends Seeder
         $grid = Grid::where('isActive',1)->value("id");
         Order::where('grid_id',$grid)->delete();
 
-        Order::factory(50)->create();
+        Order::factory(200)->create();
     }
 }

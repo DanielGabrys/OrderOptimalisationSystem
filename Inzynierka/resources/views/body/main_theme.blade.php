@@ -33,6 +33,7 @@
     <script src="{{asset('Frontend/Js/OrderOptimalisation/OrderOptimalisation.js')}}"></script>
     <script src="{{asset('Frontend/Js/OrderOptimalisation/ContainersOpt.js')}}"></script>
     <script src="{{asset('Frontend/Js/ShortestPath/SimulatedAnnealing.js')}}"></script>
+    <script src="{{asset('Frontend/Js/OrderOptimalisation/worker.js')}}"></script>
 
 
 

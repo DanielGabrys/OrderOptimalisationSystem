@@ -208,9 +208,10 @@
             loadContainersData();
             setStartData();
             cont.loadDatabase(obj)
-            //solverGA();
-           //solverSA()
-           solver2OPT()
+          //  solverGA();
+         // solverSA()
+            solver2OPT()
+
 
         });
 
@@ -241,6 +242,9 @@
 
         function loadContainersData()
         {
+
+
+
             let table = document.getElementById("order_containers")
             let rows = table.rows.length;
 
@@ -312,14 +316,31 @@
 
                 start = window.performance.now();
 
-                interval = setInterval(SingleIteration, 10, iteration, max_time);
+
+            interval = setInterval(SingleIteration, 10, iteration, max_time);
 
             }
+
+        function solver2OPTGA()
+        {
+            let max_time = document.getElementById("max_time").value;
+            let max_cap =0// document.getElementById("max_cap").value
+
+            for(let i=1;i<cont.orderPopulationSize;i++)
+                     cont.orderPopulation.push(cont.orderPopulation[0])
+
+                start = window.performance.now();
+                interval = setInterval(SingleIteration, 10, iteration, max_time);
+                //solver2OPT()
+
+
+        }
 
          function solver2OPT()
          {
              let max_time = document.getElementById("max_time").value;
              let max_cap =0// document.getElementById("max_cap").value
+
 
              // cont.createPopulation();
              cont.setStartVariables(obj2, containers, distinct_containers,document.getElementById('split').checked);
@@ -342,10 +363,36 @@
                  cont.getPopNodeMaxDistances(cont.orderPopulation[0]);
              }
             // cont.setPopulationNodeShortestPathData(cont.orderPopulation[0], cont.orderPopulationSummary[0], 0);
-             console.log(JSON.parse(JSON.stringify(cont.orderPopulation[0])))
-             cont.OrderBatching2OPT()
-             FinalResults(cont)
+             //console.log(JSON.parse(JSON.stringify(cont.orderPopulation[0])))
+
+            worker2opt(cont,max_time)
+
+
+            // cont.OrderBatching2OPT(max_time,0)
+            // FinalResults(cont)
+
          }
+
+        function worker2opt(cont,max_time)
+        {
+            let data
+            let worker = new Worker('../Frontend/Js/OrderOptimalisation/worker.js')
+            worker.postMessage({
+                batch: JSON.stringify(cont),
+                max_time: max_time
+            })
+            worker.onmessage = function (en)
+            {
+                data = en.data.batch;
+                let result = JSON.parse(en.data.batch)
+                console.log(result)
+                document.getElementById("dist").innerHTML = result.dist.toString();
+                cont.bestCombination = result
+                FinalResults(cont)
+                // console.log(result)
+            }
+
+        }
 
         function solverSA()
         {
@@ -394,6 +441,7 @@
 
        function SingleIteration(iter, max_time)
             {
+                console.log("start")
                 let end = window.performance.now();
                 let time = parseInt(end - start - max_time * 1000);
 
@@ -402,31 +450,39 @@
                 {
 
                     document.getElementById("progress").innerHTML = iteration + "/" + cont.orderIteration ;
-                    document.getElementById("dist").innerHTML = cont.bestOrderVariationDistance.toString();
+                    document.getElementById("dist").innerHTML = cont.bestCombination.dist;
 
                     if(max_iteration===iteration || time >0)
                     {
                         clearInterval(interval)
                         FinalResults(cont);
-                        break;
+                        return
                     }
 
-
-                    for (const key2 in cont.orderPopulation[key])
+                    if(iteration===0)
                     {
+                        console.log(key)
+                        for (const key2 in cont.orderPopulation[key]) {
 
                             cont.orderFitness(cont.orderPopulation[key][key2]);
                             cont.startGenetic();
                             cont.setOrderNodeShortestPathData(cont.orderPopulation[key][key2]);
                             cont.getPopNodeMaxDistances(cont.orderPopulation[key]);
 
-                    }
 
-                        console.log(cont.orderPopulation)
-                        cont.setPopulationNodeShortestPathData(cont.orderPopulation[key], cont.orderPopulationSummary[key], iter);
+                        }
+                        cont.start_time=Date.now()
+                        cont.OrderBatching2OPT(max_time,key)
+                    }
+                     //console.log(cont.containerFitness[key])
+                    //cont.bestCombination.dist=Infinity;
+
+                    cont.setPopulationNodeShortestPathData(cont.orderPopulation[key], cont.orderPopulationSummary[key], iter);
                 }
                 cont.orderContFitness(cont.orderPopulation);
-                cont.nextContGeneration()
+                cont.nextContGeneration(max_time)
+                console.log("iter",iteration,cont.containerFitnessVal)
+               // cont.nextContGenerationReplaceAll()
 
 
                 iteration++
@@ -439,6 +495,7 @@
 
 ;
             }
+
 
        function FinalResults(solver) {
 
@@ -480,8 +537,8 @@
             }
 
             function resultToJSON(solver) {
-               console.log(solver.bestCombination)
-                let batchAresult = JSON.stringify(solver.bestCombination);
+             //  console.log(solver.bestCombination)
+                let result = JSON.stringify(solver.bestCombination);
                 document.getElementById("results").value = result;
             }
 
@@ -489,19 +546,17 @@
         right_path.addEventListener("click", function()
         {
             //cont.colorizeSelectedOrders(document.getElementById("path_etape").value);
-            sa.colorizeSelectedOrders(document.getElementById("path_etape").value);
+            cont.colorizeSelectedOrders(document.getElementById("path_etape").value);
         });
 
 
         document.getElementById("stop").addEventListener("click", function()
         {
+
             flag=false;
             clearInterval(interval)
             FinalResults(sa);
         });
-
-
-
 
 
     </script>
