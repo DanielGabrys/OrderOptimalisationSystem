@@ -664,8 +664,8 @@ class OrderOptimalisation extends GeneticAlgo
 
             let order = "Order  "+i;
             this.order_colors[i] = this.orderColors[i];
-            block.innerHTML+= '<div class="badge text-wrap" style="width: 4rem; color: #1a1e21; background:' + this.orderColors[i] + '">' +order + ' </div>';
-            block.innerHTML+= '<div class="badge bg" style="width: 1rem;"> <div>';
+           // block.innerHTML+= '<div class="badge text-wrap" style="width: 4rem; color: #1a1e21; background:' + this.orderColors[i] + '">' +order + ' </div>';
+            //block.innerHTML+= '<div class="badge bg" style="width: 1rem;"> <div>';
             counter ++;
         }
 
@@ -679,7 +679,7 @@ class OrderOptimalisation extends GeneticAlgo
         {
             if(key !=="dist")
             {
-                this.bestCombination[key].detailed_path = this.getDetailedNaivePathOrder(this.bestCombination[key].path)
+               // this.bestCombination[key].detailed_path = this.getDetailedNaivePathOrder(this.bestCombination[key].path)
 
                 let cont = ' <div class="row" style="cursor: pointer"> <div class="col-xl-12 d-flex align-items-center justify-content-center id="joined'+key+'" "> '
                 let inside ='';
@@ -694,6 +694,19 @@ class OrderOptimalisation extends GeneticAlgo
                     inside += '<div class="badge bg" style="width: 5rem;"> </div> </div> </div>';
 
                 block.innerHTML+= cont+inside
+            }
+
+        }
+    }
+
+    getOrderFinalResultDetailedPath()
+    {
+
+        for (const key in this.bestCombination)
+        {
+            if(key !=="dist")
+            {
+                this.bestCombination[key].detailed_path = this.getDetailedNaivePathOrder(this.bestCombination[key].path)
             }
 
         }

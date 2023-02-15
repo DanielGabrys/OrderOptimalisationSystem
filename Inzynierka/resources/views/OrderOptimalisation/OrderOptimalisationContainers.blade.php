@@ -29,68 +29,23 @@
         @endforeach
     </div>
 
-
     <div class="container-fluid mt-2 d-flex justify-content-center">
 
         <form class="form-inline">
 
-            <button type="button" id="load_database" class="btn btn-success btn-sm" >FROM DATABASE</button>
+            <button type="button" id="load_database" class="btn btn-success btn" >OPTYMALIZUJ</button>
 
-        </form>
-
-
-    </div>
-    <div class="container-fluid d-flex justify-content-center">
-        <form class="form-inline">
-
-            <div class="input-group mb-2 mr-sm-2">
+            <div class="input-group">
                 <div class="input-group-prepend">
-                    <div class="input-group-text">POPULATION</div>
-                </div>
-                <input type="number" class="form-control" id="population" name="population"  value=1 style="width: 80px;">
-            </div>
-
-            <div class="input-group mb-2 mr-sm-2">
-                <div class="input-group-prepend">
-                    <div class="input-group-text">ITERATION</div>
-                </div>
-                <input type="number" class="form-control" id="iteration" name="iteration" value=1 style="width: 80px;">
-            </div>
-
-            <div class="input-group mb-2 mr-sm-2">
-                <div class="input-group-prepend">
-                    <div class="input-group-text">MAX TIME</div>
+                    <div class="input-group-text">CZAS KALKULACJI [s]</div>
                 </div>
                 <input type="number" class="form-control" id="max_time" name="max_time" value=60 style="width: 80px;">
+                <button type="button" id="stop" name="stop" class="btn bg-secondary " >Stop</button>
             </div>
-
 
 
         </form>
 
-    </div>
-
-    <div class="container-fluid d-flex justify-content-center">
-        <form class="form-inline">
-
-            <div class="input-group mb-2 mr-sm-2">
-                <div class="input-group-prepend">
-                    <div class="input-group-text">BASE POPULATION</div>
-                </div>
-                <input type="number" class="form-control" id="Basepopulation" name="Basepopulation"  value=1 style="width: 80px;">
-            </div>
-
-            <div class="input-group mb-2 mr-sm-2">
-                <div class="input-group-prepend">
-                    <div class="input-group-text">BASE ITERATION</div>
-                </div>
-                <input type="number" class="form-control" id="Baseiteration" name="Baseiteration" value=1 style="width: 80px;">
-            </div>
-
-
-
-
-        </form>
 
     </div>
 
@@ -98,7 +53,7 @@
         <div class="form-check">
             <input class="form-check-input" type="checkbox" name="split" value="" id="split">
             <label class="form-check-label" for="flexCheckDefault">
-                Allow split single order into multiple containers
+                Rozdziel ponadwymiarowe zamówienia do kilku kontenerów
             </label>
         </div>
     </div>
@@ -106,36 +61,41 @@
     <div class="container-fluid d-flex justify-content-center">
     </div>
 
-    <div class="container-fluid d-flex justify-content-center" id="legend">
+    <div class="container-fluid mt-6 d-flex justify-content-center">
+
+        <table id="iteration_table" class="table table-striped table-dark">
+            <thead class="thead-dark"><thead>
+            <tr>
+                <th scope="col">Dystans</th>
+                <th scope="col">Czas</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td id="dist">-</td>
+                <td id="time">-</td>
+            </tr>
+            </tbody>
+        </table>
     </div>
+
 
     <div class="container-fluid mt-3 d-flex justify-content-center">
-        <h3> <span class="badge bg-danger" id="time_label">Time:</span></h3>
-        <h3> <span class="badge ml-1" id="time" name="time" style="color: #1a1e21"></span></h3>
-        <h3> <span class="badge bg-success" id="dist_label">Dist:</span></h3>
-        <h3> <span class="badge ml-1" id="dist" name="dist" style="color: #1a1e21"></span></h3>
 
 
+            <div class="input-group-prepend">
+                <div id="listy" class="input-group-text"> NR LISTY</div>
+            </div>
             <input type="number" class="form-control" id="path_etape" name="path_etape" value="0" style="width: 70px;">
-            <a class="btn btn-primary " id="path_right" > SHOW COMBINATION </a>
+            <a class="btn btn-primary " id="path_right" > RYSUJ ŚCIEŻKĘ </a>
 
 
-            <form class="form-inline" action="{{route('orderOptResults')}}" target="_blank" method="POST">
-                @csrf
-                <input type="hidden" class="form-control" id="results" name="results"  value=15 style="width: 80px;">
+        <form class="form-inline" action="{{route('orderOptResults')}}" target="_blank" method="POST">
+            @csrf
+            <input type="hidden" class="form-control" id="results" name="results"  value=15 style="width: 80px;">
+            <button type="submit" id="show_results" class="btn btn-warning " >Listy kompletacyjne</button>
+        </form>
 
-                <button type="submit" id="show_results" class="btn btn-warning " >Show Results</button>
-            </form>
-
-
-
-
-    </div>
-
-
-    <div class="container-fluid mt-1 d-flex justify-content-center">
-        <div class="loader" name="loader" id="loader"></div>
-        <button type="button" id="stop" name="stop" class="btn bg-secondary " >Stop</button>
     </div>
 
     <div class="container-fluid mt-1 d-flex justify-content-center" name="progress" id="progress">
@@ -154,8 +114,8 @@
 
                 <tr>
                     <th scope="col" style="width: 80px;" ># </th>
-                    <th scope="col" style="width: 80px;" >Capability</th>
-                    <th scope="col" style="width: 80px;" >Amount</th>
+                    <th scope="col" style="width: 80px;" >Ładowność</th>
+                    <th scope="col" style="width: 80px;" >Liczba</th>
                     <th scope="col" style="width: 80px;" ></th>
                 </tr>
 
@@ -172,7 +132,7 @@
                 @endforeach
                 </tbody>
             </table>
-            <button type="button" id="add_container" class="btn btn-secondary btn-sm" >Add Comntainer</button>
+            <button type="button" id="add_container" class="btn btn-secondary btn-sm" >DODAJ KONTENER</button>
         </form>
     </div>
 
@@ -187,17 +147,18 @@
         let obj2 ={!! $order_sizes !!};
         let start;
         let containers =[];
-        let flag = true;
-        let interval =null;
-        let iteration =0;
-        let max_iteration =0;
-        sa = new SimulatedAnnealing();
-
-
         let distinct_containers =[];
 
+
+        let time = 1
+        let interval
         console.log(obj);
         console.log(obj2);
+
+        let worker = new Worker('../Frontend/Js/OrderOptimalisation/worker.js')
+
+
+
 
         hideDivElements();
         deleteContainerEvents()
@@ -208,10 +169,7 @@
             loadContainersData();
             setStartData();
             cont.loadDatabase(obj)
-          //  solverGA();
-         // solverSA()
             solver2OPT()
-
 
         });
 
@@ -242,8 +200,6 @@
 
         function loadContainersData()
         {
-
-
 
             let table = document.getElementById("order_containers")
             let rows = table.rows.length;
@@ -285,64 +241,21 @@
             }
         }
 
-        function setStartData() {
-            document.getElementById("loader").hidden = false;
-            let population = document.getElementById("population").value;
-            let iteration = document.getElementById("iteration").value;
-            max_iteration = parseInt(iteration)
-
-            let base_population = document.getElementById("Basepopulation").value;
-            let base_iteration = document.getElementById("Baseiteration").value;
-
-            cont.setPopulationData(base_population, base_iteration);
+        function setStartData()
+        {
+            cont.setPopulationData(1, 1);
             cont.getEntry({{$grid->entry}});
             cont.getPathMatrix({!! $path_matrix !!});
-            cont.setGeneticData(population, iteration);
+            cont.setGeneticData(1, 1);
             cont.orderList=cont.loadDatabase(obj)
         }
 
-        function solverGA()
-        {
-                let max_time = document.getElementById("max_time").value;
-                let max_cap =0// document.getElementById("max_cap").value
-
-               // cont.createPopulation();
-                cont.setStartVariables(obj2, containers, distinct_containers,document.getElementById('split').checked);
-                cont.createContainerPopulation(cont.orderPopulationSize);
-
-                cont.randomOrderColor()
-                cont.colorizeOrders();
-                cont.createLegend();
-
-                start = window.performance.now();
-
-
-            interval = setInterval(SingleIteration, 10, iteration, max_time);
-
-            }
-
-        function solver2OPTGA()
-        {
-            let max_time = document.getElementById("max_time").value;
-            let max_cap =0// document.getElementById("max_cap").value
-
-            for(let i=1;i<cont.orderPopulationSize;i++)
-                     cont.orderPopulation.push(cont.orderPopulation[0])
-
-                start = window.performance.now();
-                interval = setInterval(SingleIteration, 10, iteration, max_time);
-                //solver2OPT()
-
-
-        }
 
          function solver2OPT()
          {
+             interval = setInterval(function () {document.getElementById("time").innerHTML = time.toString();time++ }, 1000);
              let max_time = document.getElementById("max_time").value;
-             let max_cap =0// document.getElementById("max_cap").value
 
-
-             // cont.createPopulation();
              cont.setStartVariables(obj2, containers, distinct_containers,document.getElementById('split').checked);
              cont.createContainerPopulation(cont.orderPopulationSize);
 
@@ -350,11 +263,8 @@
              cont.colorizeOrders();
              cont.createLegend();
 
-             start = window.performance.now();
-
              for (const key2 in cont.orderPopulation[0])
              {
-
                  cont.orderFitness(cont.orderPopulation[0][key2]);
                  cont.startSolve();
                  cont.setOrderNodeShortestPathData(cont.orderPopulation[0][key2]);
@@ -362,200 +272,93 @@
                  cont.orderContFitness(cont.orderPopulation[0]);
                  cont.getPopNodeMaxDistances(cont.orderPopulation[0]);
              }
-            // cont.setPopulationNodeShortestPathData(cont.orderPopulation[0], cont.orderPopulationSummary[0], 0);
-             //console.log(JSON.parse(JSON.stringify(cont.orderPopulation[0])))
-
-            worker2opt(cont,max_time)
-
-
-            // cont.OrderBatching2OPT(max_time,0)
-            // FinalResults(cont)
-
+            worker2opt(cont,max_time,interval)
          }
 
-        function worker2opt(cont,max_time)
+        function worker2opt(cont,max_time,interval)
         {
             let data
-            let worker = new Worker('../Frontend/Js/OrderOptimalisation/worker.js')
             worker.postMessage({
                 batch: JSON.stringify(cont),
-                max_time: max_time
+                max_time: max_time,
+                end: false
             })
+
             worker.onmessage = function (en)
             {
                 data = en.data.batch;
                 let result = JSON.parse(en.data.batch)
+                let ended = en.data.end
                 console.log(result)
                 document.getElementById("dist").innerHTML = result.dist.toString();
                 cont.bestCombination = result
-                FinalResults(cont)
-                // console.log(result)
-            }
-
-        }
-
-        function solverSA()
-        {
-
-            let max_time = document.getElementById("max_time").value;
-            sa = sa.init(cont,sa)
-            sa.setStartVariables(obj2, containers, distinct_containers,document.getElementById('split').checked);
-            sa.createContainerPopulation(1);
-            sa.newTempResults()
-            console.log(sa.orderPopulation)
-
-
-            sa.randomOrderColor()
-            sa.colorizeOrders();
-            sa.createLegend();
-            start = window.performance.now();
-
-
-            interval = setInterval(SAInterval, 10, iteration,max_time);
-
-
-        }
-
-        function SAInterval(iter,max_time)
-        {
-
-            document.getElementById("progress").innerHTML = iteration + "/" + cont.orderIteration ;
-            document.getElementById("dist").innerHTML = cont.bestOrderVariationDistance.toString();
-            let end = window.performance.now();
-            let time = parseInt(end - start - max_time * 1000);
-
-            sa.SA()
-            sa.setPopulationNodeShortestPathData(cont.orderPopulation[0], cont.orderPopulationSummary[0], iter, 0);
-            iteration++;
-            if(max_iteration<=iteration || time >0)
-            {
-                clearInterval(interval)
-                FinalResults(sa);
-
-
-            }
-
-
-        }
-
-
-       function SingleIteration(iter, max_time)
-            {
-                console.log("start")
-                let end = window.performance.now();
-                let time = parseInt(end - start - max_time * 1000);
-
-              //  console.log("newpop",cont.orderPopulation)
-                for (let key = 0; key < cont.orderPopulationSize; key++)
-                {
-
-                    document.getElementById("progress").innerHTML = iteration + "/" + cont.orderIteration ;
-                    document.getElementById("dist").innerHTML = cont.bestCombination.dist;
-
-                    if(max_iteration===iteration || time >0)
-                    {
-                        clearInterval(interval)
-                        FinalResults(cont);
-                        return
-                    }
-
-                    if(iteration===0)
-                    {
-                        console.log(key)
-                        for (const key2 in cont.orderPopulation[key]) {
-
-                            cont.orderFitness(cont.orderPopulation[key][key2]);
-                            cont.startGenetic();
-                            cont.setOrderNodeShortestPathData(cont.orderPopulation[key][key2]);
-                            cont.getPopNodeMaxDistances(cont.orderPopulation[key]);
-
-
-                        }
-                        cont.start_time=Date.now()
-                        cont.OrderBatching2OPT(max_time,key)
-                    }
-                     //console.log(cont.containerFitness[key])
-                    //cont.bestCombination.dist=Infinity;
-
-                    cont.setPopulationNodeShortestPathData(cont.orderPopulation[key], cont.orderPopulationSummary[key], iter);
-                }
-                cont.orderContFitness(cont.orderPopulation);
-                cont.nextContGeneration(max_time)
-                console.log("iter",iteration,cont.containerFitnessVal)
-               // cont.nextContGenerationReplaceAll()
-
-
-                iteration++
-                // cont.orderContFitness(cont.orderPopulation[key]);
-
-
-
-
-
-
-;
-            }
-
-
-       function FinalResults(solver) {
-
-                document.getElementById("loader").hidden = true;
-                document.getElementById("progress").innerHTML = ""
-
-
-                let end = window.performance.now();
-                let time = end - start;
-
-                document.getElementById("time").innerHTML = parseInt(time) / 1000;
-                document.getElementById("time").innerHTML += "s";
-
-                console.log(time);
-
                 showDivElements();
-                //console.log(solver);
+
+               if(ended)
+               {
+                worker.terminate()
+                FinalResults(cont)
+               }
+            }
+
+        }
+
+
+       function FinalResults(solver)
+       {
+                showEndDivElements();
+
+                clearInterval(interval)
+                solver.getOrderFinalResultDetailedPath()
                 solver.getProductsIdIntoResult();
-
-
                 solver.getOrderFinalResult();
                 resultToJSON(solver);
+       }
 
-            }
-
-            function hideDivElements() {
-                document.getElementById("loader").hidden = true;
-                document.getElementById("show_results").hidden = true;
-                document.getElementById("time_label").hidden = true;
+            function hideDivElements()
+            {
+                document.getElementById("iteration_table").hidden = true;
+                document.getElementById("show_results").hidden = true
+                document.getElementById("listy").hidden = true;
                 document.getElementById("path_right").hidden = true;
                 document.getElementById("path_etape").hidden = true;
             }
 
             function showDivElements() {
-                document.getElementById("show_results").hidden = false;
-                document.getElementById("time_label").hidden = false;
-                document.getElementById("path_right").hidden = false;
-                document.getElementById("path_etape").hidden = false;
+
+                document.getElementById("time").hidden = false;
+                document.getElementById("iteration_table").hidden = false;
+
             }
 
-            function resultToJSON(solver) {
-             //  console.log(solver.bestCombination)
+        function showEndDivElements() {
+            document.getElementById("show_results").hidden = false;
+            document.getElementById("path_right").hidden = false;
+            document.getElementById("path_etape").hidden = false;
+            document.getElementById("listy").hidden = false;
+        }
+
+            function resultToJSON(solver)
+            {
                 let result = JSON.stringify(solver.bestCombination);
                 document.getElementById("results").value = result;
             }
 
-        let right_path = document.getElementById("path_right");
-        right_path.addEventListener("click", function()
+
+        document.getElementById("path_right").addEventListener("click", function()
         {
-            //cont.colorizeSelectedOrders(document.getElementById("path_etape").value);
-            cont.colorizeSelectedOrders(document.getElementById("path_etape").value);
+            let id = document.getElementById("path_etape").value
+            delete cont.bestCombination.dist
+            let path = cont.bestCombination[id].detailed_path
+            cont.colorizeSelectedOrders(id);
+            cont.colorizeSinglePathNodes(path)
         });
 
 
         document.getElementById("stop").addEventListener("click", function()
         {
-
-            flag=false;
-            clearInterval(interval)
-            FinalResults(sa);
+            FinalResults(cont)
+            worker.terminate()
         });
 
 

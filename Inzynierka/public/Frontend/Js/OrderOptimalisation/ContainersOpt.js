@@ -461,15 +461,19 @@ class ContainersOpt extends OrderOptimalisation
     reselectFinalContainers(object)
     {
 
-        /*
+
         console.log("reselectContainers",object)
         for(const k in object)
         {
             let map = object[k]["containers_map"];
             let possible_containers = object[k]["containers"].slice();
             //console.log(map,possible_containers)
-            for (const key in map) {
-                for (let i = 0; i < map[key].length; i++) {
+            for (const key in map)
+            {
+                for (let i = 0; i < map[key].length; i++)
+                {
+                    console.log("map",map[key][i])
+                    /*
                     let index = possible_containers.indexOf(map[key][i])
 
                     if (index === -1)
@@ -490,11 +494,13 @@ class ContainersOpt extends OrderOptimalisation
                         index = min_node;
                     }
                     possible_containers.splice(index, 1)
+
+                     */
                 }
             }
         }
 
-         */
+
 
     }
 

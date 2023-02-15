@@ -20,18 +20,18 @@
 
                         <div class="card">
 
-                            <div class="card-header"> All Grids </div>
+                            <div class="card-header"> MODELE MAGAZYNU </div>
 
-                            <table class="table">
+                            <table class="table-sm">
                                 <thead>
 
 
                                 <tr>
                                     <th scope="col">NR</th>
-                                    <th scope="col">Size</th>
+                                    <th scope="col">WYMIARY</th>
                                     <th scope="col">ID</th>
-                                    <th scope="col">Created</th>
-                                    <th scope="col">Active</th>
+                                    <th scope="col">UTWORZONO</th>
+                                    <th scope="col">AKTYWNA</th>
                                     <th scope="col"></th>
                                     <th scope="col"></th>
                                     <th scope="col"></th>
@@ -51,16 +51,14 @@
                                         <td>{{$grid->created_at->diffForHumans()}}</td>
 
                                         @if($grid->isActive)
-                                             <td> <a href ="{{route('activateGrid',$grid->id)}}" class="btn btn-success"> ACTIVE</a></td>
+                                             <td> <a href ="{{route('activateGrid',$grid->id)}}" class="btn btn-success"> AKTYWNA</a></td>
                                         @else
-                                            <td> <a href ="{{route('activateGrid',$grid->id)}}" class="btn btn-secondary"> ACTIVE</a></td>
+                                            <td> <a href ="{{route('activateGrid',$grid->id)}}" class="btn btn-secondary"> AKTYWUJ</a></td>
                                         @endif
-                                        <td> <a href ="#" class="btn btn-info" data-toggle="modal" data-whatever="{{$grid->height}}_{{$grid->width}}_{{$grid->id}}_{{$grid->shelfs}}" data-target=".bd-example-modal-lg"> Show </a>
-                                        </td>
-                                        <td> <a href ="{{route('editGrid',$grid->id)}}" class="btn btn-warning"> Edit Grid</a></td>
-                                        <td> <a href ="{{route('editGridProducts',$grid->id)}}" class="btn btn-warning"> Edit products </a></td>
-                                        <td> <a href ="{{route('deleteGrid',$grid->id)}}" class="btn btn-danger"> Delete </a></td>
-                                        <td> <a href ="{{route('Paths',$grid->id)}}" class="btn btn-secondary"> PATHS </a></td>
+                                        <td> <a href ="{{route('editGrid',$grid->id)}}" class="btn btn-warning"> EDYTUJ STRUKTURĘ</a></td>
+                                        <td> <a href ="{{route('editGridProducts',$grid->id)}}" class="btn btn-info"> EDYTUJ PRODUKTY </a></td>
+                                        <td> <a href ="{{route('deleteGrid',$grid->id)}}" class="btn btn-danger"> USUŃ </a></td>
+                                        <td> <a href ="{{route('Paths',$grid->id)}}" class="btn btn-secondary"> ŚCIEŻKI </a></td>
 
                                     </tr>
                                 @endforeach

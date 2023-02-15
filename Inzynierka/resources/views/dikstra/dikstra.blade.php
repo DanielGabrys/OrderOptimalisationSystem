@@ -36,19 +36,19 @@
             @csrf
             <div class="input-group mb-2 mr-sm-2">
                 <div class="input-group-prepend">
-                    <div class="input-group-text">ENTRY</div>
+                    <div class="input-group-text">START</div>
                 </div>
                 <input type="number" class="form-control" id="start" >
             </div>
 
             <div class="input-group mb-2 mr-sm-2">
                 <div class="input-group-prepend">
-                    <div class="input-group-text">END</div>
+                    <div class="input-group-text">KONIEC</div>
                 </div>
                 <input type="number" class="form-control" id="end" >
             </div>
 
-            <button type="button" id="nodes_path" class="btn btn-primary mb-2" >CALCULATE</button>
+            <button type="button" id="nodes_path" class="btn btn-primary mb-2" >OBLICZ</button>
 
             <input type="hidden" class="form-control" name="json_matrix" id="json_matrix" >
 
@@ -62,7 +62,7 @@
             <input type="hidden" id ="paths_to_save" name="paths_to_save" value="{}" >
 
             <input type="hidden" id ="chunks" name="chunks" value="1" >
-            <button type="button" id ="graph_to_file" class="btn btn-warning mb-2"> CALCULATE ALL </button>
+            <button type="button" id ="graph_to_file" class="btn btn-warning mb-2"> OBLICZ DLA WSZYSTKICH </button>
             <button type="sumbit" id ="load_paths" name="load_paths" hidden="true" class="btn btn-success mb-2"> DOWNLOAD NODES </button>
 
         </form>
@@ -85,9 +85,9 @@
             <thead>
             <tr>
                 <th scope="col">START</th>
-                <th scope="col">END</th>
-                <th scope="col">STEPS</th>
-                <th scope="col">PATH</th>
+                <th scope="col">KONIEC</th>
+                <th scope="col">DYSTANS</th>
+                <th scope="col">DROGA</th>
             </tr>
             </thead>
 

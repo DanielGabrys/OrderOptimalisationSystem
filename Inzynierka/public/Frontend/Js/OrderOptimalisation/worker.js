@@ -804,7 +804,7 @@ class Base2 extends DikstraGrid2
     getNodesDistance(a,b)
     {
 
-        // return 1
+
         if(a===b)
             return 0;
         let key =a+"->"+b;
@@ -3124,23 +3124,25 @@ class ContainersOpt2 extends OrderOptimalisation2
     reselectFinalContainers(object)
     {
 
-        /*
-        console.log("reselectContainers",object)
+
+       // console.log("reselectContainers",object)
         for(const k in object)
         {
-            let map = object[k]["containers_map"];
-            let possible_containers = object[k]["containers"].slice();
-            //console.log(map,possible_containers)
-            for (const key in map) {
-                for (let i = 0; i < map[key].length; i++) {
-                    let index = possible_containers.indexOf(map[key][i])
+            let map = object[k]["containers"];
+            let possible_containers = object[k]["containers"];
+            let containers= this.containers.slice()
+            for (const key in map)
+            {
+                for (let i = 0; i < map[key].length; i++)
+                {
+                    console.log("map",map[key][i],containers)
+                    let index = map[key][i]
 
-                    if (index === -1)
-                    {
+
                         let node = map[key][i];
                         let min = Infinity;
                         let min_node = 0;
-                        for (let j = 0; j < possible_containers.length; j++) {
+                        for (let j = 0; j < containers.length; j++) {
                             if (containers[j] > node) {
                                 if (containers[j] - node < min) {
                                     min = containers[j] - node
@@ -3149,17 +3151,19 @@ class ContainersOpt2 extends OrderOptimalisation2
                             }
                         }
                        // console.log(object[k]["possible_containers"]);
-                        object[k]["containers_map"][key][i] = possible_containers[min_node];
+                        object[k]["containers"][key][i] = containers[min_node];
                         index = min_node;
-                    }
-                    possible_containers.splice(index, 1)
+
+                   containers.splice(index, 1)
+
                 }
             }
         }
 
-         */
+
 
     }
+
 
     orderContFitness(sequence)
     {
@@ -4075,7 +4079,8 @@ self.onmessage = function (en)
                        // console.log(("best",container.bestCombination.dist))
                         this.postMessage({
                             batch: JSON.stringify(container.bestCombination),
-                            max_time: max_time
+                            max_time: max_time,
+                            end :true
 
                         })
                         self.close();
@@ -4092,7 +4097,8 @@ self.onmessage = function (en)
                         console.log("improved",index,container.bestCombination.dist)
                         this.postMessage({
                             batch: JSON.stringify(container.bestCombination),
-                            max_time: max_time
+                            max_time: max_time,
+                            end: false
 
                         })
                         if(test(container.orderPopulation[0]))
@@ -4111,7 +4117,8 @@ self.onmessage = function (en)
         container.setPopulationNodeShortestPathData(container.orderPopulation[index],container.orderPopulationSummary,0)
         this.postMessage({
             batch: JSON.stringify(container.bestCombination),
-            max_time: max_time
+            max_time: max_time,
+            end: true
 
         })
         self.close(); // zatrzymanie skryptu wewnatrz watku roboczego
@@ -4138,7 +4145,7 @@ function test (object)
             return 1
         }
     }
-    console.log(orders)
+    //console.log(orders)
     return 0
 
 }

@@ -22,7 +22,7 @@
                 @csrf
                 <div class="input-group mb-2 mr-sm-2">
                     <div class="input-group-prepend">
-                        <div class="input-group-text">Choose product</div>
+                        <div class="input-group-text">PRODUKT</div>
                     </div>
 
                     <select class="form-select" name="product_id"  id="product_id" >
@@ -34,7 +34,7 @@
 
                 <div class="input-group mb-2 mr-sm-2">
                     <div class="input-group-prepend">
-                        <div class="input-group-text">Choose place</div>
+                        <div class="input-group-text">POZYCJA</div>
                     </div>
 
                     <select class="form-select" name="desired_position"  id="desired_position" >
@@ -77,9 +77,9 @@
                         <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Name</th>
+                            <th scope="col">NAZWA</th>
                             <th scope="col">ID</th>
-                            <th scope="col">Position</th>
+                            <th scope="col">POZYCJA</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -90,7 +90,7 @@
                             <td>{{$product->name}}</td>
                             <td>{{$product->id}}</td>
                             <td>{{$product->pivot->position}}</td>
-                            <td><a href ="{{route('deleteGridProduct',$product->pivot->id)}}" class="btn btn-danger"> Delete </a></td>
+                            <td><a href ="{{route('deleteGridProduct',$product->pivot->id)}}" class="btn btn-danger"> USUŃ </a></td>
 
                         </tr>
                         @endforeach

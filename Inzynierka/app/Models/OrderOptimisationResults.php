@@ -9,5 +9,5 @@ class OrderOptimisationResults extends Model
 {
     use HasFactory;
 
-    protected $table = 'Order_Optimisation_results';
+    protected $table = 'batches';
 }

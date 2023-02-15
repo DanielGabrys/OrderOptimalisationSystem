@@ -17,6 +17,7 @@ class Base extends DikstraGrid
     path_matrix;
     final_path_indexes=[];
     colorizesProducts="";
+    colorisedPath =[];
 
 
     addButtonlisteners(products)
@@ -166,22 +167,17 @@ class Base extends DikstraGrid
     getDetailedNaivePathOrder(order)
     {
         this.distance=0;
-        //console.log(this.final_path);
+       // console.log(order)
+        let array =[]
         for(let i=0;i<order.length-1;i++)
         {
             let key = order[i]+"->"+order[i+1];
             let dist = this.getNodesDistance(order[i],order[i+1])
             this.getBFSShortestPath(this.BFSGraph, order[i],order[i+1])
 
-            this.detailed_final_path.set(key,this.path);
-            this.detailed_final_path_array[i]=this.path;
-            this.final_path_indexes.push(key);
-
-            this.detailed_final_distances[i] = dist;
-
-            this.distance+=dist;
+            array[i]=this.path;
         }
-        return this.detailed_final_path_array
+        return array
 
         //console.log("elo",this.detailed_final_path);
     }
@@ -287,7 +283,8 @@ class Base extends DikstraGrid
     getNodesDistance(a,b)
     {
 
-       // return 1
+
+       // return Math.floor(Math.random*50)
         if(a===b)
             return 0;
         let key =a+"->"+b;
@@ -300,6 +297,8 @@ class Base extends DikstraGrid
         {
             return this.path_matrix[key];
         }
+
+
 
     }
 
@@ -386,46 +385,43 @@ class Base extends DikstraGrid
         }
     }
 
-
-    colorizeSinglePathNodes(id,sign)
+    ColorizeFinalPathByStep(id)
     {
-        //this.decolorizeSinglePathNodes();
 
-        let index=0;
-        if(sign===1)
-            index = parseInt(id)+1;
-        else if(sign===0)
-            index= parseInt(id)-1
-
-
-        document.getElementById("path_etape").setAttribute("value", index.toString());
-
-        for (let i =0; i<index; i++)
+        for (let i = 0; i <= this.detailed_final_path_array.length; i++)
         {
-            for (let j = 1; j < this.detailed_final_path_array[i].length-1; j++)
+            this.colorizeSinglePathNodes(id,this.detailed_final_path_array[i])
+        }
+    }
+
+
+    colorizeSinglePathNodes(arr)
+    {
+        this.decolorizeSinglePathNodes();
+
+       for (let i =0; i<arr.length; i++)
+        {
+            for (let j = 1; j < arr[i].length-1; j++)
             {
-                let way = document.getElementById(this.detailed_final_path_array[i][j])
+
+                let way = document.getElementById(arr[i][j])
                 way.className = "path_cell";
+                this.colorisedPath.push(way)
 
             }
 
-            let way = document.getElementById(this.detailed_final_path_array[i][0])
-            way.style.background="grey"
-            way.style.fontsize = "10px"
+            let way = document.getElementById(arr[i][0])
+            way.className = "path_pick_cell"
+            this.colorisedPath.push(way)
         }
     }
 
     decolorizeSinglePathNodes()
     {
 
-        for (let i =0; i<this.detailed_final_path_array.length; i++)
+        for (let i =0; i<this.colorisedPath.length; i++)
         {
-
-            for (let j = 0; j < this.detailed_final_path_array[i].length; j++)
-            {
-                //console.log(i,j,this.detailed_final_path_array[i]);
-                let way = document.getElementById(this.detailed_final_path_array[i][j]).className = "unselected_cell";
-            }
+                this.colorisedPath[i].className = "unselected_cell"
         }
     }
 

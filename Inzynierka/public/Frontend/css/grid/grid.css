@@ -79,6 +79,11 @@ a{
 {
     background-color: orange;
 }
+.path_pick_cell
+{
+    background-color: grey;
+    font-size: 10px;
+}
 
  .loader
  {

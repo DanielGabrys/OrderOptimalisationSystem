@@ -39,7 +39,7 @@ class DikstraGrid extends ProductsGrid
                         //graphToExport["neighbours"].push(counter - Y);
                     }
 
-                        //console.log(i,j,X,Y,counter,shelves[i][j] )
+                       // console.log(i,j,X,Y,counter,shelves[i][j] )
                         //down connected node
                         if (i !== X - 1 && shelves[i + 1][j] !== -1) {
                             graph[counter][counter + Y] = 1;

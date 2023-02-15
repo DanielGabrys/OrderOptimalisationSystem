@@ -10,7 +10,7 @@
 
             <div class="row">
 
-                            <div class="container mt-12" >All Products </div>
+                            <div class="container mt-12" >Listy kompletacyjne </div>
 
 
 
@@ -20,13 +20,13 @@
 
                                     <tr>
                                         <th scope="col">#</th>
-                                        <th scope="col">ID</th>
-                                        <th scope="col">Orders</th>
-                                        <th scope="col">Distance</th>
-                                        <th scope="col">Path</th>
+                                        <th scope="col">ID LISTY</th>
+                                        <th scope="col">ZAMÓWIENIA</th>
+                                        <th scope="col">DROGA</th>
+                                        <th scope="col">SCIEŻKA</th>
 
-                                        <th scope="col">Action</th>
-                                        <th scope="col"></th>
+                                        <th scope="col">SZCEGÓŁY</th>
+                                        <th scope="col">PDF</th>
 
                                     </tr>
 
@@ -38,8 +38,9 @@
                                                 <td >{{$order->id }}</td>
                                                 <td >{{$order->orders}}</td>
                                                 <td >{{$order->distance}}</td>
-                                                <td >{{$order->path}}</td>
-                                                <td id=btr{{$loop->index+1}}> <button type="button" class="btn btn-warning btn-sm"  > Show </button></td>
+                                                <td data-toggle="tooltip" data-placement="top" data-html="true" title="{{$order->path}}" >{{Str::limit($order->path,40)}}</td>
+                                                <td id=btr{{$loop->index+1}}> <button type="button" class="btn btn-warning btn-sm"  > SZCZEGÓŁY </button></td>
+                                                <td id=pdf{{$loop->index+1}}> <button type="button" class="btn btn-danger btn-sm"  > PDF </button></td>
 
                                             </tr>
                                         @endforeach
@@ -50,8 +51,6 @@
                                 {!! $products->links('pagination::bootstrap-4') !!}
                             </div>
 
-
-                    <canvas id="myCanvas" width="400" height="50" style="border:1px solid #d3d3d3;"> </canvas>
             </div>
         </div>
 
@@ -67,13 +66,13 @@
 
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">PRODUCT_ID</th>
-                <th scope="col">POSITION</th>
-                <th scope="col">ORDER_ID</th>
-                <th scope="col">CONTAINER</th>
-                <th scope="col">AMOUNT</th>
-                <th scope="col">DIST</th>
-                <th scope="col">PATH</th>
+                <th scope="col"> ID PRODUKTU</th>
+                <th scope="col">POZYCJA</th>
+                <th scope="col">ID ZAMÓWIENIA</th>
+                <th scope="col">KONTENER</th>
+                <th scope="col">SZTUKI</th>
+                <th scope="col">DYSTANS</th>
+                <th scope="col">DROGA</th>
 
             </tr>
 
@@ -91,7 +90,9 @@
 
 <script>
 
-
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
 
         let obj = {!! $result !!};
         let orders ={!! $orders !!};
@@ -142,16 +143,13 @@
                 console.log("colors",containers)
                 let detailed_path = JSON.parse(result[id]["detailed_path"])
 
-                drawContainers(containers,color)
-                console.log("cont",containers);
+               // drawContainers(containers,color)
+                console.log("cont",detailed_path);
                 for(let i=1;i<path.length;i++)
                 {
 
                     let short_detailed_path;
-                    if (detailed_path[i - 1].length > 20)
-                        short_detailed_path = detailed_path[i - 1].slice(0, 20) + "...";
-                    else
-                        short_detailed_path = detailed_path[i - 1];
+                    short_detailed_path = detailed_path[i - 1];
 
                     let dist = detailed_path[i - 1].length - 1;
 
@@ -225,8 +223,9 @@
             for(let i=1;i<=rows;i++)
             {
                 let key ="btr"+i;
+                let key2 ="pdf"+i;
                 document.getElementById(key).addEventListener("click", function () { resultToTable(obj.data,i-1)});
-                document.getElementById(key).addEventListener("click", function ()
+                document.getElementById(key2).addEventListener("click", function ()
                 {
                     var doc = new jsPDF('p', 'pt', 'letter');
 
@@ -252,7 +251,7 @@
 
                     var y = 20;
                     doc.setLineWidth(4);
-                    doc.text(200, y = y + 30, "LISTA KOMPLETACYJNA");
+                    doc.text(200, y = y + 30, "LISTA KOMPLETACYJNA "+i);
                     doc.autoTable({
 
                         didParseCell: function(data)
@@ -288,7 +287,7 @@
 
                         },
                     })
-                    doc.save('List.pdf');
+                    doc.save('Lista kompletacyjna '+i+'.pdf');
 
             })
 
@@ -311,13 +310,13 @@
 
 
             cell0.outerHTML = "<th>#</th>";
-            cell1.outerHTML = "<th>PRODUCT_ID</th>";
-            cell2.outerHTML = "<th>POSITION</th>";
-            cell3.outerHTML = "<th>ORDER_ID</th>";
-            cell4.outerHTML = "<th>CONTAINER</th>";
-            cell5.outerHTML = "<th>AMOUNT</th>";
-            cell6.outerHTML = "<th>DISTANCE</th>";
-            cell7.outerHTML = "<th>PATH</th>";
+            cell1.outerHTML = "<th>ID PRODUKTU</th>";
+            cell2.outerHTML = "<th>POZYCJA</th>";
+            cell3.outerHTML = "<th>ID ZAMÓWIENIA</th>";
+            cell4.outerHTML = "<th>KONTENER</th>";
+            cell5.outerHTML = "<th>SZTUKI</th>";
+            cell6.outerHTML = "<th>DYSTANS</th>";
+            cell7.outerHTML = "<th>DROGA</th>";
         }
 
     </script>
@@ -325,8 +324,8 @@
 
     <script>
 
-        var c = document.getElementById("myCanvas");
-        var ctx = c.getContext("2d");
+      //  var c = document.getElementById("myCanvas");
+      //  var ctx = c.getContext("2d");
 
 
 
@@ -379,6 +378,11 @@
             margin-right: auto;
             margin-left: auto;
             display: block;
+        }
+
+        .tooltip-inner {
+            max-width: 1200px;
+
         }
 
     </style>

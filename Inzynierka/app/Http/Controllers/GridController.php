@@ -540,6 +540,7 @@ class GridController extends Controller
 
     public function orderOptResultsSubmit(Request $request)
     {
+        $grid=Grid::all()->where('isActive','=',1)->first();
         $result2 = json_decode( $request->results,true);
 
         OrderOptimisationResults::query()->delete();
@@ -550,7 +551,8 @@ class GridController extends Controller
             if($i=="dist")
                 break;
 
-            $orderOpt -> id = $i+1;
+            $orderOpt -> batch_id = $i+1;
+            $orderOpt -> grid_id = $grid->id;
             $orderOpt -> orders = json_encode($result2[$i]["order"]);
             $orderOpt -> products_id = json_encode($result2[$i]["products_id_map"]);
             $orderOpt -> distance = $result2[$i]["distance"];
@@ -567,7 +569,9 @@ class GridController extends Controller
 
     public function orderOptResults()
     {
-        $result = OrderOptimisationResults::paginate(5);
+        $grid=Grid::all()->where('isActive','=',1)->first();
+
+        $result = OrderOptimisationResults::where('grid_id','=',$grid->id)->paginate(5);
         $result2 =json_encode($result);
         $orders=Order::with('products')->get();
 

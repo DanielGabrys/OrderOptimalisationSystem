@@ -13,14 +13,20 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('Order_Optimisation_results', function (Blueprint $table)
+        Schema::create('batches', function (Blueprint $table)
         {
             $table->id();
+            $table->Biginteger('grid_id')->unsigned();
+            $table->Biginteger('batch_id')->unsigned();
             $table->String("orders");
-            $table->String("products_id");
+            $table->LongText("products_id");
             $table->integer('distance')->unsigned();
             $table->Text("path");
             $table->LongText("detailed_path");
+            $table->Text("containers");
+
+            $table->foreign('grid_id')->references('id')->on('grids')->onDelete('cascade');
+
 
             $table->timestamps();
         });
