@@ -15,6 +15,13 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class OrderController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('existAnyGrid');
+         $this->middleware('isAnyGridActive');
+    }
+
     public function showOrders()
     {
 
@@ -58,7 +65,7 @@ class OrderController extends Controller
             }
             catch (\Exception $e)
             {
-                dd($e);
+              //  dd($e);
                 DB::rollBack();
                 return Redirect()->back()->with('failure', 'Upps coś poszło nie tak');
             }

@@ -2,13 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Product;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
-use Faker\Factory as Faker;
 
-class ProductsSeeder extends Seeder
+class GridSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -18,8 +15,6 @@ class ProductsSeeder extends Seeder
     public function run()
     {
 
-        Product::factory(5000)->create();
-
-
+        Grid::factory(1)->create();
     }
 }

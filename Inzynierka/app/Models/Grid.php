@@ -9,7 +9,9 @@ class Grid extends Model
 {
     use HasFactory;
 
-    protected $fillable = array('isActive', 'nodes_shortest_paths');
+    protected $table = 'grid';
+
+    protected $fillable = array('width','height','enty','shelfs','isActive','nodes_shortest_paths');
 
     public function products()
     {

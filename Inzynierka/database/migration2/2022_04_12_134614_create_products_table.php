@@ -13,8 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('grid', function (Blueprint $table) {
-            $table->LongText('nodes_shortest_paths',)->nullable();
+        Schema::create('product', function (Blueprint $table)
+        {
+            $table->id();
+            $table->string('name');
+            $table->float('size_X', 8, 2);
+            $table->float('size_Y', 8, 2);
+            $table->float('size_Z', 8, 2);
+            $table->timestamps();
+
+
         });
     }
 
@@ -25,8 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('grid', function (Blueprint $table) {
-            $table->LongText('nodes_shortest_paths')->default("");
-        });
+        Schema::dropIfExists('products');
     }
 };

@@ -13,9 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('Order_Optimisation_results', function (Blueprint $table)
-        {
-            $table->LongText("containers");
+        Schema::table('grid_product', function (Blueprint $table) {
+            $table->integer('desired_position',)->default(0);;
         });
     }
 
@@ -26,8 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('order_opt_result', function (Blueprint $table) {
-            //
+        Schema::table('grid_product', function (Blueprint $table) {
+            $table->dropColumn('desired_position');
         });
     }
 };

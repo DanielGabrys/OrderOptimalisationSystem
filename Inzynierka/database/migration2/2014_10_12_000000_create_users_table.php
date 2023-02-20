@@ -13,8 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('grid', function (Blueprint $table) {
-            $table->LongText('nodes_shortest_paths',)->nullable();
+        Schema::create('users', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('email')->unique();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('password');
+            $table->rememberToken();
+            $table->timestamps();
         });
     }
 
@@ -25,8 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('grid', function (Blueprint $table) {
-            $table->LongText('nodes_shortest_paths')->default("");
-        });
+        Schema::dropIfExists('users');
     }
 };

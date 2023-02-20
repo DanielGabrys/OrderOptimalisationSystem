@@ -32,8 +32,18 @@ class ProductController extends Controller
 
     public function deleteProduct($id)
     {
-        $product= Product::find($id)->delete();
-        return Redirect()->back()->with('success','Pomyślnie usunięto produkt');
+        $product =Product:: findOrFail($id);
+
+        if ($product)
+        {
+            $product->delete();
+
+            return Redirect()->back()->with('success','Pomyślnie usunięto produkt');
+        }
+
+        abort(404, 'Nie znaleziono');
+
+
     }
 
 

@@ -25,7 +25,7 @@ return new class extends Migration
             $table->LongText("detailed_path");
             $table->Text("containers");
 
-            $table->foreign('grid_id')->references('id')->on('grids')->onDelete('cascade');
+            $table->foreign('grid_id')->references('id')->on('grid')->onDelete('cascade');
 
 
             $table->timestamps();

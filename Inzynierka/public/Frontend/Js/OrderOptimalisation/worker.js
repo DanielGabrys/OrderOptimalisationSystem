@@ -3135,7 +3135,7 @@ class ContainersOpt2 extends OrderOptimalisation2
             {
                 for (let i = 0; i < map[key].length; i++)
                 {
-                    console.log("map",map[key][i],containers)
+                  //  console.log("map",map[key][i],containers)
                     let index = map[key][i]
 
 

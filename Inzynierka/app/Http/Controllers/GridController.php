@@ -19,6 +19,14 @@ use Ramsey\Uuid\Type\Integer;
 
 class GridController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('existAnyGrid',['except' => ['index','createGridSubmit']]);
+        $this->middleware('isAnyGridActive',['except' => ['index','createGridSubmit','showGrids','activateGrid','deleteGrid']]);
+    }
+
+
     public function index()
     {
         return view('grid.grid');
@@ -70,7 +78,7 @@ class GridController extends Controller
         $products_id = $grid->products()->get()->pluck('id');
 
         // products which are not on list
-        $accessable_products = Product::select('products.id','name')->whereNotIn('id', $products_id)->get();
+        $accessable_products = Product::select('product.id','name')->whereNotIn('id', $products_id)->get();
 
         $fields=$this->calculateDesiredPosition($id,$id2);
         $neibours = $this->neiboursDesiredPosition($id,$id2);
@@ -155,8 +163,14 @@ class GridController extends Controller
 
         if($this->ValidateGrid($request))
         {
+
+            $grid = Grid::first();
+
+
+
             $grid= new Grid;
             $this->createGridData($grid,$request);
+
             return Redirect()->route('showGrids')->with('success','Wczytano pomyślnie siatkę');
         }
 
@@ -600,7 +614,7 @@ class GridController extends Controller
 
         $orders_sizes = DB::table('order_product')
             ->select('order_product.order_id', DB::raw('sum(order_product.amount) as capability'))
-            ->join('orders', 'orders.id', '=', 'order_product.order_id')
+            ->join('order', 'order.id', '=', 'order_product.order_id')
             ->where('grid_id',$grid->id)
             ->groupBy('order_product.order_id')->get();
 

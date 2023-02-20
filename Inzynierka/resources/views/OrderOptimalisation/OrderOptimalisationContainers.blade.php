@@ -122,14 +122,14 @@
                 </thead>
                 <tbody>
 
-                @foreach($containers as $container)
-                    <tr>
-                        <th scope="row">{{$loop->index+1}}</th>
-                        <td > <input type="number" class="form-control" id="capability{{$loop->iteration}}" name="capability{{$loop->iteration}}" style="width: 80px;" value={{$container->capability }}></td>
-                        <td > <input type="number" id="amount{{$loop->iteration}}" class="form-control" id="amount" name="capability" style="width: 80px;"  value={{$container->amount }}></td>
-                        <td> <button type="button" class="btn" id="delete{{$loop->iteration}}" >x</button> </td>
-                    </tr>
-                @endforeach
+                <tr>
+                    <th scope="row">1</th>
+                    <td > <input type="number" class="form-control" id="capability1" name="capability1" style="width: 80px;" value=50></td>
+                    <td > <input type="number" id="amount1" class="form-control" id="amount" name="amount" style="width: 80px;"  value=4></td>
+                    <td> <button type="button" class="btn" id="delete1" >x</button> </td>
+                </tr>
+
+
                 </tbody>
             </table>
             <button type="button" id="add_container" class="btn btn-secondary btn-sm" >DODAJ KONTENER</button>

@@ -18,7 +18,7 @@ use \App\Http\Controllers\GridController;
 
 Route::get('/', function ()
 {
-    return view('body.index');
+    return view('/grid/grid');
 });
 
 // grid

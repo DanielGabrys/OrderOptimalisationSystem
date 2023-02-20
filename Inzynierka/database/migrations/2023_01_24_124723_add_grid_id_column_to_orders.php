@@ -13,10 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('orders', function (Blueprint $table) {
+        Schema::table('order', function (Blueprint $table) {
 
             $table->Biginteger('grid_id')->unsigned();
-            $table->foreign('grid_id')->references('id')->on('grids')->onDelete('cascade');
+            $table->foreign('grid_id')->references('id')->on('grid')->onDelete('cascade');
 
         });
     }

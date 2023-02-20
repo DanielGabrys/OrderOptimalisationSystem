@@ -11,6 +11,15 @@
 
     @endif
 
+    @if(session('middleware'))
+
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>{{session('middleware')}}</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+    @endif
+
 <div class="container-fluid d-flex justify-content-center">
 
     <form class="form-inline">

@@ -15,12 +15,11 @@ return new class extends Migration
     {
         Schema::create('grid', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
-            $table->string('name');
             $table->integer('width') ;
             $table->integer('height') ;
             $table->integer('entry');
             $table->LongText('shelfs');
+            $table->timestamps();
 
         });
     }
@@ -32,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('grids');
+        Schema::dropIfExists('grid');
     }
 };

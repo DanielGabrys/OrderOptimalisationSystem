@@ -37,20 +37,25 @@
 
                         <tbody>
 
-                        @foreach($products as $product)
+                        @forelse($products as $product)
                             <tr>
                                 <th scope="row">{{$loop->index+1}}</th>
                                 <td >{{$product->id }}</td>
                                 <td >{{$product->name}}</td>
                                 <td >{{$product->size_X}} x {{$product->size_Y}} x {{$product->size_Z}}</td>
 
-
-
                                 <td> <a href ="" class="btn btn-info"> EDYTUJ </a></td>
                                 <td> <a href ="{{route('deleteProduct',$product->id)}}" class="btn btn-danger"> USUŃ </a></td>
 
                             </tr>
-                        @endforeach
+
+                        @empty
+
+
+                            <td > Lista produktów jest pusta</td>
+
+
+                        @endforelse
 
 
                         </tbody>

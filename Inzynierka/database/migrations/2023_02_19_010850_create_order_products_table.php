@@ -13,20 +13,18 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('grid_product', function (Blueprint $table)
-        {
+        Schema::create('order_product', function (Blueprint $table) {
             $table->id();
 
-            $table->Biginteger('grid_id')->unsigned();
-            $table->Biginteger('product_id')->unsigned();
-            $table->integer('position');
+            $table->Biginteger('order_id')->unsigned();
+            $table->BigInteger('product_id')->unsigned();
+            $table->BigInteger('amount')->unsigned();
 
-            $table->foreign('grid_id')->references('id')->on('grid')->onDelete('cascade');
+            $table->foreign('order_id')->references('id')->on('order')->onDelete('cascade');
             $table->foreign('product_id')->references('id')->on('product')->onDelete('cascade');
 
             $table->timestamps();
         });
-
     }
 
     /**
@@ -36,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('order_product');
     }
 };

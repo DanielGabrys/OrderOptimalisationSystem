@@ -22,7 +22,7 @@ class OrderProductsSeeder extends Seeder
     public function run()
     {
 
-        OrderProducts::factory(2000)->create();
+        OrderProducts::factory(800)->create();
         /*
         $n=300;
 

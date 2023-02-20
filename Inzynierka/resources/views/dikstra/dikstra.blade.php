@@ -172,7 +172,7 @@
 
                 if(key===arr[i]) continue
 
-               // console.log(key,arr[i])
+                console.log("i")
                 let name = key+"->"+arr[i];
                 let reverse = arr[i]+"->"+key
                 if(result_BFS.has(name) || result_BFS.has(reverse)) continue
