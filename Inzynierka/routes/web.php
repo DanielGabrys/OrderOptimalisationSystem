@@ -2,6 +2,10 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\GridController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,13 +23,111 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return view('body.main_theme');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
+Route::middleware('auth')->group(function ()
+{
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // grid
+
+    //add grid
+    Route::get('/grid/add', [GridController::class, 'index'])->name('addGrid');
+
+    Route::post('/grid/gridSubmit', [GridController::class, 'createGridSubmit']) -> name("gridSubmit");
+
+    // activate grid
+    Route::get('/grid/ActivateGrid/{id}',[GridController::class,'activateGrid'])->name('activateGrid');
+
+    // show grids
+    Route::get('/grid/showGrids',[GridController::class,'showGrids'])->name('showGrids');
+
+    // delete grid
+    Route::get('/grid/deleteGrid/{id}',[GridController::class,'deleteGrid'])->name('deleteGrid');
+
+    //edit grid structure
+    Route::get('/grid/editGrid/{id}', [GridController::class, 'editGrid'])->name('editGrid');
+
+    //submit edited grid structure
+    Route::post('/grid/editGridSubmit/{id}', [GridController::class, 'editGridSubmit'])->name('editGridSubmit');
+
+
+
+
+    //show products
+    Route::get('/ShowProducts', [ProductController::class, 'showProducts'])->name('showProducts');
+
+    // add product
+    Route::post('/AddProduct', [ProductController::class, 'addProduct'])->name('addProduct');
+    // delete product
+    Route::get('/DeleteProduct{id}', [ProductController::class, 'deleteProduct'])->name('deleteProduct');
+
+
+    //show orders
+    Route::get('/ShowOrders', [OrderController::class, 'showOrders'])->name('showOrders');
+
+    // addOrder
+    Route::post('/UploadOrders', [OrderController::class, 'uploadOrders'])->name('uploadOrders');
+    // delete order
+    Route::get('/DeleteOrder{id}', [OrderController::class, 'deleteOrder'])->name('deleteOrder');
+
+
+
+
+//edit products on grid - grid view
+    Route::get('/grid/editGridProducts/{id}', [GridController::class, 'editGridProducts'])->name('editGridProducts');
+
+    //edit specific products on grid
+
+    Route::get('/grid/editGridCellProducts/{id}/{id2}', [GridController::class, 'editGridCellProducts'])->name('editGridCellProducts');
+
+    //add specific product to grid specific cell
+    Route::post('/grid/addGridSubmitProducts', [GridController::class, 'addGridCellProduct'])->name('addGridCellProduct');
+
+
+    // delete specific product from grid
+    Route::get('/grid/deleteGridProduct/{id}', [GridController::class, 'deleteGridProduct'])->name('deleteGridProduct');
+
+
+// dikstra
+
+    Route::get('/grid/Paths/{id}',[GridController::class, 'Paths'])->name('Paths');
+    Route::post('/grid/uploadNodesPaths/{id}',[GridController::class, 'uploadNodesPaths'])->name('uploadNodesPaths');
+
+// native algoritm
+
+    Route::get('/grid/calculateNaive',[GridController::class, 'calculateNaive'])->name('calculateNaive');
+    Route::post('/grid/calculateNaiveSubmit',[GridController::class, 'calculateNaiveSubmit'])->name('combinationMatrix');
+    Route::get('/grid/nativeAlgorithm',[GridController::class, 'nativeAlgorithm'])->name('nativeAlgorithm');
+
+// rectagle_division
+
+    Route::get('/grid/rectangleDivision',[GridController::class, 'rectangleDivision'])->name('rectangleDivision');
+
+// genetic algorithm
+
+    Route::get('/grid/geneticAlgo',[GridController::class, 'geneticAlgo'])->name('geneticAlgo');
+
+// order optimalisation
+    Route::get('/grid/orderOptimalisation',[GridController::class, 'orderOptimalisation'])->name('orderOptimalisation');
+
+    Route::post('/grid/OrderOptDatabase',[OrderController::class, 'ordersFromDatabase'])->name('OrderOptDatabase');
+
+// order optimalisation containers
+
+    Route::get('/grid/orderOptimalisationContainers',[GridController::class, 'orderOptimalisationContainers'])->name('orderOptimalisationContainers');
+
+
+    //results
+    Route::post('/grid/orderOptResultsSubmit',[GridController::class, 'orderOptResultsSubmit'])->name('orderOptResults');
+    //Route::get('/grid/orderOptResults',[GridController::class, 'orderOptResults'])->name('orderOptimalisationResults');
+
+    Route::get('/grid/orderOptResults',[GridController::class, 'orderOptResults'])->name('orderOptResult');
+
+
 });
 
 require __DIR__.'/auth.php';

@@ -1,4 +1,4 @@
-@extends('body.main_theme')
+@extends('layouts.navigation')
 
 @section('main')
 
