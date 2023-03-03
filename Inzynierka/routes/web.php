@@ -34,10 +34,13 @@ Route::middleware('auth')->group(function ()
 
     // grid
 
-    //add grid
+    //add grid -1-page form
     Route::get('/grid/add', [GridController::class, 'index'])->name('addGrid');
+    Route::post('/grid/addPaths', [GridController::class, 'createGridSubmit']) -> name("gridSubmit");
 
-    Route::post('/grid/gridSubmit', [GridController::class, 'createGridSubmit']) -> name("gridSubmit");
+    //add grid - 2-page form
+    Route::post('/grid/addPathSubmit', [GridController::class, 'addBFSPathsSubmit'])->name('addGridPaths');
+   // Route::post('/grid/gridSubmit', [GridController::class, 'createGridSubmit']) -> name("gridSubmit");
 
     // activate grid
     Route::get('/grid/ActivateGrid/{id}',[GridController::class,'activateGrid'])->name('activateGrid');

@@ -3,8 +3,6 @@
 @section('main')
 
 
-
-
     <div id="reload">
 
         <script>

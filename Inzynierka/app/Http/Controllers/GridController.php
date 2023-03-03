@@ -22,14 +22,14 @@ class GridController extends Controller
 
     public function __construct()
     {
-        $this->middleware('existAnyGrid',['except' => ['index','createGridSubmit']]);
-        $this->middleware('isAnyGridActive',['except' => ['index','createGridSubmit','showGrids','activateGrid','deleteGrid']]);
+        $this->middleware('existAnyGrid',['except' => ['index','createGridSubmit','addBFSPathsSubmit']]);
+        $this->middleware('isAnyGridActive',['except' => ['index','createGridSubmit','showGrids','activateGrid','deleteGrid','addBFSPathsSubmit']]);
     }
 
 
     public function index()
     {
-        return view('grid.grid');
+        return view('grid.addGrid');
     }
 
     public function showGrids()
@@ -155,7 +155,7 @@ class GridController extends Controller
         $grid->entry = $request->entry;
         $grid->shelfs = $shelfts;
 
-        $grid->save();
+        //$grid->save();
     }
 
     public function createGridSubmit(Request $request)
@@ -163,19 +163,28 @@ class GridController extends Controller
 
         if($this->ValidateGrid($request))
         {
-
-            $grid = Grid::first();
-
-
-
             $grid= new Grid;
             $this->createGridData($grid,$request);
 
-            return Redirect()->route('showGrids')->with('success','Wczytano pomyślnie siatkę');
+            $request->session()->put('grid', $grid);
+            return view('grid.BFS_paths',['grid'=>$grid]);
+
         }
 
-
     }
+
+    public function addBFSPathsSubmit(Request $request)
+    {
+
+        $grid = $request->session()->get('grid');
+        $grid->nodes_shortest_paths = $request->paths_to_save;
+        $grid->save();
+
+        $request->session()->forget('product');
+
+        return Redirect()->route('showGrids')->with('success','Pomyślnie');
+    }
+
 
     public function editGridSubmit(Request $request,$id)
     {
@@ -254,7 +263,7 @@ class GridController extends Controller
         {
             $integer_grid[$i]-=1;
         }
-        var_dump($integer_grid);
+        //var_dump($integer_grid);
 
         $grid_array=array();
         //set zeros
@@ -450,6 +459,11 @@ class GridController extends Controller
 
 
    //dikstra part
+
+    public function addBFSPaths($grid)
+    {
+        return view('grid.BFS_paths',['grid'=>$grid]);
+    }
 
     public function Paths($id)
     {
