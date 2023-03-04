@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('grid_product', function (Blueprint $table) {
-            $table->integer('desired_position',)->default(0);;
+        Schema::table('grid', function (Blueprint $table) {
+            $table->Text('nodesPathsIds')->nullable();
         });
     }
 
@@ -25,8 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('grid_product', function (Blueprint $table) {
-            $table->dropColumn('desired_position');
+        Schema::table('grid', function (Blueprint $table) {
+            //
         });
     }
 };

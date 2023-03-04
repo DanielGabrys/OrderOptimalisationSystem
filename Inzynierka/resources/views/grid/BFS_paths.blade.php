@@ -31,7 +31,7 @@
             @csrf
             <input type="hidden" id ="paths_to_save" name="paths_to_save" value="{}" >
 
-            <input type="hidden" id ="chunks" name="chunks" value="1" >
+            <input type="hidden" id ="nodes_array" name="nodes_array" value="{}" >
             <button type="button" id ="graph_to_file" class="btn btn-warning mb-2"> OBLICZ DLA WSZYSTKICH </button>
             <button type="sumbit" id ="load_paths" name="load_paths" hidden="true" class="btn btn-success mb-2"> ZAPISZ </button>
 
@@ -104,7 +104,7 @@
                 clearInterval(interval)
                 document.getElementById("load_paths").hidden = false;
                 document.getElementById("paths_to_save").value=JSON.stringify(result_BFS)
-                document.getElementById("chunks").value=max_counter
+                document.getElementById("nodes_array").value=JSON.stringify(arr)
 
             }
             if(interval_counter<max_counter)

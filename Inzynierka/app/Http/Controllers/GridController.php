@@ -178,6 +178,7 @@ class GridController extends Controller
 
         $grid = $request->session()->get('grid');
         $grid->nodes_shortest_paths = $request->paths_to_save;
+        $grid->nodesPathsIds = $request->nodes_array;
         $grid->save();
 
         $request->session()->forget('product');
@@ -642,6 +643,10 @@ class GridController extends Controller
 
         $array=json_encode($products);
         $path_matrix = $grid->nodes_shortest_paths;
+        $paths = json_decode($path_matrix, true);
+        $nodes = json_decode($grid->nodesPathsIds, true);
+        $path_matrix = $this->normalizePaths($paths,$nodes);
+
 
         return view($view,[
                 'gridProducts'=> $products,
@@ -653,6 +658,39 @@ class GridController extends Controller
                 'order_sizes' =>$orders_sizes,
             ]
         );
+
+    }
+
+    public function normalizePaths($paths,$base)
+    {
+        $array = array();
+
+
+        $start = 1;
+        foreach($paths as $path)
+        {
+             //dd(count($paths)-1);
+            $size = count($paths) ?? 0;
+            for($i=0;$i<$size; $i++)
+            {
+
+                if(count($base)>$i+$start)
+                {
+                    $key = $base[$start - 1];
+                    $key .= "->" . $base[$i + $start];
+                     $array+= array($key=>$path[$i]);
+                }
+                else
+                   break;
+
+
+            }
+            $start++;
+           // var_dump($array);
+        }
+
+       return json_encode($array);
+
 
     }
 
