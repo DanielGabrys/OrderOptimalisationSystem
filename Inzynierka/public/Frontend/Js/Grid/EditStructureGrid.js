@@ -17,16 +17,33 @@ class EditStructureGrid extends CreateGrid
         if (digits<=1)
             digits=2;
 
-        document.getElementById("reload").innerHTML='';
+        let block =''
         let counter = 1
 
         for (let rows = 0; rows < x; rows++)
         {
             for (let columns = 0; columns < y; columns++)
             {
-                document.getElementById("reload").innerHTML +=
+                block +=
                     '<div id=' + counter + ' class="unselected_cell" onmousedown="editgridstructure.mouseDown('+counter+')" onmouseover="editgridstructure.mouseOVER('+counter+')" onmouseup="editgridstructure.mouseUp('+counter+')">'+counter+'</div>';
+                counter++;
 
+            };
+
+        };
+
+        let reload = document.getElementById("reload")
+        reload.innerHTML = block
+        reload.style.width=size*y+"px";
+        reload.style.height=size*x+"px";
+
+
+
+        counter =1;
+        for (let rows = 0; rows < x; rows++)
+        {
+            for (let columns = 0; columns < y; columns++)
+            {
 
                 let cell=document.getElementById(counter.toString());
 
@@ -49,9 +66,6 @@ class EditStructureGrid extends CreateGrid
             };
 
         };
-
-        document.getElementById("reload").style.width=size*y+"px";
-        document.getElementById("reload").style.height=size*x+"px";
 
         this.calHintsandColorisation();
 
@@ -98,7 +112,7 @@ class EditStructureGrid extends CreateGrid
 
         const found = this.products_positions.filter(e => e.pivot.position === id);
 
-        console.log(this.products_positions,id,found);
+      //  console.log(this.products_positions,id,found);
         if(found.length>0)
         {
             document.getElementById(id).className="product_cell";
@@ -183,6 +197,5 @@ class EditStructureGrid extends CreateGrid
 
 }
 
-editgridstructure = new EditStructureGrid();
 
 

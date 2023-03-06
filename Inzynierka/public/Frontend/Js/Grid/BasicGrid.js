@@ -1,7 +1,9 @@
 class BasicGrid
 {
-    width=0; // rows
-    height=0; //columns
+    max_width = 50;
+    max_height =50;
+    width; // rows
+    height; //columns
     size=0; // px
 
     shelfs={};

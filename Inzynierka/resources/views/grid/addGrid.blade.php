@@ -28,14 +28,14 @@
             <div class="input-group-prepend">
                 <div class="input-group-text">WIERSZE</div>
             </div>
-            <input type="number" class="form-control" id="x" placeholder="X" value=3>
+            <input type="number" class="form-control" id="x" placeholder="1-50" min="1" max="50">
         </div>
 
         <div class="input-group mb-2 mr-sm-2">
             <div class="input-group-prepend">
                 <div class="input-group-text">COLUMNY</div>
             </div>
-            <input type="number" class="form-control" id="y" placeholder="Y" value=5>
+            <input type="number" class="form-control" id="y" placeholder="1-50" min="1" max="50">
         </div>
 
         <button type="button" class="btn btn-primary mb-2"

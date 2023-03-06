@@ -1,6 +1,6 @@
-@extends('body.main_theme')
+@extends('grid.gridLayouts.spinner')
 
-@section('main')
+@section('spinner')
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.6/jspdf.plugin.autotable.min.js"></script>

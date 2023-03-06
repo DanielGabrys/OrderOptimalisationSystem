@@ -1,6 +1,6 @@
-@extends('body.main_theme')
+@extends('grid.gridLayouts.spinner')
 
-@section('main')
+@section('spinner')
 
     <div id="reload">
 
@@ -53,12 +53,17 @@
         let result_BFS = [];
         let graph = BFS.BFSGraph
 
-        console.log(BFS)
 
         let max_counter =  Object.keys(BFS.BFSGraph.neighbors).length
         let interval_counter =0
         let arr = []
         let interval
+
+        document.getElementById("graph_to_file").addEventListener("click", function()
+        {
+            graphToArray(arr)
+            interval = setInterval(setShortestPathsNodesInterval,10,arr[interval_counter],graph)
+        });
 
         function setShortestPathsNodesInterval(key2,graph)
         {
@@ -78,24 +83,12 @@
 
                 if(key===arr[i]) continue
 
-                /*
-                console.log("i")
-                let name = key+"->"+arr[i];
-                let reverse = arr[i]+"->"+key
-                if(result_BFS.has(name) || result_BFS.has(reverse)) continue
-
-                let steps =bfs(graph,key,arr[i]);
-                result_BFS.set(name,steps)
-                temp.set(name,steps)
-
-                 */
-
                 temp[counter]=bfs(graph,key,arr[i])
                 counter++
             }
             if(temp.length>0)
                 result_BFS.push(temp)
-            console.log(temp,result_BFS)
+           // console.log(temp,result_BFS)
 
             //console.log(document.getElementById("chunk"+interval_counter),temp)
 
@@ -123,32 +116,6 @@
             }
             console.log(arr)
         }
-
-        function createChunks()
-        {
-            let parent = document.getElementById("form");
-            for(let i=0;i<max_counter;i++)
-            {
-                let input = document.createElement("input");
-                input.type = "hidden";
-                input.id = "chunk"+i;
-                input.name = "chunk"+i;
-
-                parent.appendChild(input);
-            }
-
-        }
-
-        document.getElementById("graph_to_file").addEventListener("click", function()
-        {
-            graphToArray(arr)
-
-            interval = setInterval(setShortestPathsNodesInterval,10,arr[interval_counter],graph)
-
-
-        });
-
-
     </script>
 
 

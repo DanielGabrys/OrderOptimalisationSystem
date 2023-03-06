@@ -11,8 +11,6 @@
     <link href="{{asset('css/styles.css')}}" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
 
-
-
     <script src="{{asset('Frontend/Js/Grid/BasicGrid.js')}}"></script>
     <script src="{{asset('Frontend/Js/Grid/CreateGrid.js')}}"></script>
     <script src="{{asset('Frontend/Js/Grid/ProductsGrid.js')}}"></script>
@@ -39,7 +37,10 @@
 
 
 
+
+
     <link href="{{asset('Frontend/css/grid/grid.css')}}" rel="stylesheet">
+    <link href="{{asset('Frontend/css/loader/loader.css')}}" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
@@ -130,7 +131,7 @@
     </div>
     <div id="layoutSidenav_content">
 
-        @yield('main')
+                @yield('main')
 
         <footer class="py-4 bg-light mt-auto">
             <div class="container-fluid px-4">

@@ -1,6 +1,6 @@
-@extends('body.main_theme')
+@extends('grid.gridLayouts.spinner')
 
-@section('main')
+@section('spinner')
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
@@ -8,6 +8,7 @@
     <div id="reload">
 
         <script>
+            cont = new ContainersOpt()
             cont.setSize({{$grid->height}},{{$grid->width}},700)
             cont.getProductsData({!! $products_array !!},{{$grid->shelfs}});
             cont.shelvesToGraph();

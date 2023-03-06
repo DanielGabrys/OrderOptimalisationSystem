@@ -122,13 +122,17 @@ class GridController extends Controller
     public function ValidateGrid(Request $request)
     {
         $grid_size=$request->grid_size;
+        $sizeX= $request->grid_size_x;
+        $sizeY= $request->grid_size_y;
+
+        $maxTotalSize = $sizeX*$sizeY;
         $max_size="max:".$grid_size;
 
         $rules= [
               'entry' => ['required','integer','min:1',$max_size],
                 'grid' => ['required'],
-                'grid_size_x' => ['required','integer','min:1'],
-                'grid_size_y' => ['required','integer','min:1'],
+                'grid_size_x' => ['required','integer','min:1','max:50'],
+                'grid_size_y' => ['required','integer','min:1','max:50'],
                 'grid_size' => ['required','integer','min:1'],
                 'entry_ok' => ['required','integer','min:1','max:1'],
 

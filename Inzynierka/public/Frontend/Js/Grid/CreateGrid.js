@@ -75,7 +75,11 @@ class CreateGrid extends BasicGrid
     addRow(X, Y)
     {
 
-
+        if(X >this.max_height || Y > this.max_width)
+        {
+            this.addRow(3, 5)
+            return
+        }
 
         let x=0;
         let y=0;
@@ -107,9 +111,7 @@ class CreateGrid extends BasicGrid
             this.grid_size = x * y;
         }
 
-        console.log("elo");
 
-        let main=document.getElementById("reload").innerHTML='';
         let block =''
         let counter = 1
 
