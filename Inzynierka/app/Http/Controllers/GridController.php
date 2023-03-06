@@ -193,13 +193,18 @@ class GridController extends Controller
 
     public function editGridSubmit(Request $request,$id)
     {
+
+
         if($this->ValidateGrid($request))
         {
             $grid=grid::find($id);
-
+            $products = $grid->products()->orderByRaw('position ASC')->get();
             $this->createGridData($grid,$request);
-            return Redirect()->route('showGrids')->with('success','Zaktualizowano pomyślnie siatkę');
+            $request->session()->put('grid', $grid);
+            return view('grid.BFS_paths',['grid'=>$grid,'products_array'=>$products]);
+
         }
+
     }
 
     public function addGridCellProduct(Request $request)

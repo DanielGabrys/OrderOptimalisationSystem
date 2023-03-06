@@ -2,33 +2,7 @@
 
 @section('spinner')
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-
-    <div id="reload">
-
-        <script>
-            cont = new ContainersOpt()
-            cont.setSize({{$grid->height}},{{$grid->width}},700)
-            cont.getProductsData({!! $products_array !!},{{$grid->shelfs}});
-            cont.shelvesToGraph();
-        </script>
-
-
-        @foreach(range(1, $grid->height*$grid->width) as $y)
-
-            <a id="{{"a".$y}}" >
-                <div id ="{{"b".$y}}" class="cell" >
-                    <script>
-                        cont.generateGridCells({{$grid->height}},{{$grid->width}},{{$y}})
-                        cont.getHints({{$y}})
-                        cont.colorizeProductsOnGrid({{$y}})
-                    </script>
-                </div>
-            </a>
-
-        @endforeach
-    </div>
+    @include('grid.gridLayouts.basicGrid')
 
     <div class="container-fluid mt-2 d-flex justify-content-center">
 
@@ -46,8 +20,6 @@
 
 
         </form>
-
-
     </div>
 
     <div class="container-fluid d-flex justify-content-center" id="partial">
@@ -138,11 +110,8 @@
     </div>
 
 
-
-
-
-
     <script>
+
 
         let obj = {!! $orders !!};
         let obj2 ={!! $order_sizes !!};
@@ -157,8 +126,6 @@
         console.log(obj2);
 
         let worker = new Worker('../Frontend/Js/OrderOptimalisation/worker.js')
-
-
 
 
         hideDivElements();
@@ -316,8 +283,8 @@
                 resultToJSON(solver);
        }
 
-            function hideDivElements()
-            {
+       function hideDivElements()
+       {
                 document.getElementById("iteration_table").hidden = true;
                 document.getElementById("show_results").hidden = true
                 document.getElementById("listy").hidden = true;
@@ -325,22 +292,24 @@
                 document.getElementById("path_etape").hidden = true;
             }
 
-            function showDivElements() {
+       function showDivElements()
+       {
 
                 document.getElementById("time").hidden = false;
                 document.getElementById("iteration_table").hidden = false;
 
             }
 
-        function showEndDivElements() {
+        function showEndDivElements()
+        {
             document.getElementById("show_results").hidden = false;
             document.getElementById("path_right").hidden = false;
             document.getElementById("path_etape").hidden = false;
             document.getElementById("listy").hidden = false;
         }
 
-            function resultToJSON(solver)
-            {
+        function resultToJSON(solver)
+        {
                 let result = JSON.stringify(solver.bestCombination);
                 document.getElementById("results").value = result;
             }
@@ -354,7 +323,6 @@
             cont.colorizeSelectedOrders(id);
             cont.colorizeSinglePathNodes(path)
         });
-
 
         document.getElementById("stop").addEventListener("click", function()
         {

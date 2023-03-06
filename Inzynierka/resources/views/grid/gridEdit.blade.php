@@ -26,9 +26,9 @@
                     <label class="sr-only" for="inlineFormInputGroup">Username</label>
                     <div class="input-group mb-2">
                         <div class="input-group-prepend">
-                            <div class="input-group-text">ENTRANCE</div>
+                            <div class="input-group-text">PUNKT DEPOZYTU</div>
                         </div>
-                        <input type="number" class="form-control" name="entry" id="entry" value="{{old('entry') ?? $grid->entry}}" placeholder="Entrance ID">
+                        <input type="number" class="form-control" name="entry" id="entry" value="{{old('entry') ?? $grid->entry}}" placeholder="ID DEPOZYTU">
                     </div>
                 </div>
 
@@ -40,7 +40,7 @@
 
 
                 <div class="col-auto">
-                    <button type="sumbit" class="btn btn-success mb-2" onclick="editgridstructure.setGridValues();">SUBMIT</button>
+                    <button type="sumbit" class="btn btn-success mb-2" id="editGrid" >ZAPISZ</button>
                     <!-- <button type="button" class="btn btn-success mb-2" onclick="showGrid()">Show</button> -->
                 </div>
 

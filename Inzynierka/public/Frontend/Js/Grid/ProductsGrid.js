@@ -5,7 +5,7 @@ class ProductsGrid extends BasicGrid
 
     getHints(position_id)
     {
-        // console.log(cell);
+         console.log(this.products_positions);
         const found = this.products_positions.filter(e => e.pivot.position === position_id);
 
         //if(found.length>0)

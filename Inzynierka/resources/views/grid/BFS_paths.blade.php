@@ -2,28 +2,7 @@
 
 @section('spinner')
 
-    <div id="reload">
-
-        <script>
-            BFS = new DikstraGrid()
-            BFS.setSize({{$grid->height}},{{$grid->width}},700)
-            BFS.getProductsData(null,{{$grid->shelfs}});
-            BFS.shelvesToGraph();
-        </script>
-
-
-        @foreach(range(1, $grid->height*$grid->width) as $y)
-
-            <a id="{{"a".$y}}" >
-                <div id ="{{"b".$y}}" class="cell" >
-                    <script>
-                        BFS.generateGridCells({{$grid->height}},{{$grid->width}},{{$y}})
-                    </script>
-                </div>
-            </a>
-
-        @endforeach
-    </div>
+    @include('grid.gridLayouts.basicGrid')
 
     <div class="container-fluid d-flex justify-content-center">
 
@@ -51,10 +30,10 @@
     <script>
 
         let result_BFS = [];
-        let graph = BFS.BFSGraph
+        let graph = cont.BFSGraph
 
 
-        let max_counter =  Object.keys(BFS.BFSGraph.neighbors).length
+        let max_counter =  Object.keys(cont.BFSGraph.neighbors).length
         let interval_counter =0
         let arr = []
         let interval
