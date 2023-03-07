@@ -15,10 +15,14 @@ return new class extends Migration
     {
         Schema::create('grid', function (Blueprint $table) {
             $table->id();
+            $table->Biginteger('user_id')->unsigned();
             $table->integer('width') ;
             $table->integer('height') ;
             $table->integer('entry');
             $table->LongText('shelfs');
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+
             $table->timestamps();
 
         });

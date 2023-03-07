@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Grid;
 use App\Models\Order;
+use App\Models\OrderProducts;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Faker\Factory as Faker;
@@ -20,6 +21,7 @@ class OrderSeeder extends Seeder
         $grid = Grid::where('isActive',1)->value("id");
         Order::where('grid_id',$grid)->delete();
 
-        Order::factory(100)->create();
+        Order::factory(5)->create();
+        OrderProducts::factory(40)->create();
     }
 }

@@ -11,6 +11,7 @@ use App\Models\OrderOptimisationResults;
 use App\Models\OrderProducts;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
@@ -35,7 +36,7 @@ class GridController extends Controller
     public function showGrids()
     {
         $grids_products=Grid::with('products')->get();
-        $grids = Grid::all();
+        $grids = Grid::where("user_id",Auth::id())->get();
 
         $grids_array=json_encode($grids_products);
         //dd($grids_array);
@@ -158,6 +159,7 @@ class GridController extends Controller
         $grid->height = $request->grid_size_x;
         $grid->entry = $request->entry;
         $grid->shelfs = $shelfts;
+        $grid->user_id = Auth::id();
 
         //$grid->save();
     }
@@ -536,20 +538,6 @@ class GridController extends Controller
     }
 
 
-
-   //native algorithm
-    public function nativeAlgorithm()
-    {
-
-        return $this->getGridDataForPath('shortestPath.naive');
-
-    }
-
-    public function calculateNaive()
-    {
-        return view('shortestPath.combinations');
-    }
-
     //rectangle division
     public function rectangleDivision()
     {
@@ -581,7 +569,7 @@ class GridController extends Controller
         $grid=Grid::all()->where('isActive','=',1)->first();
         $result2 = json_decode( $request->results,true);
 
-        OrderOptimisationResults::query()->delete();
+        OrderOptimisationResults::where('grid_id',$grid->id)->delete();
 
         foreach($result2 as $i => $collection)
         {
