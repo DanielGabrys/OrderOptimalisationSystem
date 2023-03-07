@@ -2,12 +2,10 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\Grid;
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
-class ExistAnyGrid
+class AuthResource
 {
     /**
      * Handle an incoming request.
@@ -18,17 +16,14 @@ class ExistAnyGrid
      */
     public function handle(Request $request, Closure $next)
     {
-        $grid = Grid::where('user_id',Auth::id())->first();
-        //dd($grid);
 
-            if(is_null($grid))
-            {
-                return redirect()->route('addGrid')->with('middleware','Przed operacją należy wcześniej utworzyć model magazynu');
+        if ($request->route('companyID')) {
+            $company = Company::find($request->route('companyID'));
+            if ($company && $company->user_id != auth()->user()->id) {
+                return redirect('/');
             }
-            else
-            {
-                return $next($request);
-            }
+        }
 
+        return $next($request);
     }
 }
