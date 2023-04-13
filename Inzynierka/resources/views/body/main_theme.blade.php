@@ -34,7 +34,7 @@
     <script src="{{asset('Frontend/Js/OrderOptimalisation/worker.js')}}"></script>
 
 
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
 
 
 
@@ -87,7 +87,7 @@
                 <div class="nav">
                     <div class="sb-sidenav-menu-heading">Siatka</div>
                     <a class="nav-link" href="{{route('addGrid')}}" >
-                        <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                        <div class="sb-nav-link-icon"> <i class="bi bi-1-circle-fill"></i></div>
                         Stwórz
                     </a>
 

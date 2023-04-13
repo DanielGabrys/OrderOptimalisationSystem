@@ -8,11 +8,31 @@
 
         <form class="form-inline" name="form" id="form" action="{{route('addGridPaths')}}" method="POST">
             @csrf
+
+            <div class="input-group mb-2 mr-sm-2">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">NAZWA</div>
+                </div>
+
+                <input type="text" class="form-control" id="name" name="name" placeholder="Zdefiniuj nazwę siatki" value="{{$grid->name ?? null}}" >
+
+            </div>
+
             <input type="hidden" id ="paths_to_save" name="paths_to_save" value="{}" >
 
             <input type="hidden" id ="nodes_array" name="nodes_array" value="{}" >
-            <button type="button" id ="graph_to_file" class="btn btn-warning mb-2"> OBLICZ DLA WSZYSTKICH </button>
+            <button type="button" id ="graph_to_file" class="btn btn-warning mb-2"> OBLICZ </button>
             <button type="sumbit" id ="load_paths" name="load_paths" hidden="true" class="btn btn-success mb-2"> ZAPISZ </button>
+
+            <div class="input-group mb-2 mr-sm-2">
+                @error('name')
+                <span class="text-danger">{{$message}}</span>
+                @enderror
+
+            </div>
+
+
+
 
         </form>
     </div>

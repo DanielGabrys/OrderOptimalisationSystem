@@ -38,7 +38,7 @@
                                 <tr>
                                     <th scope="col">NR</th>
                                     <th scope="col">WYMIARY</th>
-                                    <th scope="col">ID</th>
+                                    <th scope="col">NAZWA</th>
                                     <th scope="col">UTWORZONO</th>
                                     <th scope="col">AKTYWNA</th>
                                     <th scope="col"></th>
@@ -56,7 +56,7 @@
                                     <tr>
                                         <td >{{$loop->iteration}}</td>
                                         <td >{{$grid->height}}x{{$grid->width}}</td>
-                                        <td >{{$grid->id}}</td>
+                                        <td >{{$grid->name}}</td>
                                         <td>{{$grid->created_at->diffForHumans()}}</td>
 
                                         @if($grid->isActive)

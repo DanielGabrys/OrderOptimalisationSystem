@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('grid', function (Blueprint $table) {
             $table->id();
             $table->Biginteger('user_id')->unsigned();
+            $table->String('name');
             $table->integer('width') ;
             $table->integer('height') ;
             $table->integer('entry');
@@ -24,6 +25,8 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
             $table->timestamps();
+
+            $table->unique(['user_id','grid_id']);
 
         });
     }

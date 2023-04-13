@@ -4,10 +4,12 @@ namespace Database\Seeders;
 
 use App\Models\Grid;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Auth;
 
-class Test1Seeder extends Seeder
+class User1TestSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,15 +18,27 @@ class Test1Seeder extends Seeder
      */
     public function run()
     {
+       $this->createUser();
        $id= $this->createGrid();
        $this->activateGrid($id);
-       Product::factory(1000)->create();
+       Product::factory(20)->create();
 
+    }
+
+    public function createUser()
+    {
+        User::factory(1)->create();
+    }
+
+    public function createProduct()
+    {
+        Product::factory(20)->create();
     }
 
     public function createGrid()
     {
         $grid = new Grid();
+        $grid->user_id = Auth::id()
         $grid->width = 16;
         $grid->height = 14;
         $grid->entry = 97;

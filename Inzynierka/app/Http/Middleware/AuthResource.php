@@ -2,8 +2,10 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Grid;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AuthResource
 {
@@ -17,13 +19,19 @@ class AuthResource
     public function handle(Request $request, Closure $next)
     {
 
-        if ($request->route('companyID')) {
-            $company = Company::find($request->route('companyID'));
-            if ($company && $company->user_id != auth()->user()->id) {
-                return redirect('/');
-            }
+        //dd($request->id);
+
+        $grid = Grid::where('id',$request->id)->first();
+
+        if(is_null($grid))
+        {
+            return redirect('/');
         }
 
-        return $next($request);
+        if ($grid->user_id=== Auth::id())
+        {
+            return $next($request);
+        }
+        return redirect('/');
     }
 }

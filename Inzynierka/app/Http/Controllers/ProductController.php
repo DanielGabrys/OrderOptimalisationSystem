@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
 
     public function showProducts()
     {
-        $products = Product::paginate(6);
+        $products = Product::where('user_id',Auth::id())->orderByRaw('created_at ASC') -> paginate(6);
         return view('products.addProducts',['products'=>$products]);
     }
 
@@ -23,6 +24,7 @@ class ProductController extends Controller
             $Product->size_X = $request->size_x;
             $Product->size_Y = $request->size_y;
             $Product->size_Z = $request->size_z;
+            $Product->user_id = Auth::id();
 
             $Product->save();
 

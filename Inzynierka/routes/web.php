@@ -4,9 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Controller;
 
-use App\Http\Controllers\{
-    GridController,OrderController,ProductController
-};
+use App\Http\Controllers\{GridController, GridProductsCntroller, OrderController, ProductController};
 
 /*
 |--------------------------------------------------------------------------
@@ -28,7 +26,7 @@ Route::get('/dashboard', function ()
     return view('body.index');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware(['auth'])->group(function ()
+Route::middleware(['auth',])->group(function ()
 {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -37,27 +35,36 @@ Route::middleware(['auth'])->group(function ()
 
     Route::group(['prefix' => 'grid'], function()
     {
+
+        Route::middleware(['AuthResource',])->group(function ()
+        {
+            // activate grid
+            Route::get('/ActivateGrid/{id}',[GridController::class,'activateGrid'])->name('activateGrid');
+
+            // delete grid
+            Route::get('/deleteGrid/{id}',[GridController::class,'deleteGrid'])->name('deleteGrid');
+
+            //edit grid structure
+            Route::get('/editGrid/{id}', [GridController::class, 'editGrid'])->name('editGrid');
+
+            //submit edited grid structure
+            Route::post('/editGridSubmit/{id}', [GridController::class, 'editGridSubmit'])->name('editGridSubmit');
+
+        });
+
         //add grid -1-page form
         Route::get('/add', [GridController::class, 'index'])->name('addGrid');
         Route::post('/addPaths', [GridController::class, 'createGridSubmit']) -> name("gridSubmit");
 
         //add grid - 2-page form
-        Route::post('/addPathSubmit', [GridController::class, 'addBFSPathsSubmit'])->name('addGridPaths');
+        Route::get('/addPaths', [GridController::class, 'addBFSPathsGet']) -> name("gridSubmitGet");
+        Route::post('/addPaths', [GridController::class, 'createGridSubmit']) -> name("gridSubmit");
 
-        // activate grid
-        Route::get('/ActivateGrid/{id}',[GridController::class,'activateGrid'])->name('activateGrid');
+        //add grid - save data
+        Route::post('/addPathSubmit', [GridController::class, 'addBFSPathsSubmit'])->name('addGridPaths');
 
         // show grids
         Route::get('/showGrids',[GridController::class,'showGrids'])->name('showGrids');
-
-        // delete grid
-        Route::get('/deleteGrid/{id}',[GridController::class,'deleteGrid'])->name('deleteGrid');
-
-        //edit grid structure
-        Route::get('/editGrid/{id}', [GridController::class, 'editGrid'])->name('editGrid');
-
-        //submit edited grid structure
-        Route::post('/editGridSubmit/{id}', [GridController::class, 'editGridSubmit'])->name('editGridSubmit');
 
 
         Route::group(['prefix' => 'optimalisation'], function() {
@@ -72,6 +79,8 @@ Route::middleware(['auth'])->group(function ()
             Route::get('/batches', [GridController::class, 'orderOptResults'])->name('orderOptResult');
         });
     });
+
+
 
     Route::group(['prefix' => 'products'], function()
     {
@@ -88,20 +97,21 @@ Route::middleware(['auth'])->group(function ()
     });
 
 
+
     Route::group(['prefix' => 'gridProducts'], function()
     {
 
-        Route::group(['prefix' => 'grid'], function() {
+        Route::group(['prefix' => 'grid','middleware'=>['AuthResource']], function() {
 
             //edit products on grid - grid view
-            Route::get('/{id}', [GridController::class, 'editGridProducts'])->name('editGridProducts');
+            Route::get('/{id}', [GridProductsCntroller::class, 'editGridProducts'])->name('editGridProducts');
 
             //edit specific products on grid
 
-            Route::get('/{id}/product/{id2}', [GridController::class, 'editGridCellProducts'])->name('editGridCellProducts');
+            Route::get('/{id}/product/{id2}/edit', [GridProductsCntroller::class, 'editGridCellProducts'])->name('editGridCellProducts');
 
             // delete specific product from grid
-            Route::get('/delete/{id}', [GridController::class, 'deleteGridProduct'])->name('deleteGridProduct');
+            Route::get('/{id}/delete', [GridProductsCntroller::class, 'deleteGridProduct'])->name('deleteGridProduct');
 
             // BFS
             Route::get('/{id}/Paths', [GridController::class, 'Paths'])->name('Paths');
@@ -109,7 +119,7 @@ Route::middleware(['auth'])->group(function ()
         });
 
         //add specific product to grid specific cell
-        Route::post('/create', [GridController::class, 'addGridCellProduct'])->name('addGridCellProduct');
+        Route::post('/create', [GridProductsCntroller::class, 'addGridCellProduct'])->name('addGridCellProduct');
 
     });
 
