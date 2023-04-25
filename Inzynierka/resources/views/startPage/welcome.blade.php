@@ -11,25 +11,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!--====== Favicon Icon ======-->
-    <link rel="shortcut icon" href="{{asset('MainPageTemplate/assets/images/favicon.png')}}" type="image/png">
+    <link rel="shortcut icon" href="public/{{asset('MainPageTemplate/assets/images/favicon.png')}}" type="image/png">
 
     <!--====== Magnific Popup CSS ======-->
-    <link rel="stylesheet" href="{{asset('MainPageTemplate/assets/css/magnific-popup.css')}}">
+    <link rel="stylesheet" href="public/{{asset('MainPageTemplate/assets/css/magnific-popup.css')}}">
 
     <!--====== Slick CSS ======-->
-    <link rel="stylesheet" href="{{asset('MainPageTemplate/assets/css/slick.css')}}">
+    <link rel="stylesheet" href="public/{{asset('MainPageTemplate/assets/css/slick.css')}}">
 
     <!--====== Line Icons CSS ======-->
-    <link rel="stylesheet" href="{{asset('MainPageTemplate/assets/css/LineIcons.css')}}">
+    <link rel="stylesheet" href="public/{{asset('MainPageTemplate/assets/css/LineIcons.css')}}">
 
     <!--====== Bootstrap CSS ======-->
-    <link rel="stylesheet" href="{{asset('MainPageTemplate/assets/css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="public/{{asset('MainPageTemplate/assets/css/bootstrap.min.css')}}">
 
     <!--====== Default CSS ======-->
-    <link rel="stylesheet" href="{{asset('MainPageTemplate/assets/css/default.css')}}">
+    <link rel="stylesheet" href="public/{{asset('MainPageTemplate/assets/css/default.css')}}">
 
     <!--====== Style CSS ======-->
-    <link rel="stylesheet" href="{{asset('MainPageTemplate/assets/css/style.css')}}">
+    <link rel="stylesheet" href="public/{{asset('MainPageTemplate/assets/css/style.css')}}">
 
 </head>
 
@@ -68,7 +68,7 @@
                 <nav class="navbar navbar-expand-lg">
 
                     <a class="navbar-brand" href="#">
-                        <img src="{{asset('MainPageTemplate/assets/images/logo.svg')}}" alt="Logo">
+                        <img src="public/{{asset('MainPageTemplate/assets/images/logo.svg')}}" alt="Logo">
                     </a>
 
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTwo" aria-controls="navbarTwo" aria-expanded="false" aria-label="Toggle navigation">
@@ -142,7 +142,7 @@
                 </div> <!-- container -->
                 <div class="slider-image-box d-none d-lg-flex align-items-end">
                     <div class="slider-image">
-                        <img src="{{asset('MainPageTemplate/assets/images/slider/1.png')}}" alt="Hero">
+                        <img src="public/{{asset('MainPageTemplate/assets/images/slider/1.png')}}" alt="Hero">
                     </div> <!-- slider-imgae -->
                 </div> <!-- slider-imgae box -->
             </div> <!-- carousel-item -->
@@ -179,7 +179,7 @@
                         <h4 class="features-title"><a href="#">Graphics Design</a></h4>
                         <div class="features-icon">
                             <i class="lni lni-brush"></i>
-                            <img class="shape" src="{{asset('MainPageTemplate/assets/images/f-shape-1.svg')}}" alt="Shape">
+                            <img class="shape" src="public/{{asset('MainPageTemplate/assets/images/f-shape-1.svg')}}" alt="Shape">
                         </div>
                     </div>
                     <div class="features-content">
@@ -194,7 +194,7 @@
                         <h4 class="features-title"><a href="#">Website Design</a></h4>
                         <div class="features-icon">
                             <i class="lni lni-layout"></i>
-                            <img class="shape" src="{{asset('MainPageTemplate/assets/images/f-shape-1.svg')}}" alt="Shape">
+                            <img class="shape" src="public/{{asset('MainPageTemplate/assets/images/f-shape-1.svg')}}" alt="Shape">
                         </div>
                     </div>
                     <div class="features-content">
@@ -209,7 +209,7 @@
                         <h4 class="features-title"><a href="#">Digital Marketing</a></h4>
                         <div class="features-icon">
                             <i class="lni lni-bolt"></i>
-                            <img class="shape" src="{{asset('MainPageTemplate/assets/images/f-shape-1.svg')}}" alt="Shape">
+                            <img class="shape" src="public/{{asset('MainPageTemplate/assets/images/f-shape-1.svg')}}" alt="Shape">
                         </div>
                     </div>
                     <div class="features-content">
@@ -253,16 +253,16 @@
                     <div class="col-lg-4 col-sm-6 branding-4 planning-4">
                         <div class="single-portfolio">
                             <div class="portfolio-image">
-                                <img src="{{asset('MainPageTemplate/assets/images/portfolio/1.png')}}" alt="">
+                                <img src="public/{{asset('MainPageTemplate/assets/images/portfolio/1.png')}}" alt="">
                                 <div class="portfolio-overlay d-flex align-items-center justify-content-center">
                                     <div class="portfolio-content">
                                         <div class="portfolio-icon">
-                                            <a class="image-popup" href="{{asset('MainPageTemplate/assets/images/portfolio/1.png')}}"><i class="lni lni-zoom-in"></i></a>
-                                            <img src="{{asset('MainPageTemplate/assets/images/portfolio/shape.svg')}}" alt="shape" class="shape">
+                                            <a class="image-popup" href="public/{{asset('MainPageTemplate/assets/images/portfolio/1.png')}}"><i class="lni lni-zoom-in"></i></a>
+                                            <img src="public/{{asset('MainPageTemplate/assets/images/portfolio/shape.svg')}}" alt="shape" class="shape">
                                         </div>
                                         <div class="portfolio-icon">
                                             <a href="#"><i class="lni lni-link"></i></a>
-                                            <img src="{{asset('MainPageTemplate/assets/images/portfolio/shape.svg')}}" alt="shape" class="shape">
+                                            <img src="public/{{asset('MainPageTemplate/assets/images/portfolio/shape.svg')}}" alt="shape" class="shape">
                                         </div>
                                     </div>
                                 </div>
@@ -936,32 +936,32 @@
 
 
 <!--====== Jquery js ======-->
-<script src="{{asset('MainPageTemplate/assets/js/vendor/jquery-1.12.4.min.js')}}"></script>
-<script src="{{asset('MainPageTemplate/assets/js/vendor/modernizr-3.7.1.min.js')}}"></script>
+<script src="public/{{asset('MainPageTemplate/assets/js/vendor/jquery-1.12.4.min.js')}}"></script>
+<script src="public/{{asset('MainPageTemplate/assets/js/vendor/modernizr-3.7.1.min.js')}}"></script>
 
 <!--====== Bootstrap js ======-->
-<script src="{{asset('MainPageTemplate/assets/js/popper.min.js')}}"></script>
-<script src="{{asset('MainPageTemplate/assets/js/bootstrap.min.js')}}"></script>
+<script src="public/{{asset('MainPageTemplate/assets/js/popper.min.js')}}"></script>
+<script src="public/{{asset('MainPageTemplate/assets/js/bootstrap.min.js')}}"></script>
 
 <!--====== Slick js ======-->
-<script src="{{asset('MainPageTemplate/assets/js/slick.min.js')}}"></script>
+<script src="public/{{asset('MainPageTemplate/assets/js/slick.min.js')}}"></script>
 
 <!--====== Magnific Popup js ======-->
-<script src="{{asset('MainPageTemplate/assets/js/jquery.magnific-popup.min.js')}}"></script>
+<script src="public/{{asset('MainPageTemplate/assets/js/jquery.magnific-popup.min.js')}}"></script>
 
 <!--====== Ajax Contact js ======-->
-<script src="{{asset('MainPageTemplate/assets/js/ajax-contact.js')}}"></script>
+<script src="public/{{asset('MainPageTemplate/assets/js/ajax-contact.js')}}"></script>
 
 <!--====== Isotope js ======-->
-<script src="{{asset('MainPageTemplate/assets/js/imagesloaded.pkgd.min.js')}}"></script>
-<script src="{{asset('MainPageTemplate/assets/js/isotope.pkgd.min.js')}}"></script>
+<script src="public/{{asset('MainPageTemplate/assets/js/imagesloaded.pkgd.min.js')}}"></script>
+<script src="public/{{asset('MainPageTemplate/assets/js/isotope.pkgd.min.js')}}"></script>
 
 <!--====== Scrolling Nav js ======-->
-<script src="{{asset('MainPageTemplate/assets/js/jquery.easing.min.js')}}"></script>
-<script src="{{asset('MainPageTemplate/assets/js/scrolling-nav.js')}}"></script>
+<script src="public/{{asset('MainPageTemplate/assets/js/jquery.easing.min.js')}}"></script>
+<script src="public/{{asset('MainPageTemplate/assets/js/scrolling-nav.js')}}"></script>
 
 <!--====== Main js ======-->
-<script src="{{asset('MainPageTemplate/assets/js/main.js')}}"></script>
+<script src="public/{{asset('MainPageTemplate/assets/js/main.js')}}"></script>
 
 </body>
 
