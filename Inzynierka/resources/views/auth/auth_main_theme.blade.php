@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css?family=Karla:400,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.8.95/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{{asset('AuthenticationTemplates/assets/css/login.css')}}">
+    <link rel="stylesheet" href="{{asset('public/AuthenticationTemplates/assets/css/login.css')}}">
 </head>
 <body>
 <main class="d-flex align-items-center min-vh-100 py-3 py-md-0">
@@ -16,12 +16,12 @@
         <div class="card login-card">
             <div class="row no-gutters">
                 <div id="image_col" class="col-md-6" style="text-align: center; margin-top: auto; margin-bottom: auto">
-                    <img id="image" src="{{asset('AuthenticationTemplates/assets/images/trolley.png')}}" alt="login">
+                    <img id="image" src="{{asset('public/AuthenticationTemplates/assets/images/trolley.png')}}" alt="login">
                 </div>
                 <div class="col-md-6">
                     <div class="card-body">
                         <div class="brand-wrapper">
-                            <img src="{{asset('AuthenticationTemplates/assets/images/trolley.png')}}" alt="logo" class="logo">
+                            <img src="{{asset('public/AuthenticationTemplates/assets/images/trolley.png')}}" alt="logo" class="logo">
                         </div>
                         <p class="login-card-description">Sign into your account</p>
 
