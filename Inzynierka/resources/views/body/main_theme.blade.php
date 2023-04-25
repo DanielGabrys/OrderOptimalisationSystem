@@ -18,20 +18,20 @@
     <script src="{{asset('public/Frontend/Js/Grid/ShowGrid.js')}}"></script>
     <script src="{{asset('public/Frontend/Js/Grid/EditStructureGrid.js')}}"></script>
 
-    <script src="{{asset('Frontend/Js/Dikstra/DikstraGrid.js')}}"></script>
+    <script src="{{asset('public/Frontend/Js/Dikstra/DikstraGrid.js')}}"></script>
 
-    <script src="{{asset('Frontend/Js/ShortestPath/Base.js')}}"></script>
-    <script src="{{asset('Frontend/Js/ShortestPath/Naive.js')}}"></script>
-    <script src="{{asset('Frontend/Js/ShortestPath/RectangleDivision.js')}}"></script>
-    <script src="{{asset('Frontend/Js/ShortestPath/FarthestNeighbor.js')}}"></script>
-    <script src="{{asset('Frontend/Js/ShortestPath/Nearest.js')}}"></script>
-    <script src="{{asset('Frontend/Js/ShortestPath/GeneticAlgo/GeneticAlgo.js')}}"></script>
+    <script src="{{asset('public/Frontend/Js/ShortestPath/Base.js')}}"></script>
+    <script src="{{asset('public/Frontend/Js/ShortestPath/Naive.js')}}"></script>
+    <script src="{{asset('public/Frontend/Js/ShortestPath/RectangleDivision.js')}}"></script>
+    <script src="{{asset('public/Frontend/Js/ShortestPath/FarthestNeighbor.js')}}"></script>
+    <script src="{{asset('public/Frontend/Js/ShortestPath/Nearest.js')}}"></script>
+    <script src="{{asset('public/Frontend/Js/ShortestPath/GeneticAlgo/GeneticAlgo.js')}}"></script>
 
 
-    <script src="{{asset('Frontend/Js/OrderOptimalisation/OrderOptimalisation.js')}}"></script>
-    <script src="{{asset('Frontend/Js/OrderOptimalisation/ContainersOpt.js')}}"></script>
-    <script src="{{asset('Frontend/Js/ShortestPath/SimulatedAnnealing.js')}}"></script>
-    <script src="{{asset('Frontend/Js/OrderOptimalisation/worker.js')}}"></script>
+    <script src="{{asset('public/Frontend/Js/OrderOptimalisation/OrderOptimalisation.js')}}"></script>
+    <script src="{{asset('public/Frontend/Js/OrderOptimalisation/ContainersOpt.js')}}"></script>
+    <script src="{{asset('public/Frontend/Js/ShortestPath/SimulatedAnnealing.js')}}"></script>
+    <script src="{{asset('public/Frontend/Js/OrderOptimalisation/worker.js')}}"></script>
 
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
@@ -39,8 +39,8 @@
 
 
 
-    <link href="{{asset('Frontend/css/grid/grid.css')}}" rel="stylesheet">
-    <link href="{{asset('Frontend/css/loader/loader.css')}}" rel="stylesheet">
+    <link href="{{asset('public/Frontend/css/grid/grid.css')}}" rel="stylesheet">
+    <link href="{{asset('public/Frontend/css/loader/loader.css')}}" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
