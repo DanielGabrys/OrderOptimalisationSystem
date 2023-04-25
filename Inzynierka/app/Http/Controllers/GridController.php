@@ -395,7 +395,6 @@ class GridController extends Controller
     public function getGridDataForPath($view)
     {
 
-        $containers = Containers::all();
 
         $grid=Grid::all()->where('isActive','=',1)->first();
         $active = $grid->id;

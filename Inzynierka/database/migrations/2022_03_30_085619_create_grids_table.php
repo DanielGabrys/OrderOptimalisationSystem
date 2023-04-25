@@ -26,7 +26,7 @@ return new class extends Migration
 
             $table->timestamps();
 
-            $table->unique(['user_id','grid_id']);
+            $table->unique(['user_id','name']);
 
         });
     }
