@@ -125,7 +125,7 @@
         console.log(obj);
         console.log(obj2);
 
-        let worker = new Worker('../Frontend/Js/OrderOptimalisation/worker.js')
+        let worker = new Worker({{asset('/Frontend/Js/OrderOptimalisation/worker.js')}})
 
 
         hideDivElements();
