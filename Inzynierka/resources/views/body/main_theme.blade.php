@@ -8,30 +8,30 @@
     <meta name="author" content="" />
     <title>Dashboard - SB Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
-    <link href="{{asset('public/css/styles.css')}}" rel="stylesheet" />
+    <link href="public/{{asset('css/styles.css')}}" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
 
-    <script src="{{asset('public/Frontend/Js/Grid/BasicGrid.js')}}"></script>
-    <script src="{{asset('public/Frontend/Js/Grid/CreateGrid.js')}}"></script>
-    <script src="{{asset('public/Frontend/Js/Grid/ProductsGrid.js')}}"></script>
-    <script src="{{asset('public/Frontend/Js/Grid/DetailedGrid.js')}}"></script>
-    <script src="{{asset('public/Frontend/Js/Grid/ShowGrid.js')}}"></script>
-    <script src="{{asset('public/Frontend/Js/Grid/EditStructureGrid.js')}}"></script>
+    <script src="public/{{asset('Frontend/Js/Grid/BasicGrid.js')}}"></script>
+    <script src="public/{{asset('Frontend/Js/Grid/CreateGrid.js')}}"></script>
+    <script src="public/{{asset('Frontend/Js/Grid/ProductsGrid.js')}}"></script>
+    <script src="public/{{asset('Frontend/Js/Grid/DetailedGrid.js')}}"></script>
+    <script src="public/{{asset('Frontend/Js/Grid/ShowGrid.js')}}"></script>
+    <script src="public/{{asset('Frontend/Js/Grid/EditStructureGrid.js')}}"></script>
 
-    <script src="{{asset('public/Frontend/Js/Dikstra/DikstraGrid.js')}}"></script>
+    <script src="public/{{asset('Frontend/Js/Dikstra/DikstraGrid.js')}}"></script>
 
-    <script src="{{asset('public/Frontend/Js/ShortestPath/Base.js')}}"></script>
-    <script src="{{asset('public/Frontend/Js/ShortestPath/Naive.js')}}"></script>
-    <script src="{{asset('public/Frontend/Js/ShortestPath/RectangleDivision.js')}}"></script>
-    <script src="{{asset('public/Frontend/Js/ShortestPath/FarthestNeighbor.js')}}"></script>
-    <script src="{{asset('public/Frontend/Js/ShortestPath/Nearest.js')}}"></script>
-    <script src="{{asset('public/Frontend/Js/ShortestPath/GeneticAlgo/GeneticAlgo.js')}}"></script>
+    <script src="public/{{asset('Frontend/Js/ShortestPath/Base.js')}}"></script>
+    <script src="public/{{asset('Frontend/Js/ShortestPath/Naive.js')}}"></script>
+    <script src="public/{{asset('Frontend/Js/ShortestPath/RectangleDivision.js')}}"></script>
+    <script src="public/{{asset('Frontend/Js/ShortestPath/FarthestNeighbor.js')}}"></script>
+    <script src="public/{{asset('Frontend/Js/ShortestPath/Nearest.js')}}"></script>
+    <script src="public/{{asset('Frontend/Js/ShortestPath/GeneticAlgo/GeneticAlgo.js')}}"></script>
 
 
-    <script src="{{asset('public/Frontend/Js/OrderOptimalisation/OrderOptimalisation.js')}}"></script>
-    <script src="{{asset('public/Frontend/Js/OrderOptimalisation/ContainersOpt.js')}}"></script>
-    <script src="{{asset('public/Frontend/Js/ShortestPath/SimulatedAnnealing.js')}}"></script>
-    <script src="{{asset('public/Frontend/Js/OrderOptimalisation/worker.js')}}"></script>
+    <script src="public/{{asset('Frontend/Js/OrderOptimalisation/OrderOptimalisation.js')}}"></script>
+    <script src="public/{{asset('Frontend/Js/OrderOptimalisation/ContainersOpt.js')}}"></script>
+    <script src="public/{{asset('Frontend/Js/ShortestPath/SimulatedAnnealing.js')}}"></script>
+    <script src="public/{{asset('Frontend/Js/OrderOptimalisation/worker.js')}}"></script>
 
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
@@ -39,8 +39,8 @@
 
 
 
-    <link href="{{asset('public/Frontend/css/grid/grid.css')}}" rel="stylesheet">
-    <link href="{{asset('public/Frontend/css/loader/loader.css')}}" rel="stylesheet">
+    <link href="public/{{asset('Frontend/css/grid/grid.css')}}" rel="stylesheet">
+    <link href="public/{{asset('Frontend/css/loader/loader.css')}}" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
