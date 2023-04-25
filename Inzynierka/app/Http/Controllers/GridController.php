@@ -437,7 +437,6 @@ class GridController extends Controller
                 'products_array'=>$array,
                 'path_matrix'=>$path_matrix,
                 'orders' =>$orders,
-                'containers' =>$containers,
                 'order_sizes' =>$orders_sizes,
             ]
         );
