@@ -13,7 +13,8 @@ class Order extends Model
     protected $table = 'order';
 
     protected $fillable = [
-        'id',
+        'order_id',
+        'user_id',
         'primary',
         'grid_id'
 

@@ -58,14 +58,13 @@ class OrderController extends Controller
                 $grid->orders()->whereIn('grid_id', $grid)->delete();
 
                 Excel::import(new OrdersImport(), $request->file('file')->store('temp'));
-                Excel::import(new OrdersProductsImport(), $request->file('file2')->store('temp'));
 
                 DB::commit();
                 return Redirect()->back()->with('success', 'Pomyślnie wczytano zamówienia');
             }
             catch (\Exception $e)
             {
-              //  dd($e);
+               dd($e);
                 DB::rollBack();
                 return Redirect()->back()->with('failure', 'Upps coś poszło nie tak');
             }
@@ -78,11 +77,10 @@ class OrderController extends Controller
 
         $rules= [
             'file' => ['required','mimes:csv'],
-            'file2' => ['required','mimes:csv']
         ];
 
         $messages= [
-            'mimes' => 'File must be csv file',
+            'mimes' => 'Wymagany format csv',
         ];
 
         return $request->validate($rules,$messages);

@@ -82,14 +82,6 @@
                             <span class="text-danger">{{$message}}</span>
                             @enderror
 
-                            <div class="form-group">
-                                <label for="exampleInputEmail1" class="form-label">SCZEGÓŁY ZAMÓWIEŃ</label>
-                                <input type="file" name="file2" value="{{old('file2')}}" class="form-control" id="file2" aria-describedby="emailHelp" >
-                            </div>
-
-                            @error('file2')
-                            <span class="text-danger">{{$message}}</span>
-                            @enderror
 
                             <table class="table table-dark">
                                 <thead>
