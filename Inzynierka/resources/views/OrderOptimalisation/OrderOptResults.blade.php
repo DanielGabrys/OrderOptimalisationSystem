@@ -141,7 +141,9 @@
             }
 
                 console.log("colors",containers)
-                let detailed_path = JSON.parse(result[id]["detailed_path"])
+                console.log("orders",orders)
+
+            let detailed_path = JSON.parse(result[id]["detailed_path"])
 
                // drawContainers(containers,color)
                 console.log("cont",detailed_path);
@@ -160,10 +162,11 @@
                         for(let j=0;j<order_id.length;j++)
                         {
 
-                            let found = orders.filter(e => e.id == order_id[j]);
+                            let found = orders.filter(e => e.order_id == order_id[j]);
+                            console.log(found,position,key)
                             found = found[0]["products"];
-                            let amount = found.filter(e => e.id == key);
-                            amount = amount[0]["pivot"]["amount"]
+                            amount = found[0]["pivot"]["amount"]
+
 
                             //console.log(found,amount);
 

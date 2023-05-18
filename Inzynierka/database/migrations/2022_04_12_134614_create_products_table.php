@@ -17,6 +17,7 @@ return new class extends Migration
         {
             $table->id();
             $table->Biginteger('user_id')->unsigned();
+            $table->Biginteger('product_id')->unsigned();
             $table->string('name');
             $table->float('size_X', 8, 2);
             $table->float('size_Y', 8, 2);
@@ -25,6 +26,7 @@ return new class extends Migration
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
+            $table->unique(['user_id','product_id']);
 
         });
     }

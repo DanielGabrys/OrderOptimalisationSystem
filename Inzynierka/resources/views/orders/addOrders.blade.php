@@ -46,7 +46,7 @@
                         @foreach($orders as $order)
                             <tr>
                                 <th scope="row">{{$loop->index+1}}</th>
-                                <td >{{$order->id }}</td>
+                                <td >{{$order->order_id }}</td>
                                 <td >{{$order->created_at}} </td>
 
                                 <td> <a href ="" class="btn btn-info"> POKAŻ </a></td>

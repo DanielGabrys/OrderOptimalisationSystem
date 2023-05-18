@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use App\Models\Grid;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class IsAnyGridActive
 {
@@ -21,7 +22,7 @@ class IsAnyGridActive
 
 
 
-        $grid=Grid::where('isActive','=',1)->first();
+        $grid=Grid::where('isActive','=',1)->where('user_id',Auth::id())->first();
         if(is_null($grid))
         {
             return redirect()->route('showGrids')->with('middleware','Aktywuj jedną z z siatek siatkę');

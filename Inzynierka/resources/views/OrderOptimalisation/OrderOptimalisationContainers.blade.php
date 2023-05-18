@@ -227,9 +227,12 @@
              cont.setStartVariables(obj2, containers, distinct_containers,document.getElementById('split').checked);
              cont.createContainerPopulation(cont.orderPopulationSize);
 
+             console.log(cont.orderPopulation)
+
              cont.randomOrderColor()
              cont.colorizeOrders();
              cont.createLegend();
+
 
              for (const key2 in cont.orderPopulation[0])
              {

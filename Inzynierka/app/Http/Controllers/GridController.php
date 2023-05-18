@@ -310,7 +310,7 @@ class GridController extends Controller
     public function calculateNaiveSubmit(Request $request)
     {
 
-        $grid=Grid::all()->where('isActive','=',1)->first();
+        $grid=Grid::all()->where('isActive','=',1)->where('user_id',Auth::id())->first();
         $matrix = $request->json_matrix;
         $number = $request->number;
 
@@ -353,7 +353,7 @@ class GridController extends Controller
 
     public function orderOptResultsSubmit(Request $request)
     {
-        $grid=Grid::all()->where('isActive','=',1)->first();
+        $grid=Grid::all()->where('isActive','=',1)->where('user_id',Auth::id())->first();
         $result2 = json_decode( $request->results,true);
 
         OrderOptimisationResults::where('grid_id',$grid->id)->delete();
@@ -382,11 +382,12 @@ class GridController extends Controller
 
     public function orderOptResults()
     {
-        $grid=Grid::all()->where('isActive','=',1)->first();
+        $grid=Grid::where('isActive','=',1)->where('user_id',Auth::id())->first();
 
         $result = OrderOptimisationResults::where('grid_id','=',$grid->id)->paginate(5);
         $result2 =json_encode($result);
-        $orders=Order::with('products')->get();
+        $orders=Order::with('products')->where('user_id',Auth::id())->get();
+
 
         return view('OrderOptimalisation.OrderOptResults',["products"=>$result, "result"=>$result2,'orders'=>$orders]);
     }
@@ -396,7 +397,7 @@ class GridController extends Controller
     {
 
 
-        $grid=Grid::all()->where('isActive','=',1)->first();
+        $grid=Grid::all()->where('isActive','=',1)->where('user_id',Auth::id())->first();
         $active = $grid->id;
         $orders=Order::with('products')->where('grid_id',$grid->id)->get();
 
@@ -411,10 +412,10 @@ class GridController extends Controller
        */
 
         $orders_sizes = DB::table('order_product')
-            ->select('order_product.order_id', DB::raw('sum(order_product.amount) as capability'))
+            ->select('order.order_id', DB::raw('sum(order_product.amount) as capability'))
             ->join('order', 'order.id', '=', 'order_product.order_id')
             ->where('grid_id',$grid->id)
-            ->groupBy('order_product.order_id')->get();
+            ->groupBy('order.order_id')->get();
 
         //dd($orders_sizes);
         /*

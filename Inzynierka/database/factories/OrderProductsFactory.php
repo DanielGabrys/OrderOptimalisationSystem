@@ -7,8 +7,11 @@ use App\Models\Grid_Product;
 use App\Models\Order;
 use App\Models\OrderProducts;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use voku\helper\ASCII;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\OrderProducts>
@@ -22,14 +25,13 @@ class OrderProductsFactory extends Factory
      */
     public function definition()
     {
+        $user_id = User::select("id")->orderBy(DB::raw('RAND()'))->first()->id;
+        $grid_id=(Grid::where('isActive','=',1)->where('user_id',$user_id)->first())->id;
 
-        $grid_id=(Grid::all()->where('isActive','=',1)->first())->id;
 
 
-
-            $order_id = (Order::select("id")->orderBy(DB::raw('RAND()'))->first())->id;
+            $order_id = (Order::select("id")->where('user_id',$user_id)->orderBy(DB::raw('RAND()'))->first())->id;
             $product_id = Grid_Product::where("grid_id",$grid_id)->orderBy(DB::raw('RAND()'))->first()->product_id;
-            var_dump($order_id);
                 return [
 
                     'order_id' => $order_id,

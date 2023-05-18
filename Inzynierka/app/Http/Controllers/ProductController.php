@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class ProductController extends Controller
 {
@@ -25,6 +26,7 @@ class ProductController extends Controller
             $Product->size_Y = $request->size_y;
             $Product->size_Z = $request->size_z;
             $Product->user_id = Auth::id();
+            $Product->product_id = $request->product_id;
 
             $Product->save();
 
@@ -57,6 +59,12 @@ class ProductController extends Controller
             'size_x' => ['required','numeric','min:0.01'],
             'size_y' => ['required','numeric','min:0.01'],
             'size_z' => ['required','numeric','min:0.01'],
+            'product_id' => ['required','numeric',
+                Rule::unique("product")->where(function($query) use ($request)
+                {
+                    $query->where('user_id',Auth::id())->where('product_id',$request->product_id);
+                })
+            ],
 
 
         ];

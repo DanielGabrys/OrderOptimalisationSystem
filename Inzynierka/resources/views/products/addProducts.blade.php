@@ -40,7 +40,7 @@
                         @forelse($products as $product)
                             <tr>
                                 <th scope="row">{{$loop->index+1}}</th>
-                                <td >{{$product->id }}</td>
+                                <td >{{$product->product_id }}</td>
                                 <td >{{$product->name}}</td>
                                 <td >{{$product->size_X}} x {{$product->size_Y}} x {{$product->size_Z}}</td>
 
@@ -85,6 +85,17 @@
                             @enderror
 
                             <div class="form-group">
+
+                                <label for="exampleInputEmail1" class="form-label"> id </label>
+                                <input type="number" name="product_id" value="{{old('product_id')}}" class="form-control" id="product_id" >
+                                @error('product_id')
+                                <span class="text-danger">{{$message}}</span>
+                                @enderror
+
+                            </div>
+
+                            <div class="form-group">
+
                                 <label for="exampleInputEmail1" class="form-label"> WYMIARY (cm) </label>
                                 <input type="number" name="size_x" value="{{old('size_x')}}" class="form-control" id="size_x"  placeholder="X">
                                 @error('size_x')

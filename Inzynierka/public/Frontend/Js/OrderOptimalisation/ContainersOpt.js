@@ -25,7 +25,7 @@ class ContainersOpt extends OrderOptimalisation
        this.max_capability= this.getsumArr(containers);
        this.partial =partial
 
-       console.log(this.partial,"partial")
+      // console.log(this.partial,"partial")
 
    }
 
@@ -67,7 +67,7 @@ class ContainersOpt extends OrderOptimalisation
                this.orderPopulation[i][j]["order"]=individual[j]["orders"];
                this.orderPopulation[i][j]["containers"] =individual[j]["containers_map"]
 
-               console.log(i);
+              // console.log(i);
            }
 
        }
@@ -88,6 +88,7 @@ class ContainersOpt extends OrderOptimalisation
 
     setContainerSizeForOrders()
     {
+        console.log("eeeeee",this.orders)
     let orders ={};
     for (let i=0;i<this.orders.length;i++)
     {
@@ -137,6 +138,7 @@ class ContainersOpt extends OrderOptimalisation
     setContainerSizeForOrdersNoSplit()
     {
         let orders ={};
+       // console.log(this.orders)
         for (let i=0;i<this.orders.length;i++)
         {
             let tem_cont = this.containers.slice();
@@ -163,7 +165,7 @@ class ContainersOpt extends OrderOptimalisation
         }
 
         this.order_containers = orders;
-        console.log(this.order_containers)
+       // console.log(this.order_containers)
 
     }
 
@@ -461,8 +463,6 @@ class ContainersOpt extends OrderOptimalisation
     reselectFinalContainers(object)
     {
 
-
-        console.log("reselectContainers",object)
         for(const k in object)
         {
             let map = object[k]["containers_map"];
@@ -472,7 +472,7 @@ class ContainersOpt extends OrderOptimalisation
             {
                 for (let i = 0; i < map[key].length; i++)
                 {
-                    console.log("map",map[key][i])
+                  //  console.log("map",map[key][i])
                     /*
                     let index = possible_containers.indexOf(map[key][i])
 
@@ -565,7 +565,7 @@ class ContainersOpt extends OrderOptimalisation
             this.timestamps[this.time]=this.bestCombination.dist
             this.time+=60;
         }
-        console.log(time)
+       // console.log(time)
 
         let rate = Math.floor(Math.random() * this.orderPopulation.length)
 
@@ -586,8 +586,8 @@ class ContainersOpt extends OrderOptimalisation
             this.addNewCroosoversToPopulation(result)
             this.addNewCroosoversToPopulation(result2)
 
-            console.log(this.orderPopulation[this.orderPopulation.length-1])
-            console.log(this.orderPopulation[this.orderPopulation.length-2])
+          //  console.log(this.orderPopulation[this.orderPopulation.length-1])
+          //  console.log(this.orderPopulation[this.orderPopulation.length-2])
             this.OrderBatching2OPT(max_time,this.orderPopulation.length-1)
             this.OrderBatching2OPT(max_time,this.orderPopulation.length-2)
 
@@ -996,7 +996,7 @@ class ContainersOpt extends OrderOptimalisation
     OrderBatching2OPT(max_time,index)
     {
 
-                console.log(this.bestOrderVariationDistance)
+               // console.log(this.bestOrderVariationDistance)
                 //console.log(this.orderPopulation[0])
                 let improved = true
                 let counter =0;
@@ -1044,8 +1044,8 @@ class ContainersOpt extends OrderOptimalisation
                     }
                 }
                 this.setPopulationNodeShortestPathData(this.orderPopulation[0],this.orderPopulationSummary,0,)
-                console.log(this.bestCombination)
-                console.log(this.timestamps)
+              //  console.log(this.bestCombination)
+               // console.log(this.timestamps)
 
     }
 

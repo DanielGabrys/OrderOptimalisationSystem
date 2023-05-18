@@ -234,8 +234,8 @@ class OrderOptimalisation extends GeneticAlgo
         for( let key =0; key<obj.length; key++)
         {
 
-            this.order_ids.push(obj[key]['id']);
-            let id =obj[key]["id"];
+            this.order_ids.push(obj[key]['order_id']);
+            let id =obj[key]['order_id'];
             orders[id] = {};
             orders[id]['positions'] = [];
             orders[id]['real_positions'] = [];
@@ -273,7 +273,6 @@ class OrderOptimalisation extends GeneticAlgo
 
         this.randomOrderColor();
 
-       // console.log(orders)
 
         return orders;
     }
@@ -282,6 +281,7 @@ class OrderOptimalisation extends GeneticAlgo
     {
 
 
+        console.log(sequence)
         let arr =[];
         let duplicats=0;
         for (let i=0;i<sequence["order"].length;i++)
@@ -673,6 +673,7 @@ class OrderOptimalisation extends GeneticAlgo
 
     getOrderFinalResult()
     {
+        console.log(this.bestCombination)
         let block = document.getElementById("finalCombination");
         block.innerHTML=""
         for (const key in this.bestCombination)

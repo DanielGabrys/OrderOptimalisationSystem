@@ -2263,8 +2263,8 @@ class OrderOptimalisation2 extends GeneticAlgo2
         for( let key =0; key<obj.length; key++)
         {
 
-            this.order_ids.push(obj[key]['id']);
-            let id =obj[key]["id"];
+            this.order_ids.push(obj[key]['order_id']);
+            let id =obj[key]["order_id"];
             orders[id] = {};
             orders[id]['positions'] = [];
             orders[id]['real_positions'] = [];
