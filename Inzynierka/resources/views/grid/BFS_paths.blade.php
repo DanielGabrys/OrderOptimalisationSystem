@@ -6,7 +6,11 @@
 
     <div class="container-fluid d-flex justify-content-center">
 
-        <form class="form-inline" name="form" id="form" action="{{route('addGridPaths')}}" method="POST">
+        <form class="form-inline" name="form" id="form"
+              @if($grid->name) action="{{route('editGridSubmit',$grid->id)}}"
+              @else action="{{route('addGridPaths')}}"
+              @endif
+              method="POST">
             @csrf
 
             <div class="input-group mb-2 mr-sm-2">

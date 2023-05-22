@@ -19,7 +19,7 @@
 
     <div class="container d-flex justify-content-center ">
 
-        <form id="load_grid" name="load_grid" action="{{route('editGridSubmit',$grid->id)}}" method="POST">
+        <form id="load_grid" name="load_grid" action="{{route('editGridPaths',$grid->id)}}" method="POST">
             @csrf
             <div class="form-row align-items-center">
                 <div class="col-auto">

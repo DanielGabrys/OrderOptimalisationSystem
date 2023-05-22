@@ -44,11 +44,16 @@ Route::middleware(['auth',])->group(function ()
             // delete grid
             Route::get('/deleteGrid/{id}',[GridController::class,'deleteGrid'])->name('deleteGrid');
 
-            //edit grid structure
+
+
+            //edit grid structure -1-page-form
             Route::get('/editGrid/{id}', [GridController::class, 'editGrid'])->name('editGrid');
+            Route::post('/editGrid/{id}', [GridController::class, 'editGridSubmit'])->name('editGridPaths');
+
 
             //submit edited grid structure
-            Route::post('/editGridSubmit/{id}', [GridController::class, 'editGridSubmit'])->name('editGridSubmit');
+            Route::post('/editGridSubmit/{id}', [GridController::class, 'editBFSPathsSubmit'])->name('editGridSubmit');
+
 
         });
 
@@ -63,9 +68,10 @@ Route::middleware(['auth',])->group(function ()
         //add grid - save data
         Route::post('/addPathSubmit', [GridController::class, 'addBFSPathsSubmit'])->name('addGridPaths');
 
+
+
         // show grids
         Route::get('/showGrids',[GridController::class,'showGrids'])->name('showGrids');
-
 
         Route::group(['prefix' => 'optimalisation'], function() {
             // order optimalisation containers

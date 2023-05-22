@@ -25,10 +25,10 @@ class GridController extends Controller
     public function __construct()
     {
         $this->middleware('existAnyGrid',['except' =>
-            ['index','createGridSubmit','addBFSPathsSubmit','addBFSPathsGet']
+            ['index','createGridSubmit','addBFSPathsSubmit','addBFSPathsGet','editBFSPathsSubmit']
         ]);
         $this->middleware('isAnyGridActive',['except' =>
-            ['index','createGridSubmit','showGrids','activateGrid','deleteGrid','addBFSPathsSubmit','addBFSPathsGet']]);
+            ['index','createGridSubmit','showGrids','activateGrid','deleteGrid','addBFSPathsSubmit','addBFSPathsGet','editBFSPathsSubmit']]);
     }
 
 
@@ -144,23 +144,21 @@ class GridController extends Controller
             $grid = $request->session()->get('grid');
             return view('grid.BFS_paths',['grid'=>$grid]);
 
+
         }
     }
 
 
     public function addBFSPathsSubmit(Request $request)
     {
-
-
-        $rules=
-            [
-            'name' => ['required','string','min:3','max:255',
-                      Rule::unique("grid")->where(function($query) use ($request)
-                      {
-                         $query->where('user_id',Auth::id())->where('name',$request->name);
-                      })
-                ],
-        ];
+            $rules =
+                [
+                    'name' => ['required', 'string', 'min:3', 'max:255',
+                        Rule::unique("grid")->where(function ($query) use ($request) {
+                            $query->where('user_id', Auth::id())->where('name', $request->name);
+                        })
+                    ],
+                ];
 
         $messages= [
             'required' => 'Pole jest wymagane',
@@ -174,6 +172,7 @@ class GridController extends Controller
 
         $request->validate($rules,$messages);
 
+
         $grid = $request->session()->get('grid');
         $grid->nodes_shortest_paths = $request->paths_to_save;
         $grid->name = $request->name;
@@ -183,6 +182,45 @@ class GridController extends Controller
         $request->session()->forget('grid');
 
         return Redirect()->route('showGrids')->with('success','Pomyślnie');
+    }
+
+    public function editBFSPathsSubmit(Request $request)
+    {
+
+        $edited = $request->session()->get('grid')->id;
+        $existed = Grid::find($edited)->name;
+        $rules =
+            [
+                'name' => ['required', 'string', 'min:3', 'max:255',
+                    Rule::unique("grid")->where(function ($query) use ($request,$existed) {
+                        $query->where('user_id', Auth::id())->where('name', $request->name)->where('name','!=',$existed);
+                    })
+                ],
+            ];
+
+        $messages= [
+            'required' => 'Pole jest wymagane',
+            'min' => 'Nazwa jest za krótka',
+            'max' => 'Nazwa jest za długa',
+            'string' => 'Niewłaściwa nazwa',
+            'unique' => 'Nazwa już istnieje'
+        ];
+
+
+
+        $request->validate($rules,$messages);
+
+
+        $grid = $request->session()->get('grid');
+        $grid->nodes_shortest_paths = $request->paths_to_save;
+        $grid->name = $request->name;
+        $grid->nodesPathsIds = $request->nodes_array;
+        $grid->save();
+
+        $request->session()->forget('grid');
+
+        return Redirect()->route('showGrids')->with('success','Pomyślnie');
+
     }
 
 
@@ -196,7 +234,7 @@ class GridController extends Controller
             $products = $grid->products()->orderByRaw('position ASC')->get();
             $this->createGridData($grid,$request);
             $request->session()->put('grid', $grid);
-            return view('grid.BFS_paths',['grid'=>$grid,'products_array'=>$products]);
+            return Redirect()->route('gridSubmitGet');
 
         }
 

@@ -42,8 +42,13 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
-    public function grids(): HasMany
+    public function grids()
     {
         return $this->hasMany(Grid::class);
+    }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
     }
 }

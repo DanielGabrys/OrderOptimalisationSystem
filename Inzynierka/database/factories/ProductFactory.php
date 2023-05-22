@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Product;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Auth;
@@ -22,7 +23,8 @@ class ProductFactory extends Factory
         return
             [
                 'name' => $this->faker->name,
-                'user_id' => User::select("id")->orderBy(DB::raw('RAND()'))->first()->id,
+                'user_id' => function () {return User::factory()->create()->id;},
+                'product_id' => $this->faker->unique()->numberBetween(1,50),
                 'size_X' => $this->faker->randomFloat(1,2,20),
                 'size_Y' => $this->faker->randomFloat(1,2,20),
                 'size_Z' => $this->faker->randomFloat(1,2,20),
@@ -30,4 +32,6 @@ class ProductFactory extends Factory
                 'updated_at' => $this->faker->dateTime(),
         ];
     }
+
+
 }

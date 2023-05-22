@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -55,12 +56,13 @@ class GridFactory extends Factory
        // var_dump($str);
 
         return [
+            'name' =>$this->faker->word(),
+            'user_id' => function () {return User::factory()->create()->id;},
             'height' => $x,
             'width' => $y,
             'entry' => $entry,
             'shelfs' => $str,
             'isActive' => 0,
-           // 'size_Z' => $this->faker->randomFloat(1,2,20),
             'created_at' => $this->faker->dateTime(),
             'updated_at' => $this->faker->dateTime(),
         ];
