@@ -66,7 +66,7 @@ class OrderController extends Controller
             {
                dd($e);
                 DB::rollBack();
-                return Redirect()->back()->with('failure', 'Upps coś poszło nie tak');
+                return Redirect()->back()->with('failure', 'Upps coś poszło nie tak, sprawdź dane wejściowe');
             }
         }
     }

@@ -29,7 +29,7 @@ class OrdersImport implements ToCollection, WithHeadingRow
         foreach ($rows as $row)
         {
 
-                $order_count = Order::where('user_id',Auth::id())->where('order_id',$row['order_id']);
+                $order_count = Order::where('grid_id',$grid)->where('order_id',$row['order_id']);
                 $order_id = 0;
 
                 if($order_count->count()==0)
@@ -39,7 +39,6 @@ class OrdersImport implements ToCollection, WithHeadingRow
                     $order->order_id = $row['order_id'];
                     $order->primary = 0;
                     $order->grid_id = $grid;
-                    $order->user_id = Auth::id();
 
                     $order->save();
                     $order_id = $order->id;

@@ -424,7 +424,7 @@ class GridController extends Controller
 
         $result = OrderOptimisationResults::where('grid_id','=',$grid->id)->paginate(5);
         $result2 =json_encode($result);
-        $orders=Order::with('products')->where('user_id',Auth::id())->get();
+        $orders=Order::with('products')->where('grid_id',$grid->id)->get();
 
 
         return view('OrderOptimalisation.OrderOptResults',["products"=>$result, "result"=>$result2,'orders'=>$orders]);

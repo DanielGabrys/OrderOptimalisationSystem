@@ -25,17 +25,14 @@ class OrderProductsFactory extends Factory
      */
     public function definition()
     {
-        $user_id = User::select("id")->orderBy(DB::raw('RAND()'))->first()->id;
-        $grid_id=(Grid::where('isActive','=',1)->where('user_id',$user_id)->first())->id;
 
 
-
-            $order_id = (Order::select("id")->where('user_id',$user_id)->orderBy(DB::raw('RAND()'))->first())->id;
-            $product_id = Grid_Product::where("grid_id",$grid_id)->orderBy(DB::raw('RAND()'))->first()->product_id;
                 return [
 
-                    'order_id' => $order_id,
-                    'product_id' => $product_id,
+                    'order_id' => function () {return Order::factory()->create()->id;},
+                    'product_id' => Grid_Product::
+                        orderBy(DB::raw('RAND()'))
+                        ->first()->product_id,
                     'amount' => rand(1, 6),
                     'created_at' => $this->faker->dateTime(),
                     'updated_at' => $this->faker->dateTime(),

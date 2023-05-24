@@ -18,6 +18,12 @@ return new class extends Migration
             $table->Biginteger('order_id')->unsigned();
             $table->boolean("primary");
             $table->timestamps();
+
+            $table->Biginteger('grid_id')->unsigned();
+            $table->foreign('grid_id')->references('id')->on('grid')->onDelete('cascade');
+
+
+            $table->unique(['grid_id','order_id']);
         });
     }
 

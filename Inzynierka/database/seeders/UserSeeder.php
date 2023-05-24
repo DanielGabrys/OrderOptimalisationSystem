@@ -18,7 +18,7 @@ class UserSeeder extends Seeder
     public function run()
     {
         User::factory(1)->
-        has(Product::factory()->count(rand(5,20)),'products')->
+        has(Product::factory()->count(rand(5,200)),'products')->
             has(Grid::factory(3),'grids')
             ->create();
     }

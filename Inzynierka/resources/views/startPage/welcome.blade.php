@@ -90,7 +90,7 @@
 
                     <div class="navbar-btn d-none d-sm-inline-block">
                         <ul>
-                            <li><a class="solid" href="#">
+                            <li><a class="solid" href="https://github.com/DanielGabrys/OrderOptimalisationSystem" target ="blank" >
                                     <i class="bi bi-github"></i>
                                     Download
                                 </a>
@@ -527,10 +527,10 @@
                 </ul> <!-- social -->
                 <div class="footer-support text-center">
                     <span class="number">+8801234567890</span>
-                    <span class="mail">support@uideck.com</span>
+                    <span class="mail">support@wms.com</span>
                 </div>
                 <div class="copyright text-center mt-35">
-                    <p class="text">Designed by <a href="https://uideck.com" rel="nofollow">UIdeck</a> and Built-with <a rel="nofollow" href="https://ayroui.com">Ayro UI</a> </p>
+
                 </div> <!--  copyright -->
             </div>
         </div> <!-- row -->

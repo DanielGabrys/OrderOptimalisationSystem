@@ -17,4 +17,6 @@ class OrderProducts extends Model
         'amount'
 
     ];
+
+
 }

@@ -22,26 +22,13 @@ class OrderFactory extends Factory
     public function definition()
     {
 
-        $user_id = User::select("id")->orderBy(DB::raw('RAND()'))->first()->id;
-        $grid_id = Grid::where('isActive',1)->where('user_id',$user_id)->first();
-
-        var_dump("elo");
-
-        if($grid_id == null)
-        {
-
-            return [];
-        }
 
         return
             [
+                'order_id' => $this->faker->numberBetween(1,1000),
                 'primary' => $this->faker->boolean(),
                 'created_at' => $this->faker->dateTime(),
                 'updated_at' => $this->faker->dateTime(),
-                'grid_id' => $grid_id->id,
-                'user_id' => $user_id,
-                'order_id' => $this->faker->numberBetween(1,1000)
-
 
             ];
     }
