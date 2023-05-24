@@ -25,7 +25,7 @@
         "tailwindcss": "^3.1.0"
     },
     "dependencies": {
-        "bootstrap-icons": "^1.10.3",
+        "bootstrap-icons": "^1.10.5",
         "open-graph": "^0.2.1"
     }
 }

@@ -1,14 +1,14 @@
 $(function() {
-    
+
     "use strict";
-    
+
     //===== Prealoder
-    
+
     $(window).on('load', function(event) {
         $('.preloader').delay(500).fadeOut(500);
     });
-    
-    
+
+
     //===== Sticky
 
     $(window).on('scroll', function (event) {
@@ -22,9 +22,10 @@ $(function() {
         }
     });
 
-    
+
     //===== Section Menu Active
 
+    /*
     var scrollLink = $('.page-scroll');
     // Active link switching
     $(window).scroll(function () {
@@ -40,8 +41,10 @@ $(function() {
             }
         });
     });
-    
-    
+
+     */
+
+
     //===== close navbar-collapse when a  clicked
 
     $(".navbar-nav a").on('click', function () {
@@ -55,8 +58,8 @@ $(function() {
     $(".navbar-nav a").on('click', function () {
         $(".navbar-toggler").removeClass('active');
     });
-    
-    
+
+
     //===== Sidebar
 
     $('[href="#side-menu-left"], .overlay-left').on('click', function (event) {
@@ -66,8 +69,8 @@ $(function() {
     $('[href="#close"], .overlay-left').on('click', function (event) {
         $('.sidebar-left, .overlay-left').removeClass('open');
     });
-    
-    
+
+
     //===== Slick
 
     $('.slider-items-active').slick({
@@ -109,8 +112,8 @@ $(function() {
             }
         ]
     });
-    
-    
+
+
     //===== Isotope Project 4
 
     $('.container').imagesLoaded(function () {
@@ -134,10 +137,10 @@ $(function() {
             event.preventDefault();
         });
     });
-    
-    
+
+
     //===== slick Testimonial Four
-    
+
     $('.testimonial-active').slick({
         dots: false,
         arrows: true,
@@ -149,28 +152,28 @@ $(function() {
         speed: 800,
         slidesToShow: 1,
     });
-    
-    
+
+
     //====== Magnific Popup
-    
+
     $('.video-popup').magnificPopup({
         type: 'iframe'
         // other options
     });
-    
-    
+
+
     //===== Magnific Popup
-    
+
     $('.image-popup').magnificPopup({
       type: 'image',
       gallery:{
         enabled:true
       }
     });
-    
-    
+
+
     //===== Back to top
-    
+
     // Show or hide the sticky footer button
     $(window).on('scroll', function(event) {
         if($(this).scrollTop() > 600){
@@ -179,33 +182,33 @@ $(function() {
             $('.back-to-top').fadeOut(200)
         }
     });
-    
-    
+
+
     //Animate the scroll to yop
     $('.back-to-top').on('click', function(event) {
         event.preventDefault();
-        
+
         $('html, body').animate({
             scrollTop: 0,
         }, 1500);
     });
-    
-    
-    //===== 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+    //=====
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 });
