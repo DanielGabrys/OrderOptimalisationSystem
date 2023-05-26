@@ -5,7 +5,7 @@
     <meta charset="utf-8">
 
     <!--====== Title ======-->
-    <title>Smash - Bootstrap Business Template</title>
+    <title>WOOS</title>
 
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -119,7 +119,7 @@
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="slider-content">
-                                <h1 class="title"> WMS </h1>
+                                <h1 class="title"> WOOS </h1>
                                 <p class="text">Aplikacja usprawniająca proces realizacji zamówień na hali magazynowej</p>
 
 
