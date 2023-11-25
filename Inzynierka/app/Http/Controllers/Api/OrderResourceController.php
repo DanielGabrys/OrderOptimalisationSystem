@@ -14,17 +14,18 @@ class OrderResourceController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
+
     public function index(Request $request, $hash)
     {
         $decoded = Hashids::decode($hash);
 
         if($decoded)
-            return response()->json("200");
+            return response('Hello World', 200);
         else
         {
-            return response()->json("no");
+            return response('No ', 401);
         }
 
     }
