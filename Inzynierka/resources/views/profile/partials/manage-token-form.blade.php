@@ -17,6 +17,11 @@
             <x-input-error class="mt-2" :messages="$errors->get('token')" />
         </div>
 
+        <div>
+            <x-input-label id="merchant" name="merchant" type="text" class="mt-1 block w-full" :value="old('name', $merchant)" required autofocus autocomplete="name" />
+            <x-input-error class="mt-2" :messages="$errors->get('merchant')" />
+        </div>
+
         <button type="submit" class="btn btn-primary">Submit</button>
 
 

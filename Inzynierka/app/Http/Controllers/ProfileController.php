@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Api\TokenController;
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Grid;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use Vinkla\Hashids\Facades\Hashids;
 
 class ProfileController extends Controller
 {
@@ -16,9 +19,12 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
+
         return view('profile.edit', [
             'user' => $request->user(),
-            'token' => ""
+            'token' => "",
+            'merchant' => TokenController::generateHash(),
+
         ]);
     }
 

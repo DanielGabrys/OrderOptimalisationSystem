@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Vinkla\Hashids\Facades\Hashids;
+
 
 
 class OrderResourceController extends Controller
@@ -14,8 +16,16 @@ class OrderResourceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request, $hash)
     {
+        $decoded = Hashids::decode($hash);
+
+        if($decoded)
+            return response()->json("200");
+        else
+        {
+            return response()->json("no");
+        }
 
     }
 
