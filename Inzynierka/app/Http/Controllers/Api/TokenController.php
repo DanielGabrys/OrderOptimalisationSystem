@@ -29,9 +29,8 @@ class TokenController extends Controller
     public static function generateHash()
     {
         $user=Auth::user();
-        $grid=Grid::all()->where('isActive','=',1)->where('user_id',$user->id)->first();
         $key = 4583928432937483;
-        $salt = ($key).($grid->id).($user->id);
+        $salt = ($key).($user->id);
 
 
         return Hashids::encode($salt);
