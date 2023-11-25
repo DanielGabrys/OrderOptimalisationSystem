@@ -8,7 +8,7 @@ rm -r Inzynierka/
 
 ls -la
 
-rm -R ../public_html*
+rm ../public_html/*
 cp -R public/* ../public_html
 
 cp ../conf/index.php ../public_html
@@ -19,7 +19,7 @@ cp ../conf/.env ./
 php artisan route:clear
 php artisan cache:clear
 php artisan config:clear
-php artisan view:c
+php artisan view:clear
 php artisan key:generate
 php artisan migrate
 php artisan storage:link
