@@ -37,6 +37,7 @@
 
                                 <tr>
                                     <th scope="col">NR</th>
+                                    <th scope="col">ID</th>
                                     <th scope="col">WYMIARY</th>
                                     <th scope="col">NAZWA</th>
                                     <th scope="col">UTWORZONO</th>
@@ -55,6 +56,7 @@
                                 @foreach($grids as $grid)
                                     <tr>
                                         <td >{{$loop->iteration}}</td>
+                                        <td >{{$grid->id}}</td>
                                         <td >{{$grid->height}}x{{$grid->width}}</td>
                                         <td >{{$grid->name}}</td>
                                         <td>{{$grid->created_at->diffForHumans()}}</td>

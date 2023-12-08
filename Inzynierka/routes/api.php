@@ -16,7 +16,9 @@ use App\Http\Controllers\Api\OrderResourceController;
 */
 
 
-Route::group(['prefix' => 'v1', 'middleware' => 'auth:sanctum'], function()
+Route::group(['prefix' => 'v1',
+    'middleware' => 'auth:sanctum'
+], function()
 {
 
     Route::apiResource("merchant/{id}/orders",OrderResourceController::class);
