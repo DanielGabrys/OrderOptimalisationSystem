@@ -60,6 +60,7 @@ class OrderResourceController extends Controller
         if(!$key) return response()->json('Authorisation failed ', 401);
         if(!$ok =$this->ValidateRequestParams($request,$key)) return response()->json($this->error_messages,"400");
 
+       // return $this->ValidateRequestParams($request,$key);
         return  $this->processRequest($request);
 
     }
@@ -122,11 +123,13 @@ class OrderResourceController extends Controller
         DB::beginTransaction();
 
         try {
+
+            $this->deletePrevOrders($decoded["grid_id"]);
+
             foreach ($decoded["orders"] as $order)
             {
 
 
-                $this->deletePrevOrders($decoded["grid_id"]);
                 $id =  $this->storeRequestOrder($order,$decoded["grid_id"]);
                 $this->storeRequestOrderProducts($id,$order["orderItem"]);
 
@@ -196,11 +199,11 @@ class OrderResourceController extends Controller
             return false;
         }
 
-        $user_grid_products = Grid::with("products")->where("id",20)->first()->products->pluck("id");
+        $user_grid_products = Grid::with("products")->where("id",$grid_id)->first()->products->pluck("id");
         $user_products = Product::where("user_id",$user_id)->get();
         $user_grid_products_ids = Product::whereIn("id",$user_grid_products)->get()->pluck("product_id")->toArray();
         $this->db_product_id = Product::whereIn("id",$user_grid_products)->get()->pluck("id","product_id")->toArray();
-        //return response()->json($this->db_product_id);
+        //return response()->json($user_grid_products_ids);
 
 
 

@@ -122,7 +122,7 @@ Route::middleware(['auth',])->group(function ()
             Route::get('/{id}/product/{id2}/edit', [GridProductsCntroller::class, 'editGridCellProducts'])->name('editGridCellProducts');
 
             // delete specific product from grid
-            Route::get('/{id}/delete', [GridProductsCntroller::class, 'deleteGridProduct'])->name('deleteGridProduct');
+            Route::get('/{id}/product/{id2}/delete', [GridProductsCntroller::class, 'deleteGridProduct'])->name('deleteGridProduct');
 
             // BFS
             Route::get('/{id}/Paths', [GridController::class, 'Paths'])->name('Paths');

@@ -90,7 +90,7 @@
                             <td>{{$product->name}}</td>
                             <td>{{$product->id}}</td>
                             <td>{{$product->pivot->position}}</td>
-                            <td><a href ="{{route('deleteGridProduct',$product->pivot->id)}}" class="btn btn-danger"> USUŃ </a></td>
+                            <td><a href ="{{route('deleteGridProduct',[$grid->id,$product->pivot->id])}}" class="btn btn-danger"> USUŃ </a></td>
 
                         </tr>
                         @endforeach

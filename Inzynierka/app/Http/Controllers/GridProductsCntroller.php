@@ -62,9 +62,9 @@ class GridProductsCntroller extends Controller
 
     }
 
-    public function deleteGridProduct($id)
+    public function deleteGridProduct($id,$id2)
     {
-        $grid_product = Grid_Product::find($id)->delete();
+        $grid_product = Grid_Product::find($id2)->delete();
         return Redirect()->back()->with('success','Pomyślnie usunięto product z komórki siatki');
     }
 
